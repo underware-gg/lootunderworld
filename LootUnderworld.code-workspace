@@ -1,0 +1,34 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+        "typescript.validate.enable": true,
+        "files.exclude": {
+            "**/node_modules": true,
+            "**/build": true,
+            "**/.github": true,
+            "**/.vscode": true,
+            "**/.next": true,
+            "**/_bak": true,
+            "**/*.tsbuildinfo": true,
+            "**/.env*": true,
+        },
+        "search.exclude": {
+            "**/package-lock.json": true,
+            "**/artifacts/**/*.json": true,
+            "**/contracts/**/*.json": true,
+            "**/dist": true,
+            "**/.gitignore": true,
+            "**/.gitmodules": true,
+        },
+        "cairo1.languageServerPath": "~/.dojo/bin/dojo-language-server",
+        "cairo1.enableLanguageServer": true,
+        "cairo1.enableScarb": true
+    }
+}
