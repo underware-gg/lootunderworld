@@ -4,13 +4,22 @@ Granted by Frontinus House / BibliothecaDAO
 
 [Original Proposal](https://github.com/BibliothecaDAO/Frontinus-House-Docs/issues/26)
 
-## Game Design
+## Game Design Notes
 
-yadda yadda yadda
+##### Alternative 1
 
+* A Realm is 50x50 km
+* A Chamber is 40x40 m
+* We can fit exactly 1250x1250 Chambers inside a Realm
+* Or 1.562.500 Chambers, per level depth
 
+##### Alternative 2
 
-## Dojo React Quick Start Guide
+* A Realm is 50x50 km
+* The Realms SVG viewbox is 1000x1000p, less the 50p borders, 900x900 points
+* We could consider to fit exactly 900x900 Chambers to make it 1:1 to the Realms SVG scale.
+* Or 810.000 Chambers, per level depth
+* Each Chamber would have 55,55x55,55 meters
 
 
 
