@@ -1,10 +1,18 @@
-## Integrate React with Dojo: A Quick Start Guide
+# Loot Underworld
 
-Dive into this straightforward example to understand how to meld React with Dojo.
+Granted by Frontinus House / BibliothecaDAO
 
-This integration taps into the powerful libraries designed by [Lattice](https://lattice.xyz/):
+[Original Proposal](https://github.com/BibliothecaDAO/Frontinus-House-Docs/issues/26)
 
-- [recs](https://github.com/latticexyz/mud/tree/main/packages/recs)
+## Game Design
+
+yadda yadda yadda
+
+
+
+## Dojo React Quick Start Guide
+
+From [dojo-starter-react-app](https://github.com/dojoengine/dojo-starter-react-app)
 
 ### Initial Setup
 
@@ -16,10 +24,14 @@ The repository already contains the `dojo` as a submodule. Feel free to remove i
 curl -L https://install.dojoengine.org | bash
 ```
 
-Followed by:
+Now install/update dojo with [`dojoup`](https://book.dojoengine.org/toolchain/dojoup.html) also to update Dojo.
+... 
 
 ```console
-dojoup    
+# latest stable
+dojoup
+# or the nightly
+dojoup -v nightly
 ```
 
 For an in-depth setup guide, consult the [Dojo book](https://book.dojoengine.org/getting-started/quick-start.html).
@@ -31,13 +43,15 @@ After cloning the project, execute the following:
 1. **Terminal 1 - Katana**:
 
 ```console
-cd dojo && katana --disable-fee
+cd dojo
+katana --disable-fee
 ```
 
 2. **Terminal 2 - Contracts**:
 
 ```console
-cd dojo && sozo build && sozo migrate
+cd dojo
+sozo build && sozo migrate
 
 // Basic Auth - This will allow burner Accounts to interact with the contracts
 sozo auth writer Position move
@@ -48,8 +62,11 @@ sozo auth writer Moves spawn
 
 3. **Terminal 3 - Client**:
 
+You need this [`.env`](https://github.com/dojoengine/dojo-starter-react-app/blob/main/client/.env) in your `client` folder.
+
 ```console
-cd client && yarn && yarn dev
+cd client
+yarn && yarn dev
 ```
 
 4. **Terminal 4 - Torii**:
@@ -57,7 +74,8 @@ cd client && yarn && yarn dev
 Uncomment the 'world_address' parameter in `dojo/Scarb.toml` then:
 
 ```console
-cd dojo && torii
+cd dojo
+torii
 ```
 
 Upon completion, launch your browser and navigate to http://localhost:5173/. You'll be greeted by the running example!

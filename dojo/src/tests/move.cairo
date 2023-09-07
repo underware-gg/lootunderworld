@@ -9,10 +9,10 @@ mod tests {
     use dojo::test_utils::spawn_test_world;
 
     // project imports
-    use dojo_examples::components::{position, Position};
-    use dojo_examples::components::{moves, Moves};
-    use dojo_examples::systems::spawn;
-    use dojo_examples::systems::move;
+    use loot_underworld::components::{position, Position};
+    use loot_underworld::components::{moves, Moves};
+    use loot_underworld::systems::spawn;
+    use loot_underworld::systems::move;
 
     // helper setup function
     // reuse this function for all tests

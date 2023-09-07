@@ -6,9 +6,9 @@ mod spawn {
     use option::OptionTrait;
     use dojo::world::Context;
 
-    use dojo_examples::components::Position;
-    use dojo_examples::components::Moves;
-    use dojo_examples::constants::OFFSET;
+    use loot_underworld::components::Position;
+    use loot_underworld::components::Moves;
+    use loot_underworld::constants::OFFSET;
 
     // so we don't go negative
 
@@ -38,8 +38,8 @@ mod move {
     use dojo::world::Context;
     use debug::PrintTrait;
 
-    use dojo_examples::components::Position;
-    use dojo_examples::components::Moves;
+    use loot_underworld::components::Position;
+    use loot_underworld::components::Moves;
 
     #[derive(Serde, Drop)]
     enum Direction {
