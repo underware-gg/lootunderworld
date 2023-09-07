@@ -12,55 +12,93 @@ yadda yadda yadda
 
 ## Dojo React Quick Start Guide
 
-From [dojo-starter-react-app](https://github.com/dojoengine/dojo-starter-react-app)
 
-### Initial Setup
 
-The repository already contains the `dojo` as a submodule. Feel free to remove it if you prefer.
+## Dojo Quick Start Guide
 
-**Prerequisites:** First and foremost, ensure that Dojo is installed on your system. If it isn't, you can easily get it set up with:
+Cloned from the [dojo-starter-react-app](https://github.com/dojoengine/dojo-starter-react-app)
+
+For an in-depth setup guide, consult the [Dojo book](https://book.dojoengine.org/getting-started/quick-start.html).
+
+### Development Setup [🔗](https://book.dojoengine.org/getting-started/setup.html)
+
+Install Rust + Cargo + others
+
+```
+# Install Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup override set stable
+rustup update
+cargo test
+
+# Install Cargo
+curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh
+
+# other stuff you might need
+brew install protobuf
+```
+
+Install the [Cairo 1.0](https://marketplace.visualstudio.com/items?itemName=starkware.cairo1) extension for Visual Studio Code
+
+
+### Install Dojo [🔗](https://book.dojoengine.org/getting-started/quick-start.html)
 
 ```console
 curl -L https://install.dojoengine.org | bash
+dojoup
 ```
 
-Now install/update dojo with [`dojoup`](https://book.dojoengine.org/toolchain/dojoup.html) also to update Dojo.
-... 
+
+### Update Dojo [🔗](https://book.dojoengine.org/toolchain/dojoup.html)
 
 ```console
 # latest stable
 dojoup
-# or the nightly
+# install specific version
+dojoup -v 0.2.1
+# install the nightly
 dojoup -v nightly
+# install specific branch
+dojoup -b main
+# install specific commit
+dojoup -C 40ea4d86a9739fd85ca153f56668c8797bb3750f
+# install fromo a path
+dojoup -p ../../dojo
 ```
 
-For an in-depth setup guide, consult the [Dojo book](https://book.dojoengine.org/getting-started/quick-start.html).
 
-### Launch the Example in Under 30 Seconds
+## Launch Dojo
 
-After cloning the project, execute the following:
-
-1. **Terminal 1 - Katana**:
+#### Terminal 1: Katana (local node)
 
 ```console
 cd dojo
 katana --disable-fee
 ```
 
-2. **Terminal 2 - Contracts**:
+#### Terminal 2: Contracts
 
 ```console
 cd dojo
 sozo build && sozo migrate
 
-// Basic Auth - This will allow burner Accounts to interact with the contracts
+# authorize burner Accounts to interact with the contracts
 sozo auth writer Position move
 sozo auth writer Position spawn
 sozo auth writer Moves move
 sozo auth writer Moves spawn
 ```
 
-3. **Terminal 3 - Client**:
+#### Terminal 3: Torii (indexer)
+
+Uncomment the `world_address` parameter in `dojo/Scarb.toml` then:
+
+```console
+cd dojo
+torii
+```
+
+#### Terminal 4: Client
 
 You need this [`.env`](https://github.com/dojoengine/dojo-starter-react-app/blob/main/client/.env) in your `client` folder.
 
@@ -69,13 +107,8 @@ cd client
 yarn && yarn dev
 ```
 
-4. **Terminal 4 - Torii**:
+#### Browser
 
-Uncomment the 'world_address' parameter in `dojo/Scarb.toml` then:
+Open [http://localhost:5173/](http://localhost:5173/)
 
-```console
-cd dojo
-torii
-```
 
-Upon completion, launch your browser and navigate to http://localhost:5173/. You'll be greeted by the running example!
