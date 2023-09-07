@@ -1,1 +1,1 @@
-const OFFSET: felt252 = 1000;
+const SPAWN_OFFSET: felt252 = 1000;

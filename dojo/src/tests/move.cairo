@@ -9,10 +9,10 @@ mod tests {
     use dojo::test_utils::spawn_test_world;
 
     // project imports
-    use loot_underworld::components::{position, Position};
-    use loot_underworld::components::{moves, Moves};
-    use loot_underworld::systems::spawn;
-    use loot_underworld::systems::move;
+    use loot_underworld::components::example::{position, Position};
+    use loot_underworld::components::example::{moves, Moves};
+    use loot_underworld::systems::example::spawn;
+    use loot_underworld::systems::example::move;
 
     // helper setup function
     // reuse this function for all tests
@@ -43,12 +43,12 @@ mod tests {
         let call_data = array![caller.into()].span();
 
         // check entity
-        let moves = world.entity('Moves', call_data, 0, dojo::SerdeLen::<Moves>::len());
+        let moves = world.entity('Moves', call_data, 0, dojo::StorageSize::<Moves>::unpacked_size());
         assert(*moves[0] == 99, 'moves is wrong');
 
         // check position
         let new_position = world
-            .entity('Position', call_data, 0, dojo::SerdeLen::<Position>::len());
+            .entity('Position', call_data, 0, dojo::StorageSize::<Position>::unpacked_size());
         assert(*new_position[0] == 1001, 'position x is wrong');
         assert(*new_position[1] == 1000, 'position y is wrong');
     }
