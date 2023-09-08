@@ -6,7 +6,7 @@ mod generate_chamber {
     use option::OptionTrait;
     use dojo::world::Context;
 
-    use loot_underworld::components::chamber::Chamber;
+    use loot_underworld::components::chamber::{Seed, Map};
     use loot_underworld::utils::seeder::make_seed;
     use loot_underworld::constants::SPAWN_OFFSET;
 
@@ -19,12 +19,16 @@ mod generate_chamber {
 
         set!(ctx.world,
             (
-                Chamber {
+                Seed {
                     // player: ctx.origin,
                     realm_id,
                     coord,
                     seed,
-                    // bitmap: seed,
+                },
+                Map {
+                    realm_id,
+                    coord,
+                    bitmap: seed,
                 },
             )
         );
