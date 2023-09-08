@@ -20,16 +20,21 @@ fn hash_felt(seed: felt252, offset: felt252) -> felt252 {
 
 fn hash_u128(seed: u128, offset: u128) -> u128 {
     let hash = hash_felt(seed.into(), offset.into());
-    match u128s_from_felt252(hash) {
+    felt_to_u128(hash)
+}
+
+fn felt_to_u128(value: felt252) -> u128 {
+    match u128s_from_felt252(value) {
         U128sFromFelt252Result::Narrow(x) => x,
         U128sFromFelt252Result::Wide((_, x)) => x,
     }
 }
 
-fn hash_u128_to_u256(h: u128) -> u256 {
+// upgrade a u128 hash to u256
+fn hash_u128_to_u256(value: u128) -> u256 {
     u256 {
-        low: h,
-        high: hash_u128(h, h)
+        low: value,
+        high: hash_u128(value, value)
     }
 }
 
@@ -38,6 +43,12 @@ fn hash_128_range(seed: u128, offset: u128, min: u128, max: u128) -> u128 {
     let rnd = hash_u128(seed, offset);
     let range = max - min + 1;
     min + rnd % range
+}
+
+#[test]
+// #[available_gas(20000)]
+fn test_felt_to_u128() {
+    assert(0xab9d03074bff6ee2d4dbc374dbf3f846 == felt_to_u128(0x7f25249bc3b57d4a9cb82bd75d25579ab9d03074bff6ee2d4dbc374dbf3f846), '');
 }
 
 #[test]
