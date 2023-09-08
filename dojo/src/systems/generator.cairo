@@ -16,7 +16,7 @@ mod generate_chamber {
         // let offset: u32 = SPAWN_OFFSET.try_into().unwrap();
 
         let block_hask: u128 = 1;
-        let seed: u128 = make_seed(realm_id, coord, block_hask);
+        let seed: u256 = make_seed(realm_id, coord, block_hask);
 
         set!(ctx.world,
             (

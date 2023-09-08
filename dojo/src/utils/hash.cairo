@@ -2,6 +2,7 @@ use traits::Into;
 use debug::PrintTrait;
 
 // https://github.com/starkware-libs/cairo/blob/main/corelib/src/integer.cairo
+// https://github.com/smartcontractkit/chainlink-starknet/blob/develop/contracts/src/utils.cairo
 use integer::{u128s_from_felt252, U128sFromFelt252Result};
 
 // https://github.com/starkware-libs/cairo/blob/main/corelib/src/pedersen.cairo
@@ -10,17 +11,13 @@ use integer::{u128s_from_felt252, U128sFromFelt252Result};
 extern fn pedersen(a: felt252, b: felt252) -> felt252 implicits(Pedersen) nopanic;
 
 //
-// hash based on: 
+// initially hash based on: 
 // https://github.com/shramee/cairo-random/blob/main/src/hash.cairo
-//
 
-// Full random felt
 fn hash_felt(seed: felt252, offset: felt252) -> felt252 {
     pedersen(seed, offset)
 }
 
-// Random u128
-// https://github.com/smartcontractkit/chainlink-starknet/blob/develop/contracts/src/utils.cairo
 fn hash_u128(seed: u128, offset: u128) -> u128 {
     let hash = hash_felt(seed.into(), offset.into());
     match u128s_from_felt252(hash) {
@@ -29,7 +26,14 @@ fn hash_u128(seed: u128, offset: u128) -> u128 {
     }
 }
 
-// retruns the hashed number mod'ded to min .. max (non inclusive)
+fn hash_u128_to_u256(h: u128) -> u256 {
+    u256 {
+        low: h,
+        high: hash_u128(h, h)
+    }
+}
+
+// returns the hashed number mod'ded to min .. max (inclusive)
 fn hash_128_range(seed: u128, offset: u128, min: u128, max: u128) -> u128 {
     let rnd = hash_u128(seed, offset);
     let range = max - min + 1;
@@ -40,11 +44,13 @@ fn hash_128_range(seed: u128, offset: u128, min: u128, max: u128) -> u128 {
 // #[available_gas(20000)]
 fn test_hash_felt() {
     let rnd0  = hash_felt(25, 1);
+    let rnd00 = hash_felt(rnd0, rnd0);
     let rnd1  = hash_felt(25, 1);
     let rnd12 = hash_felt(25, 2);
     let rnd2  = hash_felt(26, 1);
     let rnd22 = hash_felt(26, 2);
     assert(rnd0 == 0x7f25249bc3b57d4a9cb82bd75d25579ab9d03074bff6ee2d4dbc374dbf3f846, '');
+    assert(rnd0 != rnd00, '');
     assert(rnd0 == rnd1, '');
     assert(rnd1 != rnd12, '');
     assert(rnd1 != rnd2, '');
@@ -55,12 +61,14 @@ fn test_hash_felt() {
 // #[available_gas(20000)]
 fn test_hash_u128() {
     let rnd0  = hash_u128(25, 1);
+    let rnd00 = hash_u128(rnd0, rnd0);
     let rnd1  = hash_u128(25, 1);
     let rnd12 = hash_u128(25, 2);
     let rnd2  = hash_u128(26, 1);
     let rnd22 = hash_u128(26, 2);
     // rnd.print();
     assert(rnd0 == 0xab9d03074bff6ee2d4dbc374dbf3f846, '');
+    assert(rnd0 != rnd00, '');
     assert(rnd0 == rnd1, '');
     assert(rnd1 != rnd12, '');
     assert(rnd1 != rnd2, '');

@@ -7,6 +7,6 @@ struct Chamber {
     realm_id: u128,
     #[key]
     coord: u128,
-    seed: u128,
+    seed: u256,
     // bitmap: u256,
 }
