@@ -1,8 +1,8 @@
 import './App.css';
 import { useDojo } from './DojoContext';
-import { useComponentValue } from "@dojoengine/react";
+import { EntityIndex, setComponent, HasValue, Has } from '@latticexyz/recs';
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { Direction, } from './dojo/createSystemCalls'
-import { EntityIndex, setComponent } from '@latticexyz/recs';
 import { useEffect } from 'react';
 import { getFirstComponentByType } from './utils';
 import { Moves, Position } from './generated/graphql';
@@ -10,8 +10,8 @@ import { Moves, Position } from './generated/graphql';
 function App() {
   const {
     setup: {
-      systemCalls: { spawn, move },
-      components: { Moves, Position },
+      systemCalls: { spawn, move, generate_chamber },
+      components: { Moves, Position, Chamber, Map },
       network: { graphSdk, call }
     },
     account: { create, list, select, account, isDeploying }
@@ -23,6 +23,13 @@ function App() {
   // get current component values
   const position = useComponentValue(Position, parseInt(entityId.toString()) as EntityIndex);
   const moves = useComponentValue(Moves, parseInt(entityId.toString()) as EntityIndex);
+
+  // const seeds = useComponentValue(Seed, parseInt(entityId.toString()) as EntityIndex);
+
+  // const chamberIds = useEntityQuery([HasValue(Chamber, { realm_id: 1 })]);
+  const chamberIds = useEntityQuery([Has(Chamber)]);
+  // const mapIds = useEntityQuery([HasValue(Map, { realmId: 1 })]);
+  console.log(chamberIds)
 
   useEffect(() => {
 
@@ -54,12 +61,15 @@ function App() {
           })}
         </select>
       </div>
+      <hr />
+      <div className="card">
+        <button onClick={() => generate_chamber(account, 1, Date.now())}>Mint Chamber</button>
+      </div>
+      <hr />
       <div className="card">
         <button onClick={() => spawn(account)}>Spawn</button>
         <div>Moves Left: {moves ? `${moves['remaining']}` : 'Need to Spawn'}</div>
         <div>Position: {position ? `${position['x']}, ${position['y']}` : 'Need to Spawn'}</div>
-      </div>
-      <div className="card">
         <button onClick={() => move(account, Direction.Up)}>Move Up</button> <br />
         <button onClick={() => move(account, Direction.Left)}>Move Left</button>
         <button onClick={() => move(account, Direction.Right)}>Move Right</button> <br />

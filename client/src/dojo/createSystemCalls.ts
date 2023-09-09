@@ -15,9 +15,48 @@ export enum Direction {
 }
 
 export function createSystemCalls(
-    { execute, contractComponents }: SetupNetworkResult,
-    { Position, Moves }: ClientComponents
+    { execute, provider, contractComponents }: SetupNetworkResult,
+    { Position, Moves, Chamber, Map }: ClientComponents
 ) {
+
+
+    const generate_chamber = async (signer: Account, realmId: number, coord: number) => {
+
+        const entityId = parseInt(signer.address) as EntityIndex;
+        console.log(entityId)
+
+        const chamberId = uuid();
+        Chamber.addOverride(chamberId, {
+            entity: entityId,
+            value: { realm_id: 0, coord: 0, seed: 0 },
+        });
+
+        const mapId = uuid();
+        Map.addOverride(mapId, {
+            entity: entityId,
+            value: { bitmap: 0 },
+        });
+
+        try {
+            const tx = await execute(signer, "generate_chamber", [realmId, coord]);
+
+            console.log(`generate_chamber tx:`, tx)
+            const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 500 })
+            console.log(receipt)
+
+            const events = getEvents(receipt);
+            console.log(events)
+            setComponentsFromEvents(contractComponents, events);
+
+        } catch (e) {
+            console.log(`generate_chamber exception:`, e)
+            Chamber.removeOverride(chamberId);
+            Map.removeOverride(mapId);
+        } finally {
+            Chamber.removeOverride(chamberId);
+            Map.removeOverride(mapId);
+        }
+    };
 
 
 
@@ -25,6 +64,7 @@ export function createSystemCalls(
     // EXAMPLE
     //
     const spawn = async (signer: Account): Promise<number> => {
+        
         const entityId = parseInt(signer.address) as EntityIndex;
 
         const positionId = uuid();
@@ -44,14 +84,16 @@ export function createSystemCalls(
         try {
             const tx = await execute(signer, "spawn", []);
 
-            console.log(tx)
-            const receipt = await signer.waitForTransaction(tx.transaction_hash, { retryInterval: 500 })
+            console.log(`spawn tx:`, tx)
+            const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 500 })
+            console.log(`R:`, receipt)
 
             const events = getEvents(receipt);
+            console.log(`E:`, events)
             setComponentsFromEvents(contractComponents, events);
             entity_id = getEntityIdFromEvents(events, "Moves");
         } catch (e) {
-            console.log(`spawn() exception:`, e)
+            console.log(`spawn exception:`, e)
             Position.removeOverride(positionId);
             Moves.removeOverride(movesId);
         } finally {
@@ -91,7 +133,7 @@ export function createSystemCalls(
             setComponentsFromEvents(contractComponents, events);
             entity_id = getEntityIdFromEvents(events, "Moves");
         } catch (e) {
-            console.log(`move() exception:`, e)
+            console.log(`move exception:`, e)
             Position.removeOverride(positionId);
             Moves.removeOverride(movesId);
         } finally {

@@ -4,6 +4,39 @@ import { defineComponent, Type as RecsType, World } from "@latticexyz/recs";
 
 export function defineContractComponents(world: World) {
   return {
+    // Loot Underworld
+    Chamber: (() => {
+      const name = "Chamber";
+      return defineComponent(
+        world,
+        {
+          realm_id: RecsType.Number,
+          coord: RecsType.Number,
+          seed: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Map: (() => {
+      const name = "Map";
+      return defineComponent(
+        world,
+        {
+          bitmap: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+
+    // Example
     Moves: (() => {
       const name = "Moves";
       return defineComponent(
