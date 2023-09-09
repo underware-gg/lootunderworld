@@ -2,10 +2,10 @@ use array::ArrayTrait;
 use starknet::ContractAddress;
 
 #[derive(Component, Copy, Drop, Serde)]
-struct Seed {
+struct Chamber {
     #[key]
+    entity_id: u128,
     realm_id: u128,
-    #[key]
     coord: u128,
     seed: u256,
 }
@@ -13,8 +13,6 @@ struct Seed {
 #[derive(Component, Copy, Drop, Serde)]
 struct Map {
     #[key]
-    realm_id: u128,
-    #[key]
-    coord: u128,
+    entity_id: u128,
     bitmap: u256,
 }

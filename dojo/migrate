@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+sozo build
+sozo migrate
+
+scripts/default_auth.sh
+
+cp target/dev/manifest.json ../client/src/
+
+cd ../client
+yarn run codegen
+
+echo "--- DONE!"

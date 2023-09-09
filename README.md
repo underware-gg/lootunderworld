@@ -121,3 +121,28 @@ yarn && yarn dev
 Open [http://localhost:5173/](http://localhost:5173/)
 
 
+
+## After edits...
+
+#### Build, migrate, authorize
+
+```console
+cd dojo
+sozo build
+sozo migrate
+scripts/default_auth.sh
+cp target/dev/manifest.json ../client/src/
+cd ../client
+yarn run codegen
+
+# or just...
+cd dojo
+./migrate
+```
+
+#### Run client codegen
+
+```console
+cd client
+npm run codegen
+```
