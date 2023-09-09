@@ -1,3 +1,7 @@
+import {
+    EntityIndex,
+} from "@latticexyz/recs";
+import { poseidonHashMany } from "micro-starknet";
 import { Direction } from "../dojo/createSystemCalls";
 
 export function isValidArray(input: any): input is any[] {
@@ -42,3 +46,15 @@ export function updatePositionWithDirection(direction: Direction, value: { x: nu
     }
     return value;
 }
+
+// DISCUSSION: MUD expects Numbers, but entities in Starknet are BigInts (from poseidon hash)
+// so I am converting them to Numbers here, but it means that there is a bigger risk of collisions
+export function getEntityIdFromKeys(keys: bigint[]): EntityIndex {
+    if (keys.length === 1) {
+        return parseInt(keys[0].toString()) as EntityIndex;
+    }
+    // calculate the poseidon hash of the keys
+    let poseidon = poseidonHashMany([BigInt(keys.length), ...keys]);
+    return parseInt(poseidon.toString()) as EntityIndex;
+}
+
