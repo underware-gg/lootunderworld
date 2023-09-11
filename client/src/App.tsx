@@ -42,8 +42,12 @@ function App() {
         let remaining = getFirstComponentByType(data.entities?.edges, 'Moves') as Moves;
         let position = getFirstComponentByType(data.entities?.edges, 'Position') as Position;
 
-        setComponent(Moves, parseInt(entityId.toString()) as EntityIndex, { remaining: remaining.remaining })
-        setComponent(Position, parseInt(entityId.toString()) as EntityIndex, { x: position.x, y: position.y })
+        if (remaining) {
+          setComponent(Moves, parseInt(entityId.toString()) as EntityIndex, { remaining: remaining.remaining })
+        }
+        if(position) {
+          setComponent(Position, parseInt(entityId.toString()) as EntityIndex, { x: position.x, y: position.y })
+        }
       }
     }
     fetchData();
@@ -64,6 +68,9 @@ function App() {
       <hr />
       <div className="card">
         <button onClick={() => generate_chamber(account, 1, Date.now())}>Mint Chamber</button>
+        {chamberIds.map((id) => {
+          return <p>{id.toString()}</p>
+        })}
       </div>
       <hr />
       <div className="card">

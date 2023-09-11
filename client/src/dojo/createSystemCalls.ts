@@ -41,7 +41,7 @@ export function createSystemCalls(
             const tx = await execute(signer, "generate_chamber", [realmId, coord]);
 
             console.log(`generate_chamber tx:`, tx)
-            const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 500 })
+            const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
             console.log(receipt)
 
             const events = getEvents(receipt);
@@ -85,7 +85,7 @@ export function createSystemCalls(
             const tx = await execute(signer, "spawn", []);
 
             console.log(`spawn tx:`, tx)
-            const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 500 })
+            const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
             console.log(`R:`, receipt)
 
             const events = getEvents(receipt);
@@ -127,7 +127,7 @@ export function createSystemCalls(
             const tx = await execute(signer, "move", [direction]);
 
             console.log(tx)
-            const receipt = await signer.waitForTransaction(tx.transaction_hash, { retryInterval: 500 })
+            const receipt = await signer.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
 
             const events = getEvents(receipt);
             setComponentsFromEvents(contractComponents, events);
