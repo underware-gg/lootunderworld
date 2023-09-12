@@ -1,11 +1,12 @@
 import './App.css';
+import { useEffect, useState } from 'react';
 import { useDojo } from './DojoContext';
 import { EntityIndex, setComponent, HasValue, Has } from '@latticexyz/recs';
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { Direction, } from './dojo/createSystemCalls'
-import { useEffect } from 'react';
 import { getFirstComponentByType } from './utils';
 import { Moves, Position } from './generated/graphql';
+import ChamberMap from './underworld/Map';
 
 function App() {
   const {
@@ -23,13 +24,6 @@ function App() {
   // get current component values
   const position = useComponentValue(Position, parseInt(entityId.toString()) as EntityIndex);
   const moves = useComponentValue(Moves, parseInt(entityId.toString()) as EntityIndex);
-
-  // const seeds = useComponentValue(Seed, parseInt(entityId.toString()) as EntityIndex);
-
-  // const chamberIds = useEntityQuery([HasValue(Chamber, { realm_id: 1 })]);
-  const chamberIds = useEntityQuery([Has(Chamber)]);
-  // const mapIds = useEntityQuery([HasValue(Map, { realmId: 1 })]);
-  console.log(chamberIds)
 
   useEffect(() => {
 
@@ -54,6 +48,15 @@ function App() {
   }, [account.address]);
 
 
+  // const chamberIds = useEntityQuery([HasValue(Chamber, { realm_id: 1 })]);
+  const chamberIds = useEntityQuery([Has(Chamber)]);
+
+  const [selectedChamberId, setSelectedChamberId] = useState(0 as EntityIndex)
+  useEffect(() => {
+    setSelectedChamberId(chamberIds[chamberIds.length-1] ?? 0)
+  }, [chamberIds])
+
+
   return (
     <>
       <button onClick={create}>{isDeploying ? "deploying burner" : "create burner"}</button>
@@ -65,14 +68,26 @@ function App() {
           })}
         </select>
       </div>
+      
       <hr />
+
       <div className="card">
         <button onClick={() => generate_chamber(account, 1, Date.now())}>Mint Chamber</button>
-        {chamberIds.map((id) => {
-          return <p>{id.toString()}</p>
-        })}
+        <div>
+          <select onChange={e => setSelectedChamberId(parseInt(e.target.value) as EntityIndex)}>
+            {chamberIds.map((entityId) => {
+              const _id = entityId.toString()
+              return <option value={_id} key={_id} selected={parseInt(_id) == selectedChamberId}>{_id}</option>
+            })}
+          </select>
+        </div>
+        <div>
+          <ChamberMap entityId={selectedChamberId} />
+        </div>
       </div>
+
       <hr />
+      
       <div className="card">
         <button onClick={() => spawn(account)}>Spawn</button>
         <div>Moves Left: {moves ? `${moves['remaining']}` : 'Need to Spawn'}</div>
