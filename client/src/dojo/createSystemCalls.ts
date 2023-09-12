@@ -1,9 +1,7 @@
+import { setComponent, Components, Schema } from "@latticexyz/recs";
+import { Account } from "starknet";
 import { SetupNetworkResult } from "./setupNetwork";
-import { Account, InvokeTransactionReceiptResponse, shortString } from "starknet";
-import { EntityIndex, getComponentValue, setComponent, Components, Schema } from "@latticexyz/recs";
-import { uuid } from "@latticexyz/utils";
-import { ClientComponents } from "./createClientComponents";
-import { updatePositionWithDirection, getEntityIdFromKeys } from "../utils";
+import { getEntityIdFromKeys } from "../utils";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -16,45 +14,23 @@ export enum Direction {
 
 export function createSystemCalls(
     { execute, provider, contractComponents }: SetupNetworkResult,
-    { Position, Moves, Chamber, Map }: ClientComponents
+    // { Position, Moves, Chamber, Map }: ClientComponents
 ) {
 
 
     const generate_chamber = async (signer: Account, realmId: number, coord: number) => {
-
-        const entityId = parseInt(signer.address) as EntityIndex;
-        console.log(entityId)
-
-        const chamberId = uuid();
-        Chamber.addOverride(chamberId, {
-            entity: entityId,
-            value: { realm_id: 0, coord: 0, seed: 0 },
-        });
-
-        const mapId = uuid();
-        Map.addOverride(mapId, {
-            entity: entityId,
-            value: { bitmap: 0 },
-        });
-
         try {
             const tx = await execute(signer, "generate_chamber", [realmId, coord]);
-
             console.log(`generate_chamber tx:`, tx)
             const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-            console.log(receipt)
-
+            console.log(`generate_chamber receipt:`, receipt)
             const events = getEvents(receipt);
-            console.log(events)
+            console.log(`generate_chamber events:`, events)
             setComponentsFromEvents(contractComponents, events);
 
         } catch (e) {
             console.log(`generate_chamber exception:`, e)
-            Chamber.removeOverride(chamberId);
-            Map.removeOverride(mapId);
         } finally {
-            Chamber.removeOverride(chamberId);
-            Map.removeOverride(mapId);
         }
     };
 
@@ -64,83 +40,73 @@ export function createSystemCalls(
     // EXAMPLE
     //
     const spawn = async (signer: Account): Promise<number> => {
-        
-        const entityId = parseInt(signer.address) as EntityIndex;
-
-        const positionId = uuid();
-        Position.addOverride(positionId, {
-            entity: entityId,
-            value: { x: 1000, y: 1000 },
-        });
-
-        const movesId = uuid();
-        Moves.addOverride(movesId, {
-            entity: entityId,
-            value: { remaining: 100 },
-        });
-
         let entity_id: number = 0;
+        
+        // const entityId = parseInt(signer.address) as EntityIndex;
+        // const positionId = uuid();
+        // Position.addOverride(positionId, {
+        //     entity: entityId,
+        //     value: { x: 1000, y: 1000 },
+        // });
+        // const movesId = uuid();
+        // Moves.addOverride(movesId, {
+        //     entity: entityId,
+        //     value: { remaining: 100 },
+        // });
 
         try {
             const tx = await execute(signer, "spawn", []);
-
             console.log(`spawn tx:`, tx)
             const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-            console.log(`R:`, receipt)
-
+            console.log(`spawn receipt:`, receipt)
             const events = getEvents(receipt);
-            console.log(`E:`, events)
+            console.log(`spawn events:`, events)
             setComponentsFromEvents(contractComponents, events);
             entity_id = getEntityIdFromEvents(events, "Moves");
         } catch (e) {
             console.log(`spawn exception:`, e)
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            // Position.removeOverride(positionId);
+            // Moves.removeOverride(movesId);
         } finally {
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            // Position.removeOverride(positionId);
+            // Moves.removeOverride(movesId);
         }
-
         return entity_id;
     };
 
     const move = async (signer: Account, direction: Direction): Promise<number> => {
-
-        const entityId = parseInt(signer.address) as EntityIndex;
-
-        const positionId = uuid();
-        Position.addOverride(positionId, {
-            entity: entityId,
-            //@ts-ignore
-            value: updatePositionWithDirection(direction, getComponentValue(Position, entityId) as Position),
-        });
-
-        const movesId = uuid();
-        Moves.addOverride(movesId, {
-            entity: entityId,
-            value: { remaining: (getComponentValue(Moves, entityId)?.remaining || 0) - 1 },
-        });
-
         let entity_id: number = 0;
+
+        // const entityId = parseInt(signer.address) as EntityIndex;
+        // const positionId = uuid();
+        // Position.addOverride(positionId, {
+        //     entity: entityId,
+        //     //@ts-ignore
+        //     value: updatePositionWithDirection(direction, getComponentValue(Position, entityId) as Position),
+        // });
+        // const movesId = uuid();
+        // Moves.addOverride(movesId, {
+        //     entity: entityId,
+        //     value: { remaining: (getComponentValue(Moves, entityId)?.remaining || 0) - 1 },
+        // });
 
         try {
             const tx = await execute(signer, "move", [direction]);
-
-            console.log(tx)
+            console.log(`move tx:`, tx)
             const receipt = await signer.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-
+            console.log(`move receipt:`, receipt)
             const events = getEvents(receipt);
+            console.log(`move events:`, events)
             setComponentsFromEvents(contractComponents, events);
             entity_id = getEntityIdFromEvents(events, "Moves");
         } catch (e) {
             console.log(`move exception:`, e)
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            // Position.removeOverride(positionId);
+            // Moves.removeOverride(movesId);
         } finally {
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            // Position.removeOverride(positionId);
+            // Moves.removeOverride(movesId);
         }
-
         return entity_id;
     };
 

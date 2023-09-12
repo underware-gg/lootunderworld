@@ -100,6 +100,10 @@ Install the [Cairo 1.0](https://marketplace.visualstudio.com/items?itemName=star
 ```console
 curl -L https://install.dojoengine.org | bash
 dojoup
+
+# install packages
+cd client
+yarn
 ```
 
 
@@ -194,8 +198,27 @@ npm run codegen
 
 ## FAQ / Pitfalls
 
+* `sozo migrate` error:
+
+```
+[1] 🌎 Building World state....
+  > Found remote World: 0x9fcfa7f23017ca5bb2dceac67a405bf83639fea1d09c6027ee1cdfe573d33e
+  > Fetching remote state
+error: Failed to build remote World state.
+
+Caused by:
+    Unable to find remote World at address 0x9fcfa7f23017ca5bb2dceac67a405bf83639fea1d09c6027ee1cdfe573d33e. Make sure the World address is correct and that it is already deployed!
+```
+
+Fix: Comment `world_address` on `Scarb.toml`, migrate, and uncomment.
+
+
 * Console error:
 
 `Error: code=ContractNotFound, message="Contract not found"`
 
-Redeploy
+Fix: Delete burner wallets from Browser Local Storage
+
+
+
+
