@@ -39,7 +39,7 @@ function App() {
         if (remaining) {
           setComponent(Moves, parseInt(entityId.toString()) as EntityIndex, { remaining: remaining.remaining })
         }
-        if(position) {
+        if (position) {
           setComponent(Position, parseInt(entityId.toString()) as EntityIndex, { x: position.x, y: position.y })
         }
       }
@@ -53,7 +53,7 @@ function App() {
 
   const [selectedChamberId, setSelectedChamberId] = useState(0 as EntityIndex)
   useEffect(() => {
-    setSelectedChamberId(chamberIds[chamberIds.length-1] ?? 0)
+    setSelectedChamberId(chamberIds[chamberIds.length - 1] ?? 0)
   }, [chamberIds])
 
 
@@ -68,7 +68,7 @@ function App() {
           })}
         </select>
       </div>
-      
+
       <hr />
 
       <div className="card">
@@ -87,7 +87,7 @@ function App() {
       </div>
 
       <hr />
-      
+
       <div className="card">
         <button onClick={() => spawn(account)}>Spawn</button>
         <div>Moves Left: {moves ? `${moves['remaining']}` : 'Need to Spawn'}</div>
