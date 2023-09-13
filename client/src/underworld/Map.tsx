@@ -29,9 +29,9 @@ function ChamberMap(props: ChamberMapProps) {
       let row = ''
       for (let x = 0; x < 16; ++x) {
         const bit = bitmap & (BigInt(1) << BigInt(y * 16 + x))
-        row += bit ? '#' : '.'
+        row += bit ? '0' : '.'
       }
-      result.push(<div>{row}</div>)
+      result.push(<div key={`row_${y}`}>{row}</div>)
     }
     return result
   }, [bitmap])
@@ -44,14 +44,14 @@ function ChamberMap(props: ChamberMapProps) {
   return (
     <div style={style}>
       <p>
-        seed: {seed.toString()}
+        seed: 0x{seed.toString(16)}
         <br />
-        0x{seed.toString(16)}
+        {seed.toString()}
       </p>
       <p>
-        bitmap: {bitmap.toString()}
+        bitmap: 0x{bitmap.toString(16)}
         <br />
-        0x{bitmap.toString(16)}
+        {bitmap.toString()}
       </p>
       {rows}
     </div>

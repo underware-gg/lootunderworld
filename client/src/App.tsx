@@ -77,7 +77,7 @@ function App() {
           <select onChange={e => setSelectedChamberId(parseInt(e.target.value) as EntityIndex)}>
             {chamberIds.map((entityId) => {
               const _id = entityId.toString()
-              return <option value={_id} key={_id} selected={parseInt(_id) == selectedChamberId}>{_id}</option>
+              return <option value={_id} key={_id}>{_id}</option>
             })}
           </select>
         </div>

@@ -7,12 +7,12 @@ export function defineContractComponents(world: World) {
     // Loot Underworld
     Chamber: (() => {
       const name = "Chamber";
-      return defineComponent(
-        world,
+      return defineComponent(world,
         {
           realm_id: RecsType.Number,
-          coord: RecsType.Number,
+          location: RecsType.Number,
           seed: RecsType.Number,
+          minter: RecsType.Number,
         },
         {
           metadata: {
@@ -23,10 +23,23 @@ export function defineContractComponents(world: World) {
     })(),
     Map: (() => {
       const name = "Map";
-      return defineComponent(
-        world,
+      return defineComponent(world,
         {
           bitmap: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Door: (() => {
+      const name = "Door";
+      return defineComponent(world,
+        {
+          pos: RecsType.Number,
+          toLocation: RecsType.Number,
         },
         {
           metadata: {
@@ -39,8 +52,7 @@ export function defineContractComponents(world: World) {
     // Example
     Moves: (() => {
       const name = "Moves";
-      return defineComponent(
-        world,
+      return defineComponent(world,
         {
           remaining: RecsType.Number,
         },
@@ -53,8 +65,7 @@ export function defineContractComponents(world: World) {
     })(),
     Position: (() => {
       const name = "Position";
-      return defineComponent(
-        world,
+      return defineComponent(world,
         {
           x: RecsType.Number,
           y: RecsType.Number,
@@ -68,8 +79,7 @@ export function defineContractComponents(world: World) {
     })(),
     AuthStatus: (() => {
       const name = "AuthStatus";
-      return defineComponent(
-        world,
+      return defineComponent(world,
         {
           is_authorized: RecsType.Boolean,
         },
@@ -82,8 +92,7 @@ export function defineContractComponents(world: World) {
     })(),
     AuthRole: (() => {
       const name = "AuthRole";
-      return defineComponent(
-        world,
+      return defineComponent(world,
         {
           id: RecsType.Number,
         },

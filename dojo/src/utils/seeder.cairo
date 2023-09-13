@@ -12,12 +12,12 @@ fn get_block_hash() -> u128 {
     hash_u128(block_info.block_number.into(), block_info.block_timestamp.into())
 }
 
-fn make_seed(realm_id: u128, coord: u128) -> u256 {
-    _make_seed(realm_id, coord, get_block_hash())
+fn make_seed(realm_id: u128, location: u128) -> u256 {
+    _make_seed(realm_id, location, get_block_hash())
 }
 
-fn _make_seed(realm_id: u128, coord: u128, block_hash: u128) -> u256 {
-    let h1 = hash_u128(realm_id, coord);
+fn _make_seed(realm_id: u128, location: u128, block_hash: u128) -> u256 {
+    let h1 = hash_u128(realm_id, location);
     let h2 = hash_u128(h1, block_hash);
     hash_u128_to_u256(h2)
 }

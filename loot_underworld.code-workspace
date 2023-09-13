@@ -22,6 +22,8 @@
       "**/dist": true,
       "**/.gitignore": true,
       "**/.gitmodules": true,
+      "**/manifest.json": true,
+      "**/generated/*": true,
     },
     "typescript.validate.enable": true,
     "editor.detectIndentation": false,

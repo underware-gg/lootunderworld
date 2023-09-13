@@ -803,12 +803,12 @@
           "type": "core::integer::u128"
         },
         {
-          "name": "coord",
+          "name": "location",
           "type": "core::integer::u128"
         }
       ],
       "outputs": [],
-      "class_hash": "0x2d6929a5266e1cf8af34771fe7097ac246898f91968ac373aa2f75800a78296",
+      "class_hash": "0x57fe6d645b8a338a8fe77ede9af2b26dc011ad98129d18028f6f405d8c5aa07",
       "dependencies": [],
       "abi": [
         {
@@ -863,7 +863,7 @@
               "type": "core::integer::u128"
             },
             {
-              "name": "coord",
+              "name": "location",
               "type": "core::integer::u128"
             },
             {
@@ -1163,7 +1163,7 @@
           "key": false
         },
         {
-          "name": "coord",
+          "name": "location",
           "type": "u128",
           "key": false
         },
@@ -1171,9 +1171,14 @@
           "name": "seed",
           "type": "u256",
           "key": false
+        },
+        {
+          "name": "minter",
+          "type": "ContractAddress",
+          "key": false
         }
       ],
-      "class_hash": "0x6efe7f6b93638f8e00b5ffacf807a74e6b20913aadfb6bd90b0c275f0eb0ee4",
+      "class_hash": "0x637138d8e588dafe2767df52e8999773141e9d6ed3437a6bd61f85b171703dc",
       "abi": [
         {
           "type": "function",
@@ -1296,6 +1301,87 @@
         {
           "type": "event",
           "name": "loot_underworld::components::chamber::map::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ]
+    },
+    {
+      "name": "Door",
+      "members": [
+        {
+          "name": "entity_id",
+          "type": "u128",
+          "key": true
+        },
+        {
+          "name": "dir",
+          "type": "u8",
+          "key": true
+        },
+        {
+          "name": "pos",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "toLocation",
+          "type": "u128",
+          "key": false
+        }
+      ],
+      "class_hash": "0x4b100073dfa2ec0ef8f134a194d9d6d76f174df465ec28a0702ae9f1d7d6e20",
+      "abi": [
+        {
+          "type": "function",
+          "name": "name",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::felt252"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "function",
+          "name": "size",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::integer::u32"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "schema",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::array::Array::<(core::felt252, core::felt252, core::bool)>"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "event",
+          "name": "loot_underworld::components::chamber::door::Event",
           "kind": "enum",
           "variants": []
         }

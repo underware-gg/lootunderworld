@@ -18,9 +18,9 @@ export function createSystemCalls(
 ) {
 
 
-  const generate_chamber = async (signer: Account, realmId: number, coord: number) => {
+  const generate_chamber = async (signer: Account, realmId: number, location: number) => {
     try {
-      const tx = await execute(signer, "generate_chamber", [realmId, coord]);
+      const tx = await execute(signer, "generate_chamber", [realmId, location]);
       console.log(`generate_chamber tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
       console.log(`generate_chamber receipt:`, receipt)
