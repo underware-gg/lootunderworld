@@ -1,17 +1,11 @@
 #[system]
 mod spawn {
-    use array::ArrayTrait;
-    use box::BoxTrait;
-    use traits::{Into, TryInto};
-    use option::OptionTrait;
     use dojo::world::Context;
 
     use loot_underworld::components::example::Position;
     use loot_underworld::components::example::Moves;
 
     const SPAWN_OFFSET: felt252 = 1000;
-
-    // so we don't go negative
 
     fn execute(ctx: Context) {
         // cast the offset to a u32
@@ -33,8 +27,6 @@ mod spawn {
 
 #[system]
 mod move {
-    use array::ArrayTrait;
-    use box::BoxTrait;
     use traits::Into;
     use dojo::world::Context;
     use debug::PrintTrait;

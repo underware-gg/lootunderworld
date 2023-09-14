@@ -1,2 +1,3 @@
+mod arrays;
+mod bitshift;
 mod hash;
-mod seeder;
