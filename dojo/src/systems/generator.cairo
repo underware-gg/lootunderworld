@@ -9,7 +9,7 @@ mod generate_chamber {
     use dojo::world::Context;
 
     use loot_underworld::components::chamber::{Chamber, Map, Door};
-    use loot_underworld::constants::{DIR_NORTH,DIR_EAST,DIR_WEST,DIR_SOUTH,DIR_OVER,DIR_UNDER};
+    use loot_underworld::core::dir::{Dir};
     use loot_underworld::utils::seeder::{make_seed};
 
     fn execute(ctx: Context, realm_id: u128, location: u128) {
@@ -36,31 +36,31 @@ mod generate_chamber {
                 },
                 Door {
                     entity_id: entity_id.into(),
-                    dir: DIR_OVER,
+                    dir: Dir::Over.into(),
                     pos: 0,
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
-                    dir: DIR_NORTH,
+                    dir: Dir::North.into(),
                     pos: 0,
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
-                    dir: DIR_EAST,
+                    dir: Dir::East.into(),
                     pos: 0,
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
-                    dir: DIR_WEST,
+                    dir: Dir::West.into(),
                     pos: 0,
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
-                    dir: DIR_SOUTH,
+                    dir: Dir::South.into(),
                     pos: 0,
                     toLocation: location,
                 },

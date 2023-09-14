@@ -8,7 +8,8 @@ mod spawn {
 
     use loot_underworld::components::example::Position;
     use loot_underworld::components::example::Moves;
-    use loot_underworld::constants::SPAWN_OFFSET;
+
+    const SPAWN_OFFSET: felt252 = 1000;
 
     // so we don't go negative
 
