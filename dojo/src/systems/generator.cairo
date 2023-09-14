@@ -9,8 +9,8 @@ mod generate_chamber {
     use dojo::world::Context;
 
     use loot_underworld::components::chamber::{Chamber, Map, Door};
-    use loot_underworld::core::dir::{Dir};
-    use loot_underworld::utils::seeder::{make_seed};
+    use loot_underworld::core::seeder::{make_seed};
+    use loot_underworld::types::dir::{Dir};
 
     fn execute(ctx: Context, realm_id: u128, location: u128) {
 

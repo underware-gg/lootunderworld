@@ -10,17 +10,6 @@ enum Dir {
     Under,  // 5
 }
 
-impl DirStorageSize of dojo::StorageSize<Dir> {
-    #[inline(always)]
-    fn unpacked_size() -> usize {
-        1
-    }
-    #[inline(always)]
-    fn packed_size() -> usize {
-        252
-    }
-}
-
 impl IntoU8Dir of Into<Dir, u8> {
     fn into(self: Dir) -> u8 {
         match self {
@@ -91,3 +80,14 @@ impl DirPrint of PrintTrait<Dir> {
         felt.print();
     }
 }
+
+// impl DirStorageSize of dojo::StorageSize<Dir> {
+//     #[inline(always)]
+//     fn unpacked_size() -> usize {
+//         1
+//     }
+//     #[inline(always)]
+//     fn packed_size() -> usize {
+//         252
+//     }
+// }
