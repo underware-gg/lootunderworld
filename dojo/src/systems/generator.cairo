@@ -23,7 +23,8 @@ mod generate_chamber {
         seed.high.print();
 
         let bitmap: u256 = carve(seed, 0x0, 5);
-        bitmap.print();
+        bitmap.low.print();
+        bitmap.high.print();
 
         set!(ctx.world,
             (

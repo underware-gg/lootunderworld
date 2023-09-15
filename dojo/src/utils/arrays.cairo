@@ -28,7 +28,7 @@ fn test_create_array_u8() {
     let mut i: usize = 0;
     loop {
         if i >= arr1.len() { break; }
-        assert(*arr1.at(i) == 255_u8, 'array 1 value');
+        assert(*arr1[i] == 255_u8, 'array 1 value');
         i += 1;
     };
 }
