@@ -49,33 +49,14 @@ fn count_digits_of_base(mut num: u128, base: u128) -> u128 {
 // BitShift::bit(8)
 
 trait BitShift<T> {
-    fn fpow(x: T, n: T) -> T;
-    fn shl(x: T, n: T) -> T;
-    fn shr(x: T, n: T) -> T;
     fn bit(n: usize) -> T;
+    fn shl(x: T, n: usize) -> T;
+    fn shr(x: T, n: usize) -> T;
+    fn isSet(x: T, n: usize) -> bool;
 }
 
 impl U8BitShift of BitShift<u8> {
-    fn fpow(x: u8, n: u8) -> u8 {
-        if n == 0 {
-            1
-        } else if n == 1 {
-            x
-        } else if (n & 1) == 1 {
-            x * BitShift::fpow(x * x, n / 2)
-        } else {
-            BitShift::fpow(x * x, n / 2)
-        }
-    }
-    fn shl(x: u8, n: u8) -> u8 {
-        if n >= 8 { return 0; }
-        x * BitShift::fpow(2, n)
-    }
-    fn shr(x: u8, n: u8) -> u8 {
-        if n >= 8 { return 0; }
-        x / BitShift::fpow(2, n)
-    }
-    fn bit(mut n: usize) -> u8 {
+    fn bit(n: usize) -> u8 {
         if n == 0 { return 0x1; }
         if n == 1 { return 0x2; }
         if n == 2 { return 0x4; }
@@ -86,214 +67,230 @@ impl U8BitShift of BitShift<u8> {
         if n == 7 { return 0x80; }
         0
     }
+    fn shl(x: u8, n: usize) -> u8 {
+        x * U8BitShift::bit(n)
+    }
+    fn shr(x: u8, n: usize) -> u8 {
+        x / U8BitShift::bit(n)
+    }
+    fn isSet(x: u8, n: usize) -> bool {
+        ((U8BitShift::shr(x, n) & 1) != 0)
+    }
 }
 
 impl U16BitShift of BitShift<u16> {
-    fn fpow(x: u16, n: u16) -> u16 {
-        if n == 0 {
-            1
-        } else if n == 1 {
-            x
-        } else if (n & 1) == 1 {
-            x * BitShift::fpow(x * x, n / 2)
-        } else {
-            BitShift::fpow(x * x, n / 2)
-        }
-    }
-    fn shl(x: u16, n: u16) -> u16 {
-        if n >= 16 { return 0; }
-        x * BitShift::fpow(2, n)
-    }
-    fn shr(x: u16, n: u16) -> u16 {
-        if n >= 16 { return 0; }
-        x / BitShift::fpow(2, n)
-    }
-    fn bit(mut n: usize) -> u16 {
+    fn bit(n: usize) -> u16 {
         if n < 8 { return U8BitShift::bit(n).into(); }
         if n < 16 { return U8BitShift::bit(n-8).into() * 0x100; }
         0
     }
+    fn shl(x: u16, n: usize) -> u16 {
+        x * U16BitShift::bit(n)
+    }
+    fn shr(x: u16, n: usize) -> u16 {
+        x / U16BitShift::bit(n)
+    }
+    fn isSet(x: u16, n: usize) -> bool {
+        ((U16BitShift::shr(x, n) & 1) != 0)
+    }
 }
 
 impl U32BitShift of BitShift<u32> {
-    fn fpow(x: u32, n: u32) -> u32 {
-        if n == 0 {
-            1
-        } else if n == 1 {
-            x
-        } else if (n & 1) == 1 {
-            x * BitShift::fpow(x * x, n / 2)
-        } else {
-            BitShift::fpow(x * x, n / 2)
-        }
-    }
-    fn shl(x: u32, n: u32) -> u32 {
-        if n >= 32 { return 0; }
-        x * BitShift::fpow(2, n)
-    }
-    fn shr(x: u32, n: u32) -> u32 {
-        if n >= 32 { return 0; }
-        x / BitShift::fpow(2, n)
-    }
-    fn bit(mut n: usize) -> u32 {
+    fn bit(n: usize) -> u32 {
         if n < 16 { return U16BitShift::bit(n).into(); }
         if n < 32 { return U16BitShift::bit(n-16).into() * 0x10000; }
         0
     }
+    fn shl(x: u32, n: u32) -> u32 {
+        x * U32BitShift::bit(n)
+    }
+    fn shr(x: u32, n: u32) -> u32 {
+        x / U32BitShift::bit(n)
+    }
+    fn isSet(x: u32, n: u32) -> bool {
+        ((U32BitShift::shr(x, n) & 1) != 0)
+    }
 }
 
 impl U64BitShift of BitShift<u64> {
-    fn fpow(x: u64, n: u64) -> u64 {
-        if n == 0 {
-            1
-        } else if n == 1 {
-            x
-        } else if (n & 1) == 1 {
-            x * BitShift::fpow(x * x, n / 2)
-        } else {
-            BitShift::fpow(x * x, n / 2)
-        }
-    }
-    fn shl(x: u64, n: u64) -> u64 {
-        if n >= 64 { return 0; }
-        x * BitShift::fpow(2, n)
-    }
-    fn shr(x: u64, n: u64) -> u64 {
-        if n >= 64 { return 0; }
-        x / BitShift::fpow(2, n)
-    }
-    fn bit(mut n: usize) -> u64 {
+    fn bit(n: usize) -> u64 {
         if n < 32 { return U32BitShift::bit(n).into(); }
         if n < 64 { return U32BitShift::bit(n-32).into() * 0x100000000; }
         0
     }
+    fn shl(x: u64, n: usize) -> u64 {
+        x * U64BitShift::bit(n)
+    }
+    fn shr(x: u64, n: usize) -> u64 {
+        x / U64BitShift::bit(n)
+    }
+    fn isSet(x: u64, n: usize) -> bool {
+        ((U64BitShift::shr(x, n) & 1) != 0)
+    }
 }
 
 impl U128BitShift of BitShift<u128> {
-    fn fpow(x: u128, n: u128) -> u128 {
-        if n == 0 {
-            1
-        } else if n == 1 {
-            x
-        } else if (n & 1) == 1 {
-            x * BitShift::fpow(x * x, n / 2)
-        } else {
-            BitShift::fpow(x * x, n / 2)
-        }
-    }
-    fn shl(x: u128, n: u128) -> u128 {
-        if n >= 128 { return 0; }
-        x * BitShift::fpow(2, n)
-    }
-    fn shr(x: u128, n: u128) -> u128 {
-        if n >= 128 { return 0; }
-        x / BitShift::fpow(2, n)
-    }
-    fn bit(mut n: usize) -> u128 {
+    fn bit(n: usize) -> u128 {
         if n < 64 { return U64BitShift::bit(n).into(); }
         if n < 128 { return U64BitShift::bit(n-64).into() * 0x10000000000000000; }
         0
     }
+    fn shl(x: u128, n: usize) -> u128 {
+        x * U128BitShift::bit(n)
+    }
+    fn shr(x: u128, n: usize) -> u128 {
+        x / U128BitShift::bit(n)
+    }
+    fn isSet(x: u128, n: usize) -> bool {
+        ((U128BitShift::shr(x, n) & 1) != 0)
+    }
 }
 
 impl U256BitShift of BitShift<u256> {
-    fn fpow(x: u256, n: u256) -> u256 {
-        if n == 0 {
-            1
-        } else if n == 1 {
-            x
-        } else if (n & 1) == 1 {
-            x * BitShift::fpow(x * x, n / 2)
-        } else {
-            BitShift::fpow(x * x, n / 2)
-        }
-    }
-    fn shl(x: u256, n: u256) -> u256 {
-        if n >= 256 { return 0; }
-        x * BitShift::fpow(2, n)
-    }
-    fn shr(x: u256, n: u256) -> u256 {
-        if n >= 256 { return 0; }
-        x / BitShift::fpow(2, n)
-    }
-    fn bit(mut n: usize) -> u256 {
+    fn bit(n: usize) -> u256 {
         if n < 128 { return u256 { low: U128BitShift::bit(n), high: 0x0 }; }
         if n < 256 { return u256 { low: 0x0, high: U128BitShift::bit(n-128) }; }
         0
     }
+    fn shl(x: u256, n: usize) -> u256 {
+        x * U256BitShift::bit(n)
+    }
+    fn shr(x: u256, n: usize) -> u256 {
+        x / U256BitShift::bit(n)
+    }
+    fn isSet(x: u256, n: usize) -> bool {
+        ((U256BitShift::shr(x, n) & 1) != 0)
+    }
+}
+
+
+
+#[test]
+#[available_gas(50_000_000)]
+fn test_bit() {
+    let mut bit: u256 = 0x1;
+    let mut n: usize = 0;
+    loop {
+        if n < 8 {
+            assert(U8BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_8_8');
+            assert(U16BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_8_16');
+            assert(U32BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_8_32');
+            assert(U64BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_8_64');
+            assert(U128BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_8_128');
+            assert(U256BitShift::bit(n) == bit, 'test_bit_8_256');
+        } else if n < 16 {
+            assert(U8BitShift::bit(n) == 0x0, 'test_bit_16_8');
+            assert(U16BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_16_16');
+            assert(U32BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_16_32');
+            assert(U64BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_16_64');
+            assert(U128BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_16_128');
+            assert(U256BitShift::bit(n) == bit, 'test_bit_16_256');
+        } else if n < 32 {
+            assert(U16BitShift::bit(n) == 0x0, 'test_bit_32_16');
+            assert(U32BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_16_32');
+            assert(U64BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_16_64');
+            assert(U128BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_16_128');
+            assert(U256BitShift::bit(n) == bit, 'test_bit_16_256');
+        } else if n < 64 {
+            assert(U32BitShift::bit(n) == 0x0, 'test_bit_64_32');
+            assert(U64BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_64_64');
+            assert(U128BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_64_128');
+            assert(U256BitShift::bit(n) == bit, 'test_bit_64_256');
+        } else if n < 128 {
+            assert(U64BitShift::bit(n) == 0x0, 'test_bit_128_64');
+            assert(U128BitShift::bit(n) == bit.try_into().unwrap(), 'test_bit_128_128');
+            assert(U256BitShift::bit(n) == bit, 'test_bit_128_256');
+        } else {
+            assert(U128BitShift::bit(n) == 0x0, 'test_bit_256_128');
+            assert(U256BitShift::bit(n) == bit, 'test_bit_256_256');
+        }
+        n += 1;
+        if n == 256 { break; }
+        bit *= 2;
+    };
+}
+
+const U8_ONE_LEFT: u8     = 0x80;
+const U16_ONE_LEFT: u16   = 0x8000;
+const U32_ONE_LEFT: u32   = 0x80000000;
+const U64_ONE_LEFT: u64   = 0x8000000000000000;
+const U128_ONE_LEFT: u128 = 0x80000000000000000000000000000000;
+const U256_ONE_LEFT: u256 = 0x8000000000000000000000000000000000000000000000000000000000000000;
+
+#[test]
+#[available_gas(300_000)]
+fn test_shift_u8() {
+    let mut n: usize = 0;
+    loop {
+        if n == 8 { break; }
+        let bit = U8BitShift::bit(n);
+        assert(bit == U8BitShift::shl(1, n), 'test_shl_u8');
+        assert(bit == U8BitShift::shr(U8_ONE_LEFT, 7-n), 'test_shr_u8');
+        n += 1;
+    };
 }
 
 #[test]
 #[available_gas(1_000_000)]
-fn test_bit_u8() {
-    assert(U8BitShift::bit(0) == 0x1, 'test_bit_u8_0');
-    assert(U8BitShift::bit(1) == 0x2, 'test_bit_u8_1');
-    assert(U8BitShift::bit(2) == 0x4, 'test_bit_u8_2');
-    assert(U8BitShift::bit(3) == 0x8, 'test_bit_u8_3');
-    assert(U8BitShift::bit(4) == 0x10, 'test_bit_u8_4');
-    assert(U8BitShift::bit(5) == 0x20, 'test_bit_u8_5');
-    assert(U8BitShift::bit(6) == 0x40, 'test_bit_u8_6');
-    assert(U8BitShift::bit(7) == 0x80, 'test_bit_u8_7');
-    assert(U8BitShift::bit(8) == 0x0, 'test_bit_u8_8');
-    let mut n: u8 = 8;
+fn test_shift_u16() {
+    let mut n: usize = 0;
     loop {
-        if n == 0 { break; }
-        assert(U8BitShift::bit(n.into()) == U8BitShift::shl(1, n), 'test_bit_u8');
-        n -= 1;
+        if n == 16 { break; }
+        let bit = U16BitShift::bit(n);
+        assert(bit == U16BitShift::shl(1, n), 'test_shl_u16');
+        assert(bit == U16BitShift::shr(U16_ONE_LEFT, 15-n), 'test_shr_u16');
+        n += 1;
     };
 }
 
 #[test]
-#[available_gas(2_000_000)]
-fn test_bit_u16() {
-    let mut n: u16 = 16;
+#[available_gas(3_000_000)]
+fn test_shift_u32() {
+    let mut n: usize = 0;
     loop {
-        if n == 0 { break; }
-        assert(U16BitShift::bit(n.into()) == U16BitShift::shl(1, n), 'test_bit_u16');
-        n -= 2;
+        if n == 32 { break; }
+        let bit = U32BitShift::bit(n);
+        assert(bit == U32BitShift::shl(1, n), 'test_shl_u32');
+        assert(bit == U32BitShift::shr(U32_ONE_LEFT, (31-n)), 'test_shr_u32');
+        n += 1;
     };
 }
 
 #[test]
-#[available_gas(4_000_000)]
-fn test_bit_u32() {
-    let mut n: usize = 32;
+#[available_gas(6_000_000)]
+fn test_shift_u64() {
+    let mut n: usize = 0;
     loop {
-        if n == 0 { break; }
-        assert(U32BitShift::bit(n) == U32BitShift::shl(1, n.into()), 'test_bit_u32');
-        n -= 1;
+        if n == 64 { break; }
+        let bit = U64BitShift::bit(n);
+        assert(bit == U64BitShift::shl(1, n), 'test_shl_u64');
+        assert(bit == U64BitShift::shr(U64_ONE_LEFT, (63-n)), 'test_shr_u64');
+        n += 1;
     };
 }
 
 #[test]
-#[available_gas(8_000_000)]
-fn test_bit_u64() {
-    let mut n: usize = 64;
+#[available_gas(20_000_000)]
+fn test_shift_u128() {
+    let mut n: usize = 0;
     loop {
-        if n == 0 { break; }
-        assert(U64BitShift::bit(n) == U64BitShift::shl(1, n.into()), 'test_bit_u64');
-        n -= 1;
+        if n == 128 { break; }
+        let bit = U128BitShift::bit(n);
+        assert(bit == U128BitShift::shl(1, n), 'test_shl_u128');
+        assert(bit == U128BitShift::shr(U128_ONE_LEFT, (127-n)), 'test_shr_u128');
+        n += 1;
     };
 }
 
 #[test]
-#[available_gas(32_000_000)]
-fn test_bit_u128() {
-    let mut n: usize = 128;
+#[available_gas(50_000_000)]
+fn test_shift_u256() {
+    let mut n: usize = 0;
     loop {
-        if n == 0 { break; }
-        assert(U128BitShift::bit(n) == U128BitShift::shl(1, n.into()), 'test_bit_u128');
-        n -= 1;
-    };
-}
-
-#[test]
-#[available_gas(200_000_000)]
-fn test_bit_u256() {
-    let mut n: usize = 256;
-    loop {
-        if n == 0 { break; }
-        assert(U256BitShift::bit(n) == U256BitShift::shl(1, n.into()), 'test_bit_u256');
-        n -= 1;
+        if n == 256 { break; }
+        let bit = U256BitShift::bit(n);
+        assert(bit == U256BitShift::shl(1, n), 'test_shl_u256');
+        assert(bit == U256BitShift::shr(U256_ONE_LEFT, (255-n)), 'test_shr_u256');
+        n += 1;
     };
 }
