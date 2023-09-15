@@ -1,3 +1,3 @@
 mod arrays;
-mod bitshift;
+mod bitwise;
 mod hash;

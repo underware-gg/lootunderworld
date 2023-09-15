@@ -1,7 +1,7 @@
 use array::ArrayTrait;
 use traits::Into;
 use debug::PrintTrait;
-use loot_underworld::utils::bitshift::{U256BitShift};
+use loot_underworld::utils::bitwise::{U256Bitwise};
 use loot_underworld::utils::arrays::{create_array};
 use loot_underworld::core::seeder::{make_seed};
 use integer::BoundedU256;
@@ -15,7 +15,7 @@ fn calc_cell_values(bitmap: u256, protected: u256) -> Array::<u8> {
     let mut i: usize = 0;
     loop {
         if i >= 256 { break; }
-        let bit: u256 = U256BitShift::bit(i.into());
+        let bit: u256 = U256Bitwise::bit(i.into());
         if (protected & bit) != 0 {
             result.append(CELL_VALUE_PROTECTED);
         } else if (bitmap & bit) != 0 {
@@ -70,7 +70,7 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
         }
         // apply rule
         if area_count >= pass_value {
-            result = result | U256BitShift::bit((255 - i).into()); // set bit
+            result = result | U256Bitwise::bit((255 - i).into()); // set bit
         }
         i += 1;
     };
@@ -94,7 +94,7 @@ fn test_calc_cell_values() {
         }
         if n == 0 { break; }
         n -= 1;
-    };
+    }
 }
 
 #[test]
@@ -106,7 +106,7 @@ fn test_calc_cell_values_max() {
         assert(*values[n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PATH');
         if n == 0 { break; }
         n -= 1;
-    };
+    }
 }
 
 #[test]
