@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "components": "npx @dojoengine/core ../dojo/target/dev/manifest.json src/dojo/contractComponents.ts"
   },
   "dependencies": {
     "@dojoengine/core": "^0.0.20",
