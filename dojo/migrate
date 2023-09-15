@@ -10,6 +10,6 @@ cp target/dev/manifest.json ../client/src/
 
 cd ../client
 yarn run codegen
-yarn run components
+yarn run components2
 
 echo "--- DONE!"
