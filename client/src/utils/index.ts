@@ -1,6 +1,5 @@
-import {
-  EntityIndex,
-} from "@latticexyz/recs";
+//@ts-ignore : vscode bug on moduleResolution: "bundler"
+import { EntityIndex } from "@latticexyz/recs";
 import { poseidonHashMany } from "micro-starknet";
 import { Direction } from "../dojo/createSystemCalls";
 

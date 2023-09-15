@@ -1,3 +1,4 @@
+//@ts-ignore : vscode bug on moduleResolution: "bundler"
 import { setComponent, Components, Schema } from "@latticexyz/recs";
 import { Account } from "starknet";
 import { SetupNetworkResult } from "./setupNetwork";

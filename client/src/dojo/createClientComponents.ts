@@ -1,3 +1,4 @@
+//@ts-ignore : vscode bug on moduleResolution: "bundler"
 import { overridableComponent } from "@latticexyz/recs";
 import { SetupNetworkResult } from "./setupNetwork";
 

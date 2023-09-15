@@ -1,6 +1,7 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import { useDojo } from './DojoContext';
+//@ts-ignore : vscode bug on moduleResolution: "bundler"
 import { EntityIndex, setComponent, HasValue, Has } from '@latticexyz/recs';
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { Direction, } from './dojo/createSystemCalls'
