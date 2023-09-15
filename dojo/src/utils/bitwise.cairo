@@ -63,9 +63,11 @@ impl U8Bitwise of Bitwise<u8> {
         0
     }
     fn shl(x: u8, n: usize) -> u8 {
+        if n >= 8 { return 0; }
         x * U8Bitwise::bit(n)
     }
     fn shr(x: u8, n: usize) -> u8 {
+        if n >= 8 { return 0; }
         x / U8Bitwise::bit(n)
     }
     fn isSet(x: u8, n: usize) -> bool {
@@ -80,9 +82,11 @@ impl U16Bitwise of Bitwise<u16> {
         0
     }
     fn shl(x: u16, n: usize) -> u16 {
+        if n >= 16 { return 0; }
         x * U16Bitwise::bit(n)
     }
     fn shr(x: u16, n: usize) -> u16 {
+        if n >= 16 { return 0; }
         x / U16Bitwise::bit(n)
     }
     fn isSet(x: u16, n: usize) -> bool {
@@ -96,13 +100,15 @@ impl U32Bitwise of Bitwise<u32> {
         if n < 32 { return U16Bitwise::bit(n-16).into() * 0x10000; }
         0
     }
-    fn shl(x: u32, n: u32) -> u32 {
+    fn shl(x: u32, n: usize) -> u32 {
+        if n >= 32 { return 0; }
         x * U32Bitwise::bit(n)
     }
-    fn shr(x: u32, n: u32) -> u32 {
+    fn shr(x: u32, n: usize) -> u32 {
+        if n >= 32 { return 0; }
         x / U32Bitwise::bit(n)
     }
-    fn isSet(x: u32, n: u32) -> bool {
+    fn isSet(x: u32, n: usize) -> bool {
         ((U32Bitwise::shr(x, n) & 1) != 0)
     }
 }
@@ -114,9 +120,11 @@ impl U64Bitwise of Bitwise<u64> {
         0
     }
     fn shl(x: u64, n: usize) -> u64 {
+        if n >= 64 { return 0; }
         x * U64Bitwise::bit(n)
     }
     fn shr(x: u64, n: usize) -> u64 {
+        if n >= 64 { return 0; }
         x / U64Bitwise::bit(n)
     }
     fn isSet(x: u64, n: usize) -> bool {
@@ -131,9 +139,11 @@ impl U128Bitwise of Bitwise<u128> {
         0
     }
     fn shl(x: u128, n: usize) -> u128 {
+        if n >= 128 { return 0; }
         x * U128Bitwise::bit(n)
     }
     fn shr(x: u128, n: usize) -> u128 {
+        if n >= 128 { return 0; }
         x / U128Bitwise::bit(n)
     }
     fn isSet(x: u128, n: usize) -> bool {
@@ -148,9 +158,11 @@ impl U256Bitwise of Bitwise<u256> {
         0
     }
     fn shl(x: u256, n: usize) -> u256 {
+        if n >= 256 { return 0; }
         x * U256Bitwise::bit(n)
     }
     fn shr(x: u256, n: usize) -> u256 {
+        if n >= 256 { return 0; }
         x / U256Bitwise::bit(n)
     }
     fn isSet(x: u256, n: usize) -> bool {
@@ -252,7 +264,7 @@ fn test_shift_u32() {
 }
 
 #[test]
-#[available_gas(6_000_000)]
+#[available_gas(7_000_000)]
 fn test_shift_u64() {
     let mut n: usize = 0;
     loop {
