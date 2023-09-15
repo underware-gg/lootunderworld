@@ -10,7 +10,6 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          player: RecsType.BigNumber,
           remaining: RecsType.Number,
         },
         {
@@ -25,7 +24,6 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          player: RecsType.BigNumber,
           x: RecsType.Number,
           y: RecsType.Number,
         },
@@ -41,7 +39,6 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          entity_id: RecsType.BigNumber,
           realm_id: RecsType.BigNumber,
           location: RecsType.BigNumber,
           seed: RecsType.BigNumber,
@@ -59,7 +56,6 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          entity_id: RecsType.BigNumber,
           bitmap: RecsType.BigNumber,
         },
         {
@@ -74,8 +70,6 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          entity_id: RecsType.BigNumber,
-          dir: RecsType.Number,
           pos: RecsType.Number,
           toLocation: RecsType.BigNumber,
         },

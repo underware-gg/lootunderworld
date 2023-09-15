@@ -11,6 +11,7 @@ export function createClientComponents({ contractComponents }: SetupNetworkResul
     // Loot Underworld
     Chamber: overridableComponent(contractComponents.Chamber),
     Map: overridableComponent(contractComponents.Map),
+    Door: overridableComponent(contractComponents.Door),
     // Example
     Position: overridableComponent(contractComponents.Position),
     Moves: overridableComponent(contractComponents.Moves),

@@ -23,19 +23,19 @@ mod generate_chamber {
         seed.low.print();
         seed.high.print();
 
-        // let bitmap: u256 = carve(seed, 0x0, 5);
-        let bitmap: u256 = collapse(seed, false);
+        let bitmap: u256 = carve(seed, 0x0, 5);
+        // let bitmap: u256 = collapse(seed, false);
         bitmap.low.print();
         bitmap.high.print();
 
         set!(ctx.world,
             (
                 Chamber {
-                    minter: ctx.origin,
                     entity_id: entity_id.into(),
                     realm_id,
                     location,
                     seed,
+                    minter: ctx.origin,
                 },
                 Map {
                     entity_id: entity_id.into(),
@@ -44,31 +44,31 @@ mod generate_chamber {
                 Door {
                     entity_id: entity_id.into(),
                     dir: Dir::Over.into(),
-                    pos: 0,
+                    pos: 0x88, //136, // (128+8),
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
                     dir: Dir::North.into(),
-                    pos: 0,
+                    pos: 0x8, //8,
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
                     dir: Dir::East.into(),
-                    pos: 0,
+                    pos: 0x8f, //143, // (8*16+15),
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
                     dir: Dir::West.into(),
-                    pos: 0,
+                    pos: 0x80, //128, // (8*16),
                     toLocation: location,
                 },
                 Door {
                     entity_id: entity_id.into(),
                     dir: Dir::South.into(),
-                    pos: 0,
+                    pos: 0xf8, //248, // (15*16+8),
                     toLocation: location,
                 },
             )
