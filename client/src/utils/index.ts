@@ -1,5 +1,4 @@
-//@ts-ignore : vscode bug on moduleResolution: "bundler"
-import { EntityIndex } from "@latticexyz/recs";
+import { Entity } from "@latticexyz/recs";
 import { poseidonHashMany } from "micro-starknet";
 import { Direction } from "../dojo/createSystemCalls";
 
@@ -48,12 +47,12 @@ export function updatePositionWithDirection(direction: Direction, value: { x: nu
 
 // DISCUSSION: MUD expects Numbers, but entities in Starknet are BigInts (from poseidon hash)
 // so I am converting them to Numbers here, but it means that there is a bigger risk of collisions
-export function getEntityIdFromKeys(keys: bigint[]): EntityIndex {
+export function getEntityIdFromKeys(keys: bigint[]): Entity {
   if (keys.length === 1) {
-    return parseInt(keys[0].toString()) as EntityIndex;
+    return keys[0].toString() as Entity;
   }
   // calculate the poseidon hash of the keys
   let poseidon = poseidonHashMany([BigInt(keys.length), ...keys]);
-  return parseInt(poseidon.toString()) as EntityIndex;
+  return poseidon.toString() as Entity;
 }
 

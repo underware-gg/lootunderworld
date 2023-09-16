@@ -1,5 +1,9 @@
-//@ts-ignore : vscode bug on moduleResolution: "bundler"
-import { setComponent, Components, Schema } from "@latticexyz/recs";
+import {
+  Schema,
+  Components,
+  setComponent,
+  Type as RecsType,
+} from "@latticexyz/recs";
 import { Account } from "starknet";
 import { SetupNetworkResult } from "./setupNetwork";
 import { getEntityIdFromKeys } from "../utils";
@@ -25,6 +29,10 @@ export function createSystemCalls(
       console.log(`generate_chamber tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
       console.log(`generate_chamber receipt:`, receipt)
+
+      // console.log(`generate_chamber contract:`, provider.contract)
+      // console.log(`generate_chamber contract.parseEvents():`, provider.contract.parseEvents(receipt))
+
       const events = getEvents(receipt);
       console.log(`generate_chamber events:`, events)
       setComponentsFromEvents(contractComponents, events);
@@ -57,11 +65,8 @@ export function createSystemCalls(
 
     try {
       const tx = await execute(signer, "spawn", []);
-      console.log(`spawn tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-      console.log(`spawn receipt:`, receipt)
       const events = getEvents(receipt);
-      console.log(`spawn events:`, events)
       setComponentsFromEvents(contractComponents, events);
       entity_id = getEntityIdFromEvents(events, "Moves");
     } catch (e) {
@@ -93,11 +98,8 @@ export function createSystemCalls(
 
     try {
       const tx = await execute(signer, "move", [direction]);
-      console.log(`move tx:`, tx)
       const receipt = await signer.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-      console.log(`move receipt:`, receipt)
       const events = getEvents(receipt);
-      console.log(`move events:`, events)
       setComponentsFromEvents(contractComponents, events);
       entity_id = getEntityIdFromEvents(events, "Moves");
     } catch (e) {
@@ -131,33 +133,50 @@ export function setComponentsFromEvents(components: Components, events: Event[])
 }
 
 export function setComponentFromEvent(components: Components, eventData: string[]) {
-  // retrieve the component name
+  // retrieve the component
   const componentName = hexToAscii(eventData[0]);
-
-  // retrieve the component from name
   const component = components[componentName];
 
   // get keys
-  const keysNumber = parseInt(eventData[1]);
-  let index = 2 + keysNumber + 1;
-
-  const keys = eventData.slice(2, 2 + keysNumber).map((key) => BigInt(key));
-
-  // get entityIndex from keys
+  const keysCount = parseInt(eventData[1]);
+  const keys = eventData.slice(2, 2 + keysCount).map((key) => BigInt(key));
   const entityIndex = getEntityIdFromKeys(keys);
+  // console.log(`EVENT [${componentName}] keys [${keysCount}]`, keys, entityIndex)
 
-  // get values
-  let numberOfValues = parseInt(eventData[index++]);
+  // shift to values
+  let dataIndex =
+    1 +   // component name
+    1 +   // keys count
+    keysCount + // keys
+    + 1   // 0x0
+    + 1;  // values count
 
-  // get values
-  const values = eventData.slice(index, index + numberOfValues);
+  // const valuesCount = parseInt(eventData[dataIndex]);
+  // console.log(`EVENT [${componentName}] values [${valuesCount}]`, eventData.slice(dataIndex))
+  // console.log(`EVENT schema`, component)
 
   // create component object from values with schema
   const componentValues = Object.keys(component.schema).reduce((acc: Schema, key, index) => {
-    const value = values[index];
-    acc[key] = Number(value);
+    let value: any;
+    if (component.schema[key] == RecsType.Boolean) {
+      value = Number(eventData[dataIndex++]) != 0;
+    } else if (component.schema[key] == RecsType.Number) {
+      value = Number(eventData[dataIndex++]);
+    } else if (component.schema[key] == RecsType.BigInt) {
+      //@ts-ignore
+      if (component.metadata?.types?.[index] == 'u256') {
+        value = BigInt(eventData[dataIndex++]) + (BigInt(eventData[dataIndex++]) << 128n);
+      } else {
+        value = BigInt(eventData[dataIndex++]);
+      }
+    } else { // String
+      value = eventData[dataIndex++];
+    }
+    // console.log(`--value @${dataIndex}:`, key, value.toString(16))
+    acc[key] = value;
     return acc;
   }, {});
+  console.log(`VALUES:`, componentValues)
 
   // set component
   setComponent(component, entityIndex, componentValues);
@@ -192,3 +211,42 @@ function getEntityIdFromEvents(events: Event[], componentName: string): number {
   }
   return entityId;
 }
+
+
+// Event keys (event hash)
+// 0x1a2f334228cee715f1f0f54053bb6b5eac54fa336e0bc1aacf7516decb0471d
+
+// Chamber
+// data: Array(10)
+// 0: "0x4368616d626572"    name
+// 1: "0x1"                 keys_count
+// 2: "0x9"                 key : entity_id
+// 3: "0x0"                 ?
+// 4: "0x5"                 data_count
+// 5: "0x1"                 data: realm_id
+// 6: "0x18a9b743912"       data: location
+// 7: "0x8bee3eaa82565df3aa3490f3cc638b8d"    data: seed.low
+// 8: "0x67005de7ad14a037d950d0894998d9a6"    data: seed.high
+// 9: "0x517ececd29116499f4a1b64b094da79ba08dfd54a3edaa316134c41f8160973"   minter
+
+// Map
+// data:Array(7)
+// 0:"0x4d6170"
+// 1:"0x1"
+// 2:"0x9"
+// 3:"0x0"    ??
+// 4:"0x2"
+// 5:"0xffff3fbf935f5dfffe3ffcffcdff8bed"
+// 6:"0x6700dff7ef1fef3fdffafff97ff8fffe"
+
+// Door
+// data:Array(8)
+// 0:"0x446f6f72"
+// 1:"0x2"
+// 2:"0x9"
+// 3:"0x1"
+// 4:"0x0"    ??
+// 5:"0x2"
+// 6:"0x8f"
+// 7:"0x18a9b743912"
+

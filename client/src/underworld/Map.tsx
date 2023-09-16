@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDojo } from '../DojoContext';
 //@ts-ignore : vscode bug on moduleResolution: "bundler"
 import { EntityIndex, setComponent, HasValue, Has } from '@latticexyz/recs';
@@ -22,7 +22,7 @@ function ChamberMap(props: ChamberMapProps) {
 
   const map = useComponentValue(Map, props.entityId as EntityIndex);
   const bitmap = BigInt(map?.bitmap ?? 0)
-  console.log(`map:`, map, typeof map?.bitmap, bitmap)
+  // useEffect(() => console.log(`map:`, map, typeof map?.bitmap, bitmap), [bitmap])
 
   const rows = useMemo(() => {
     const result: any = []
