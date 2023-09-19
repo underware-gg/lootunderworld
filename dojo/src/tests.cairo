@@ -1,1 +1,1 @@
-mod move;
+mod generator;

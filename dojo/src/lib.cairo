@@ -1,3 +1,4 @@
+mod dojo_examples;
 mod components;
 mod systems;
 mod core;
