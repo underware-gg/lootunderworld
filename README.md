@@ -39,6 +39,7 @@
   * GitHub: [@Rob-Morris](https://github.com/Rob-Morris)
   * Twitter: [@recipromancer](https://twitter.com/recipromancer)
 
+
 ## Background
 
 A funDAOmental project as part of `Project or080ro`
@@ -47,34 +48,10 @@ A funDAOmental project as part of `Project or080ro`
 
 Funded in part by a Frontinus House & BilbiothecaDAO grant in the FH genesis round. See the [Frontinius House proposal](https://github.com/BibliothecaDAO/Frontinus-House-Docs/issues/26) for Loot Underworld.
 
-## Design Notes
 
-Some ideas about Chamber distribution...
+## Design
 
-##### Alternative 1
-
-* Considering a Realm is 80x80 km
-* and a Chamber is 40x40 m
-* then we can fit exactly 2000x2000 Chambers inside a Realm
-* starting from the center of the Realm, 1000 Chambers in each direction
-* total of 4 million Chambers, per level depth
-
-##### Alternative 2
-
-* Considering a Realm is 50x50 km
-* and a Chamber is 40x40 m
-* then we can fit exactly 1250x1250 Chambers inside a Realm
-* or 1.562.500 Chambers, per level depth
-
-##### Alternative 3
-
-* Considering a Realm is 50x50 km
-* The Realms SVG viewbox is 1000x1000p, less the 50p borders, 900x900 points
-* We could consider to fit exactly 900x900 Chambers to make it 1:1 to the Realms SVG scale.
-* Or 810.000 Chambers, per level depth
-* Each Chamber would have 55,55x55,55 meters
-
-
+Take a look at the [DESIGN](DESIGN.md) doc.
 
 
 ## Dojo Quick Start Guide
@@ -82,6 +59,7 @@ Some ideas about Chamber distribution...
 Cloned from the [dojo-starter-react-app](https://github.com/dojoengine/dojo-starter-react-app)
 
 For an in-depth setup guide, consult the [Dojo book](https://book.dojoengine.org/getting-started/quick-start.html).
+
 
 ### Development Setup [🔗](https://book.dojoengine.org/getting-started/setup.html)
 
