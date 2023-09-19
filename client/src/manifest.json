@@ -616,11 +616,11 @@
       "inputs": [
         {
           "name": "self",
-          "type": "@loot_underworld::systems::example::spawn::ContractState"
+          "type": "@loot_underworld::dojo_examples::systems::spawn::ContractState"
         }
       ],
       "outputs": [],
-      "class_hash": "0x4548256260ae1be70d9fbee94ec73ef1f0f336746dd90066aa60bfb761e5b1",
+      "class_hash": "0x3cfd54e96f9e0ccf5bc5422290087f48cfcd76c7603a15733accf499e2b4692",
       "dependencies": [],
       "abi": [
         {
@@ -677,12 +677,6 @@
           ],
           "outputs": [],
           "state_mutability": "view"
-        },
-        {
-          "type": "event",
-          "name": "loot_underworld::systems::example::spawn::Event",
-          "kind": "enum",
-          "variants": []
         }
       ]
     },
@@ -691,15 +685,15 @@
       "inputs": [
         {
           "name": "self",
-          "type": "@loot_underworld::systems::example::move::ContractState"
+          "type": "@loot_underworld::dojo_examples::systems::move::ContractState"
         },
         {
           "name": "direction",
-          "type": "loot_underworld::systems::example::move::Direction"
+          "type": "loot_underworld::dojo_examples::systems::move::Direction"
         }
       ],
       "outputs": [],
-      "class_hash": "0x70d86e7a320088f98509823e311ca37d66db93cd3f9841959608f08a886c521",
+      "class_hash": "0x4580f8a9fb84710b8db676ad0c1f6588251fd636f322ab4cfbb1371b55c12",
       "dependencies": [],
       "abi": [
         {
@@ -715,7 +709,7 @@
         },
         {
           "type": "enum",
-          "name": "loot_underworld::systems::example::move::Direction",
+          "name": "loot_underworld::dojo_examples::systems::move::Direction",
           "variants": [
             {
               "name": "Left",
@@ -773,7 +767,7 @@
           "inputs": [
             {
               "name": "direction",
-              "type": "loot_underworld::systems::example::move::Direction"
+              "type": "loot_underworld::dojo_examples::systems::move::Direction"
             },
             {
               "name": "ctx",
@@ -782,12 +776,6 @@
           ],
           "outputs": [],
           "state_mutability": "view"
-        },
-        {
-          "type": "event",
-          "name": "loot_underworld::systems::example::move::Event",
-          "kind": "enum",
-          "variants": []
         }
       ]
     },
@@ -1016,7 +1004,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x77a884e00382ce704a8b3d3762633b6fd47c5dbf005ee66208f577c40c961d5",
+      "class_hash": "0x29aa7d0dce8cedb6ff5cceaed2983e93857ad3d341257e652a83b4b88e1dadc",
       "abi": [
         {
           "type": "function",
@@ -1067,7 +1055,7 @@
         },
         {
           "type": "event",
-          "name": "loot_underworld::components::example::moves::Event",
+          "name": "loot_underworld::dojo_examples::components::moves::Event",
           "kind": "enum",
           "variants": []
         }
@@ -1092,7 +1080,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x40147e1fedf02c981f6bb56c96cf92beb79656a49db462ce93aed9361d25d9c",
+      "class_hash": "0x76f13d3f423e480531994ca168dec9cb870ac5223866168a47376ed9bda6186",
       "abi": [
         {
           "type": "function",
@@ -1143,7 +1131,7 @@
         },
         {
           "type": "event",
-          "name": "loot_underworld::components::example::position::Event",
+          "name": "loot_underworld::dojo_examples::components::position::Event",
           "kind": "enum",
           "variants": []
         }

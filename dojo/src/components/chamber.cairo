@@ -1,7 +1,7 @@
 use array::ArrayTrait;
 use starknet::ContractAddress;
 
-#[derive(Component, Copy, Drop, Serde)]
+#[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Chamber {
     #[key]
     entity_id: u128,
@@ -11,14 +11,14 @@ struct Chamber {
     minter: ContractAddress,
 }
 
-#[derive(Component, Copy, Drop, Serde)]
+#[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Map {
     #[key]
     entity_id: u128,
     bitmap: u256,
 }
 
-#[derive(Component, Copy, Drop, Serde)]
+#[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Door {
     #[key]
     entity_id: u128,
