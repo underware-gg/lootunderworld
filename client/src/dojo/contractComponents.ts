@@ -40,7 +40,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          realm_id: RecsType.BigInt,
+          token_id: RecsType.BigInt,
           location: RecsType.BigInt,
           seed: RecsType.BigInt,
           minter: RecsType.BigInt,
@@ -68,18 +68,37 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    Tile: (() => {
+      const name = "Tile";
+      return defineComponent(
+        world,
+        {
+          chamber_id: RecsType.BigInt,
+          pos: RecsType.Number,
+          tile_type: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+            types: ["u128","u8","u8"],
+          },
+        }
+      );
+    })(),
     Door: (() => {
       const name = "Door";
       return defineComponent(
         world,
         {
-          pos: RecsType.Number,
-          toLocation: RecsType.BigInt,
+          chamber_id: RecsType.BigInt,
+          dir: RecsType.Number,
+          to_location: RecsType.BigInt,
+          open: RecsType.Boolean,
         },
         {
           metadata: {
             name: name,
-            types: ["u8","u128"],
+            types: ["u128","u8","u128","bool"],
           },
         }
       );

@@ -1,13 +1,12 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import { useDojo } from './DojoContext';
-//@ts-ignore : vscode bug on moduleResolution: "bundler"
-import { EntityIndex, setComponent, HasValue, Has } from '@latticexyz/recs';
+import { Entity, setComponent, HasValue, Has } from '@latticexyz/recs';
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { Direction, } from './dojo/createSystemCalls'
 import { getFirstComponentByType } from './utils';
 import { Moves, Position } from './generated/graphql';
-import ChamberMap from './underworld/Map';
+import ChamberMap from './underworld/components/Map';
 
 function App() {
   const {
@@ -20,11 +19,11 @@ function App() {
   } = useDojo();
 
   // entity id - this example uses the account address as the entity id
-  const entityId = account.address;
+  const entityId = account.address as Entity;
 
   // get current component values
-  const position = useComponentValue(Position, parseInt(entityId.toString()) as EntityIndex);
-  const moves = useComponentValue(Moves, parseInt(entityId.toString()) as EntityIndex);
+  const position = useComponentValue(Position, entityId);
+  const moves = useComponentValue(Moves, entityId);
 
   useEffect(() => {
 
@@ -38,10 +37,10 @@ function App() {
         let position = getFirstComponentByType(data.entities?.edges, 'Position') as Position;
 
         if (remaining) {
-          setComponent(Moves, parseInt(entityId.toString()) as EntityIndex, { remaining: remaining.remaining })
+          setComponent(Moves, entityId, { remaining: remaining.remaining })
         }
         if (position) {
-          setComponent(Position, parseInt(entityId.toString()) as EntityIndex, { x: position.x, y: position.y })
+          setComponent(Position, entityId, { x: position.x, y: position.y })
         }
       }
     }
@@ -52,7 +51,7 @@ function App() {
   // const chamberIds = useEntityQuery([HasValue(Chamber, { realm_id: 1 })]);
   const chamberIds = useEntityQuery([Has(Chamber)]);
 
-  const [selectedChamberId, setSelectedChamberId] = useState(0 as EntityIndex)
+  const [selectedChamberId, setSelectedChamberId] = useState('0')
   useEffect(() => {
     setSelectedChamberId(chamberIds[chamberIds.length - 1] ?? 0)
   }, [chamberIds])
@@ -75,7 +74,7 @@ function App() {
       <div className="card">
         <button onClick={() => generate_chamber(account, 1, Date.now())}>Mint Chamber</button>
         <div>
-          <select onChange={e => setSelectedChamberId(parseInt(e.target.value) as EntityIndex)}>
+          <select onChange={e => setSelectedChamberId(e.target.value as Entity)}>
             {chamberIds.map((entityId) => {
               const _id = entityId.toString()
               return <option value={_id} key={_id}>{_id}</option>
@@ -83,7 +82,7 @@ function App() {
           </select>
         </div>
         <div>
-          <ChamberMap entityId={selectedChamberId} />
+          <ChamberMap entity={selectedChamberId as Entity} />
         </div>
       </div>
 

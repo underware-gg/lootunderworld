@@ -1,3 +1,3 @@
 mod constants;
 mod dir;
-mod tiletype;
+mod tile_type;

@@ -19,6 +19,7 @@ export type Scalars = {
   ContractAddress: { input: any; output: any; }
   Cursor: { input: any; output: any; }
   DateTime: { input: any; output: any; }
+  bool: { input: any; output: any; }
   felt252: { input: any; output: any; }
   u8: { input: any; output: any; }
   u32: { input: any; output: any; }
@@ -28,12 +29,12 @@ export type Scalars = {
 
 export type Chamber = {
   __typename?: 'Chamber';
+  chamber_id?: Maybe<Scalars['u128']['output']>;
   entity?: Maybe<Entity>;
-  entity_id?: Maybe<Scalars['u128']['output']>;
   location?: Maybe<Scalars['u128']['output']>;
   minter?: Maybe<Scalars['ContractAddress']['output']>;
-  realm_id?: Maybe<Scalars['u128']['output']>;
   seed?: Maybe<Scalars['u256']['output']>;
+  token_id?: Maybe<Scalars['u128']['output']>;
 };
 
 export type ChamberConnection = {
@@ -54,20 +55,20 @@ export type ChamberOrder = {
 };
 
 export enum ChamberOrderOrderField {
-  EntityId = 'ENTITY_ID',
+  ChamberId = 'CHAMBER_ID',
   Location = 'LOCATION',
   Minter = 'MINTER',
-  RealmId = 'REALM_ID',
-  Seed = 'SEED'
+  Seed = 'SEED',
+  TokenId = 'TOKEN_ID'
 }
 
 export type ChamberWhereInput = {
-  entity_id?: InputMaybe<Scalars['String']['input']>;
-  entity_idGT?: InputMaybe<Scalars['String']['input']>;
-  entity_idGTE?: InputMaybe<Scalars['String']['input']>;
-  entity_idLT?: InputMaybe<Scalars['String']['input']>;
-  entity_idLTE?: InputMaybe<Scalars['String']['input']>;
-  entity_idNEQ?: InputMaybe<Scalars['String']['input']>;
+  chamber_id?: InputMaybe<Scalars['String']['input']>;
+  chamber_idGT?: InputMaybe<Scalars['String']['input']>;
+  chamber_idGTE?: InputMaybe<Scalars['String']['input']>;
+  chamber_idLT?: InputMaybe<Scalars['String']['input']>;
+  chamber_idLTE?: InputMaybe<Scalars['String']['input']>;
+  chamber_idNEQ?: InputMaybe<Scalars['String']['input']>;
   location?: InputMaybe<Scalars['String']['input']>;
   locationGT?: InputMaybe<Scalars['String']['input']>;
   locationGTE?: InputMaybe<Scalars['String']['input']>;
@@ -80,18 +81,18 @@ export type ChamberWhereInput = {
   minterLT?: InputMaybe<Scalars['String']['input']>;
   minterLTE?: InputMaybe<Scalars['String']['input']>;
   minterNEQ?: InputMaybe<Scalars['String']['input']>;
-  realm_id?: InputMaybe<Scalars['String']['input']>;
-  realm_idGT?: InputMaybe<Scalars['String']['input']>;
-  realm_idGTE?: InputMaybe<Scalars['String']['input']>;
-  realm_idLT?: InputMaybe<Scalars['String']['input']>;
-  realm_idLTE?: InputMaybe<Scalars['String']['input']>;
-  realm_idNEQ?: InputMaybe<Scalars['String']['input']>;
   seed?: InputMaybe<Scalars['String']['input']>;
   seedGT?: InputMaybe<Scalars['String']['input']>;
   seedGTE?: InputMaybe<Scalars['String']['input']>;
   seedLT?: InputMaybe<Scalars['String']['input']>;
   seedLTE?: InputMaybe<Scalars['String']['input']>;
   seedNEQ?: InputMaybe<Scalars['String']['input']>;
+  token_id?: InputMaybe<Scalars['String']['input']>;
+  token_idGT?: InputMaybe<Scalars['String']['input']>;
+  token_idGTE?: InputMaybe<Scalars['String']['input']>;
+  token_idLT?: InputMaybe<Scalars['String']['input']>;
+  token_idLTE?: InputMaybe<Scalars['String']['input']>;
+  token_idNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Component = {
@@ -115,7 +116,7 @@ export type ComponentEdge = {
   node?: Maybe<Component>;
 };
 
-export type ComponentUnion = Chamber | Door | Map | Moves | Position;
+export type ComponentUnion = Chamber | Door | Map | Moves | Position | Tile;
 
 export enum Direction {
   Asc = 'ASC',
@@ -124,11 +125,12 @@ export enum Direction {
 
 export type Door = {
   __typename?: 'Door';
+  chamber_id?: Maybe<Scalars['u128']['output']>;
   dir?: Maybe<Scalars['u8']['output']>;
   entity?: Maybe<Entity>;
   entity_id?: Maybe<Scalars['u128']['output']>;
-  pos?: Maybe<Scalars['u8']['output']>;
-  toLocation?: Maybe<Scalars['u128']['output']>;
+  open?: Maybe<Scalars['bool']['output']>;
+  to_location?: Maybe<Scalars['u128']['output']>;
 };
 
 export type DoorConnection = {
@@ -149,13 +151,20 @@ export type DoorOrder = {
 };
 
 export enum DoorOrderOrderField {
+  ChamberId = 'CHAMBER_ID',
   Dir = 'DIR',
   EntityId = 'ENTITY_ID',
-  Pos = 'POS',
-  Tolocation = 'TOLOCATION'
+  Open = 'OPEN',
+  ToLocation = 'TO_LOCATION'
 }
 
 export type DoorWhereInput = {
+  chamber_id?: InputMaybe<Scalars['String']['input']>;
+  chamber_idGT?: InputMaybe<Scalars['String']['input']>;
+  chamber_idGTE?: InputMaybe<Scalars['String']['input']>;
+  chamber_idLT?: InputMaybe<Scalars['String']['input']>;
+  chamber_idLTE?: InputMaybe<Scalars['String']['input']>;
+  chamber_idNEQ?: InputMaybe<Scalars['String']['input']>;
   dir?: InputMaybe<Scalars['Int']['input']>;
   dirGT?: InputMaybe<Scalars['Int']['input']>;
   dirGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -168,18 +177,18 @@ export type DoorWhereInput = {
   entity_idLT?: InputMaybe<Scalars['String']['input']>;
   entity_idLTE?: InputMaybe<Scalars['String']['input']>;
   entity_idNEQ?: InputMaybe<Scalars['String']['input']>;
-  pos?: InputMaybe<Scalars['Int']['input']>;
-  posGT?: InputMaybe<Scalars['Int']['input']>;
-  posGTE?: InputMaybe<Scalars['Int']['input']>;
-  posLT?: InputMaybe<Scalars['Int']['input']>;
-  posLTE?: InputMaybe<Scalars['Int']['input']>;
-  posNEQ?: InputMaybe<Scalars['Int']['input']>;
-  toLocation?: InputMaybe<Scalars['String']['input']>;
-  toLocationGT?: InputMaybe<Scalars['String']['input']>;
-  toLocationGTE?: InputMaybe<Scalars['String']['input']>;
-  toLocationLT?: InputMaybe<Scalars['String']['input']>;
-  toLocationLTE?: InputMaybe<Scalars['String']['input']>;
-  toLocationNEQ?: InputMaybe<Scalars['String']['input']>;
+  open?: InputMaybe<Scalars['Int']['input']>;
+  openGT?: InputMaybe<Scalars['Int']['input']>;
+  openGTE?: InputMaybe<Scalars['Int']['input']>;
+  openLT?: InputMaybe<Scalars['Int']['input']>;
+  openLTE?: InputMaybe<Scalars['Int']['input']>;
+  openNEQ?: InputMaybe<Scalars['Int']['input']>;
+  to_location?: InputMaybe<Scalars['String']['input']>;
+  to_locationGT?: InputMaybe<Scalars['String']['input']>;
+  to_locationGTE?: InputMaybe<Scalars['String']['input']>;
+  to_locationLT?: InputMaybe<Scalars['String']['input']>;
+  to_locationLTE?: InputMaybe<Scalars['String']['input']>;
+  to_locationNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Entity = {
@@ -383,6 +392,7 @@ export type Query = {
   systemCall: SystemCall;
   systemCalls?: Maybe<SystemCallConnection>;
   systems?: Maybe<SystemConnection>;
+  tileComponents?: Maybe<TileConnection>;
 };
 
 
@@ -469,6 +479,16 @@ export type QuerySystemCallArgs = {
   id: Scalars['Int']['input'];
 };
 
+
+export type QueryTileComponentsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<TileOrder>;
+  where?: InputMaybe<TileWhereInput>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   componentRegistered: Component;
@@ -519,10 +539,70 @@ export type SystemEdge = {
   node?: Maybe<System>;
 };
 
+export type Tile = {
+  __typename?: 'Tile';
+  chamber_id?: Maybe<Scalars['u128']['output']>;
+  entity?: Maybe<Entity>;
+  entity_id?: Maybe<Scalars['u128']['output']>;
+  pos?: Maybe<Scalars['u8']['output']>;
+  tile_type?: Maybe<Scalars['u8']['output']>;
+};
+
+export type TileConnection = {
+  __typename?: 'TileConnection';
+  edges?: Maybe<Array<Maybe<TileEdge>>>;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type TileEdge = {
+  __typename?: 'TileEdge';
+  cursor: Scalars['Cursor']['output'];
+  node?: Maybe<Tile>;
+};
+
+export type TileOrder = {
+  direction: Direction;
+  field: TileOrderOrderField;
+};
+
+export enum TileOrderOrderField {
+  ChamberId = 'CHAMBER_ID',
+  EntityId = 'ENTITY_ID',
+  Pos = 'POS',
+  TileType = 'TILE_TYPE'
+}
+
+export type TileWhereInput = {
+  chamber_id?: InputMaybe<Scalars['String']['input']>;
+  chamber_idGT?: InputMaybe<Scalars['String']['input']>;
+  chamber_idGTE?: InputMaybe<Scalars['String']['input']>;
+  chamber_idLT?: InputMaybe<Scalars['String']['input']>;
+  chamber_idLTE?: InputMaybe<Scalars['String']['input']>;
+  chamber_idNEQ?: InputMaybe<Scalars['String']['input']>;
+  entity_id?: InputMaybe<Scalars['String']['input']>;
+  entity_idGT?: InputMaybe<Scalars['String']['input']>;
+  entity_idGTE?: InputMaybe<Scalars['String']['input']>;
+  entity_idLT?: InputMaybe<Scalars['String']['input']>;
+  entity_idLTE?: InputMaybe<Scalars['String']['input']>;
+  entity_idNEQ?: InputMaybe<Scalars['String']['input']>;
+  pos?: InputMaybe<Scalars['Int']['input']>;
+  posGT?: InputMaybe<Scalars['Int']['input']>;
+  posGTE?: InputMaybe<Scalars['Int']['input']>;
+  posLT?: InputMaybe<Scalars['Int']['input']>;
+  posLTE?: InputMaybe<Scalars['Int']['input']>;
+  posNEQ?: InputMaybe<Scalars['Int']['input']>;
+  tile_type?: InputMaybe<Scalars['Int']['input']>;
+  tile_typeGT?: InputMaybe<Scalars['Int']['input']>;
+  tile_typeGTE?: InputMaybe<Scalars['Int']['input']>;
+  tile_typeLT?: InputMaybe<Scalars['Int']['input']>;
+  tile_typeLTE?: InputMaybe<Scalars['Int']['input']>;
+  tile_typeNEQ?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type GetEntitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetEntitiesQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Chamber' } | { __typename: 'Door' } | { __typename: 'Map' } | { __typename: 'Moves', remaining?: any | null } | { __typename: 'Position', x?: any | null, y?: any | null } | null> | null } | null } | null> | null } | null };
+export type GetEntitiesQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Chamber' } | { __typename: 'Door' } | { __typename: 'Map' } | { __typename: 'Moves', remaining?: any | null } | { __typename: 'Position', x?: any | null, y?: any | null } | { __typename: 'Tile' } | null> | null } | null } | null> | null } | null };
 
 
 export const GetEntitiesDocument = gql`

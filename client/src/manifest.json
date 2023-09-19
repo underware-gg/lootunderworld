@@ -787,7 +787,7 @@
           "type": "@loot_underworld::systems::generator::generate_chamber::ContractState"
         },
         {
-          "name": "realm_id",
+          "name": "token_id",
           "type": "core::integer::u128"
         },
         {
@@ -796,7 +796,7 @@
         }
       ],
       "outputs": [],
-      "class_hash": "0x78c3f2091667cb21d63155acf586878960658779c23cabc08a96d112e163ab1",
+      "class_hash": "0x22aad83ceaf2f93c1550a6db7e5b9a5ef213af3b2233df8e03a03333e4e1c89",
       "dependencies": [],
       "abi": [
         {
@@ -847,7 +847,7 @@
           "name": "execute",
           "inputs": [
             {
-              "name": "realm_id",
+              "name": "token_id",
               "type": "core::integer::u128"
             },
             {
@@ -1141,12 +1141,12 @@
       "name": "Chamber",
       "members": [
         {
-          "name": "entity_id",
+          "name": "chamber_id",
           "type": "u128",
           "key": true
         },
         {
-          "name": "realm_id",
+          "name": "token_id",
           "type": "u128",
           "key": false
         },
@@ -1166,7 +1166,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x637138d8e588dafe2767df52e8999773141e9d6ed3437a6bd61f85b171703dc",
+      "class_hash": "0x78abfcb3aa4b5bcc8c72b587904680629d7b4a4b9e0e7834f9546ba4d11fc75",
       "abi": [
         {
           "type": "function",
@@ -1295,7 +1295,7 @@
       ]
     },
     {
-      "name": "Door",
+      "name": "Tile",
       "members": [
         {
           "name": "entity_id",
@@ -1303,9 +1303,9 @@
           "key": true
         },
         {
-          "name": "dir",
-          "type": "u8",
-          "key": true
+          "name": "chamber_id",
+          "type": "u128",
+          "key": false
         },
         {
           "name": "pos",
@@ -1313,12 +1313,12 @@
           "key": false
         },
         {
-          "name": "toLocation",
-          "type": "u128",
+          "name": "tile_type",
+          "type": "u8",
           "key": false
         }
       ],
-      "class_hash": "0x4b100073dfa2ec0ef8f134a194d9d6d76f174df465ec28a0702ae9f1d7d6e20",
+      "class_hash": "0x621c378ae7e4e970a54e41042d6366fad35bfb42ab13a102d31052a7763b0dc",
       "abi": [
         {
           "type": "function",
@@ -1369,7 +1369,93 @@
         },
         {
           "type": "event",
-          "name": "loot_underworld::components::chamber::door::Event",
+          "name": "loot_underworld::components::tile::tile::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ]
+    },
+    {
+      "name": "Door",
+      "members": [
+        {
+          "name": "entity_id",
+          "type": "u128",
+          "key": true
+        },
+        {
+          "name": "chamber_id",
+          "type": "u128",
+          "key": false
+        },
+        {
+          "name": "dir",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "to_location",
+          "type": "u128",
+          "key": false
+        },
+        {
+          "name": "open",
+          "type": "bool",
+          "key": false
+        }
+      ],
+      "class_hash": "0x769e504e4fe026c31a25775cdcc7c1158a79b3a2882d822352d7cd3bc9b1b1c",
+      "abi": [
+        {
+          "type": "function",
+          "name": "name",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::felt252"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "function",
+          "name": "size",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::integer::u32"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "schema",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::array::Array::<(core::felt252, core::felt252, core::bool)>"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "event",
+          "name": "loot_underworld::components::tile::door::Event",
           "kind": "enum",
           "variants": []
         }
