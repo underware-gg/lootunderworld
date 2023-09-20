@@ -1,7 +1,7 @@
 mod dojo_examples;
 mod components;
-mod systems;
 mod core;
-mod utils;
+mod systems;
 mod tests;
 mod types;
+mod utils;

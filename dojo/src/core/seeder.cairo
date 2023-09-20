@@ -43,6 +43,14 @@ fn test_make_seed() {
     let s6 = _make_seed(2, 1, 2);
     let s7 = _make_seed(2, 2, 1);
     let s8 = _make_seed(2, 2, 2);
+    assert(s1.low !=s1.high, 's1 h/l');
+    assert(s2.low !=s2.high, 's2 h/l');
+    assert(s3.low !=s3.high, 's3 h/l');
+    assert(s4.low !=s4.high, 's4 h/l');
+    assert(s5.low !=s5.high, 's5 h/l');
+    assert(s6.low !=s6.high, 's6 h/l');
+    assert(s7.low !=s7.high, 's7 h/l');
+    assert(s8.low !=s8.high, 's8 h/l');
     assert(s1!=s2 && s1!=s3 && s1!=s4 && s1!=s5 && s1!=s6 && s1!=s7 && s1!=s8, 's1');
     assert(s2!=s1 && s2!=s3 && s2!=s4 && s2!=s5 && s2!=s6 && s2!=s7 && s2!=s8, 's2');
     assert(s3!=s1 && s3!=s2 && s3!=s4 && s3!=s5 && s3!=s6 && s3!=s7 && s3!=s8, 's3');

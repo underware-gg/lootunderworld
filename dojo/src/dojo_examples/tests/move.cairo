@@ -3,6 +3,7 @@ mod tests {
     // cairo core imports
     use core::traits::Into;
     use array::ArrayTrait;
+    use debug::PrintTrait;
 
     // dojo core imports
     use dojo::world::{IWorldDispatcherTrait, IWorldDispatcher};
