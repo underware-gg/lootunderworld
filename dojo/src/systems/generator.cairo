@@ -1,7 +1,7 @@
 
 #[system]
 mod generate_chamber {
-    // use debug::PrintTrait;
+    use debug::PrintTrait;
     use traits::{Into, TryInto};
     use dojo::world::{Context}; //{Context, IWorldDispatcher, IWorldDispatcherTrait};
 
@@ -12,9 +12,16 @@ mod generate_chamber {
     use loot_underworld::core::tiler::{create_door};
     use loot_underworld::types::dir::{Dir};
 
-    fn execute(ctx: Context, token_id: u128, location: u128) {
+    fn execute(ctx: Context, token_id: u128, coord: u128) {
+
+        assert(token_id > 0, 'Invalid token id');
+
+        // TODO: add domain, token_id to location
+        let location: u128 = coord;
         
-        let chamber_id: u128 = ctx.world.uuid().into();
+        // assert chamber is new
+        let _chamber = get!(ctx.world, location, (Chamber));
+        assert(_chamber.token_id == 0, 'Chamber already exists');
 
         let seed: u256 = make_seed(token_id, location);
         // let seed: u256 = 0xffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa9999999988888888;
@@ -26,6 +33,9 @@ mod generate_chamber {
         // let bitmap: u256 = collapse(seed, false);
         // bitmap.low.print();
         // bitmap.high.print();
+
+        // let chamber_id: u128 = ctx.world.uuid().into();
+        let chamber_id: u128 = location;
 
         set!(ctx.world,
             (
