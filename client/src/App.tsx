@@ -11,7 +11,7 @@ import ChamberMap from './underworld/components/Map';
 function App() {
   const {
     setup: {
-      systemCalls: { spawn, move, generate_chamber },
+      systemCalls: { spawn, move, mint_realms_chamber },
       components: { Moves, Position, Chamber, Map },
       network: { graphSdk, call }
     },
@@ -72,7 +72,7 @@ function App() {
       <hr />
 
       <div className="card">
-        <button onClick={() => generate_chamber(account, 1, Date.now())}>Mint Chamber</button>
+        <button onClick={() => mint_realms_chamber(account, 1, Date.now())}>Mint Chamber</button>
         <div>
           <select onChange={e => setSelectedChamberId(e.target.value as Entity)}>
             {chamberIds.map((entityId) => {

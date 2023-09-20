@@ -1,1 +1,1 @@
-mod generator;
+mod test_mint_realms_chamber;

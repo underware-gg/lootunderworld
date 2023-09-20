@@ -1,20 +1,24 @@
-
 #[system]
-mod generate_chamber {
+mod mint_realms_chamber {
     use debug::PrintTrait;
     use traits::{Into, TryInto};
     use dojo::world::{Context}; //{Context, IWorldDispatcher, IWorldDispatcherTrait};
 
+    use loot_underworld::systems::actions::create_door::{create_door};
     use loot_underworld::components::chamber::{Chamber, Map};
     use loot_underworld::core::seeder::{make_seed};
     use loot_underworld::core::carver::{carve};
     use loot_underworld::core::collapsor::{collapse};
-    use loot_underworld::core::tiler::{create_door};
     use loot_underworld::types::dir::{Dir};
 
     fn execute(ctx: Context, token_id: u128, coord: u128) {
 
+        // TODO: from_coord
+        // TODO: from_dir
+
         assert(token_id > 0, 'Invalid token id');
+
+        // TODO: verify ownership
 
         // TODO: add domain, token_id to location
         let location: u128 = coord;
@@ -25,14 +29,11 @@ mod generate_chamber {
 
         let seed: u256 = make_seed(token_id, location);
         // let seed: u256 = 0xffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa9999999988888888;
-        // seed.low.print();
-        // seed.high.print();
 
-        let mut bitmap: u256 = carve(seed, 0x0, 5);
-        bitmap = carve(bitmap, 0x0, 5);
-        // let bitmap: u256 = collapse(seed, false);
-        // bitmap.low.print();
-        // bitmap.high.print();
+        // let mut bitmap: u256 = carve(seed, 0x0, 5);
+        let mut bitmap: u256 = collapse(seed, false);
+        // bitmap = carve(bitmap, 0x0, 4);
+        // bitmap = collapse(bitmap, false);
 
         // let chamber_id: u128 = ctx.world.uuid().into();
         let chamber_id: u128 = location;

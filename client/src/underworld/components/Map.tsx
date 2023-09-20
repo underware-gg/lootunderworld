@@ -10,7 +10,7 @@ interface ChamberMapProps {
 function ChamberMap(props: ChamberMapProps) {
   const {
     setup: {
-      // systemCalls: { spawn, move, generate_chamber },
+      // systemCalls: { spawn, move, mint_realms_chamber },
       components: { Chamber, Map, Door },
     },
     // account: { create, list, select, account, isDeploying }

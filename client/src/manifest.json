@@ -780,23 +780,23 @@
       ]
     },
     {
-      "name": "generate_chamber",
+      "name": "mint_realms_chamber",
       "inputs": [
         {
           "name": "self",
-          "type": "@loot_underworld::systems::generator::generate_chamber::ContractState"
+          "type": "@loot_underworld::systems::mint_realms_chamber::mint_realms_chamber::ContractState"
         },
         {
           "name": "token_id",
           "type": "core::integer::u128"
         },
         {
-          "name": "location",
+          "name": "coord",
           "type": "core::integer::u128"
         }
       ],
       "outputs": [],
-      "class_hash": "0x22aad83ceaf2f93c1550a6db7e5b9a5ef213af3b2233df8e03a03333e4e1c89",
+      "class_hash": "0x444b368b63289dbe55ddb5b3df5df06e21371b5b494ce6984cad0550f28cc4b",
       "dependencies": [],
       "abi": [
         {
@@ -851,7 +851,7 @@
               "type": "core::integer::u128"
             },
             {
-              "name": "location",
+              "name": "coord",
               "type": "core::integer::u128"
             },
             {
@@ -864,7 +864,7 @@
         },
         {
           "type": "event",
-          "name": "loot_underworld::systems::generator::generate_chamber::Event",
+          "name": "loot_underworld::systems::mint_realms_chamber::mint_realms_chamber::Event",
           "kind": "enum",
           "variants": []
         }

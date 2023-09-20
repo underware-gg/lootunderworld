@@ -11,7 +11,7 @@ mod tests {
     use loot_underworld::components::chamber::{map, Map};
     use loot_underworld::components::tile::{tile, Tile};
     use loot_underworld::components::tile::{door, Door};
-    use loot_underworld::systems::generator::generate_chamber;
+    use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
 
     // helper setup function
     // reuse this function for all tests
@@ -20,7 +20,7 @@ mod tests {
         let mut components = array![chamber::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH, door::TEST_CLASS_HASH];
 
         // systems
-        let mut systems = array![generate_chamber::TEST_CLASS_HASH];
+        let mut systems = array![mint_realms_chamber::TEST_CLASS_HASH];
 
         // deploy executor, world and register components/systems
         spawn_test_world(components, systems)
@@ -28,14 +28,14 @@ mod tests {
 
     #[test]
     #[available_gas(1_000_000_000)]
-    fn test_generate_chamber() {
+    fn test_mint_realms_chamber() {
         let world = setup_world();
 
         let token_id: u128 = 1;
         let location: u128 = 123456;
 
         // Generate one chamber
-        world.execute('generate_chamber', array![token_id.into(), location.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.into()]);
 
         // check Chamber component
         let query = array![location.into()].span();
@@ -53,17 +53,17 @@ mod tests {
     #[test]
     #[available_gas(1_000_000_000)]
     #[should_panic]
-    fn test_generate_chamber_invalid_token_id() {
+    fn test_mint_realms_chamber_invalid_token_id() {
         let world = setup_world();
-        world.execute('generate_chamber', array![0, 999]);
+        world.execute('mint_realms_chamber', array![0, 999]);
     }
 
     #[test]
     #[available_gas(1_000_000_000)]
     #[should_panic]
-    fn test_generate_chamber_existing() {
+    fn test_mint_realms_chamber_existing() {
         let world = setup_world();
-        world.execute('generate_chamber', array![1, 999]);
-        world.execute('generate_chamber', array![1, 999]);
+        world.execute('mint_realms_chamber', array![1, 999]);
+        world.execute('mint_realms_chamber', array![1, 999]);
     }
 }

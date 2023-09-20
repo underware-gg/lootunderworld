@@ -23,22 +23,22 @@ export function createSystemCalls(
 ) {
 
 
-  const generate_chamber = async (signer: Account, realmId: number, location: number) => {
+  const mint_realms_chamber = async (signer: Account, realmId: number, location: number) => {
     try {
-      const tx = await execute(signer, "generate_chamber", [realmId, location]);
-      console.log(`generate_chamber tx:`, tx)
+      const tx = await execute(signer, "mint_realms_chamber", [realmId, location]);
+      console.log(`mint_realms_chamber tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-      console.log(`generate_chamber receipt:`, receipt)
+      console.log(`mint_realms_chamber receipt:`, receipt)
 
-      // console.log(`generate_chamber contract:`, provider.contract)
-      // console.log(`generate_chamber contract.parseEvents():`, provider.contract.parseEvents(receipt))
+      // console.log(`mint_realms_chamber contract:`, provider.contract)
+      // console.log(`mint_realms_chamber contract.parseEvents():`, provider.contract.parseEvents(receipt))
 
       const events = getEvents(receipt);
-      console.log(`generate_chamber events:`, events)
+      console.log(`mint_realms_chamber events:`, events)
       setComponentsFromEvents(contractComponents, events);
 
     } catch (e) {
-      console.log(`generate_chamber exception:`, e)
+      console.log(`mint_realms_chamber exception:`, e)
     } finally {
     }
   };
@@ -114,7 +114,7 @@ export function createSystemCalls(
   };
 
   return {
-    generate_chamber,
+    mint_realms_chamber,
     spawn,
     move
   };
