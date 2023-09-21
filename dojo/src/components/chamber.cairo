@@ -5,10 +5,10 @@ use starknet::ContractAddress;
 struct Chamber {
     #[key]
     chamber_id: u128,
-    token_id: u128,
-    location: u128,
     seed: u256,
     minter: ContractAddress,
+    domain_id: u16,
+    token_id: u16,
 }
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]

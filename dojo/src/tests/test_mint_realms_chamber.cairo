@@ -7,11 +7,14 @@ mod tests {
     use dojo::world::{IWorldDispatcherTrait, IWorldDispatcher};
     use dojo::test_utils::spawn_test_world;
 
+    use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
     use loot_underworld::components::chamber::{chamber, Chamber};
     use loot_underworld::components::chamber::{map, Map};
     use loot_underworld::components::tile::{tile, Tile};
     use loot_underworld::components::tile::{door, Door};
-    use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
+    use loot_underworld::types::location::{Location, LocationTrait};
+    use loot_underworld::types::dir::{Dir};
+    use loot_underworld::types::constants::{DOMAINS};
 
     // helper setup function
     // reuse this function for all tests
@@ -26,44 +29,60 @@ mod tests {
         spawn_test_world(components, systems)
     }
 
+    fn get_from_location(token_id: u16) -> (u128, u8, u128) {
+        let location: Location = Location{ domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        let location_id: u128 = location.to_id();
+        let dir: u8 = Dir::Under.into();
+        let to_location: Location = location.offset(Dir::Under);
+        let to_location_id : u128 = to_location.to_id();
+        (location_id, dir, to_location_id)
+    }
+
     #[test]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber() {
         let world = setup_world();
-
-        let token_id: u128 = 1;
-        let location: u128 = 123456;
-
-        // Generate one chamber
-        world.execute('mint_realms_chamber', array![token_id.into(), location.into()]);
+        let token_id: u16 = 255;
+        let (location_id, dir, to_location_id) = get_from_location(token_id);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
 
         // check Chamber component
-        let query = array![location.into()].span();
+        let query = array![to_location_id.into()].span();
         let chamber = world.entity('Chamber', query, 0, dojo::SerdeLen::<Chamber>::len());
-        assert(*chamber[0] == token_id.into(), 'bad token_id');
-        assert(*chamber[1] == location.into(), 'bad location');
-        assert(*chamber[2] != 0, 'bad seed');
-        // assert(*chamber[3] == call_data.into(), 'bad minter');
+        assert(*chamber[0] != 0, 'Chamber: bad seed.low');
+        assert(*chamber[1] != 0, 'Chamber: bad seed.high');
+        assert(*chamber[0] != *chamber[1], 'Chamber: seed.low != seed.high');
+        // assert(*chamber[2] == call_data.into(), 'Chamber: bad minter');
+        assert(*chamber[3] == DOMAINS::REALMS.into(), 'Chamber: bad domain_id');
+        assert(*chamber[4] == token_id.into(), 'Chamber: bad token_id');
 
         // check Map component
         let map = world.entity('Map', query, 0, dojo::SerdeLen::<Map>::len());
-        assert(*map[1] != 0, 'bad map');
+        assert(*map[0] != 0, 'Map: map.low != 0');
+        assert(*map[1] != 0, 'Map: map.low != 0');
+        assert(*map[0] != *map[1], 'Map: map.low != map.high');
+        assert(*map[0] != *chamber[0], 'Map: map.low != seed.low');
+        assert(*map[1] != *chamber[1], 'Map: map.high != seed.high');
     }
 
     #[test]
-    #[available_gas(1_000_000_000)]
     #[should_panic]
+    #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_invalid_token_id() {
         let world = setup_world();
-        world.execute('mint_realms_chamber', array![0, 999]);
+        let token_id: u16 = 0;
+        let (location_id, dir, to_location_id) = get_from_location(token_id);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
     }
 
     #[test]
-    #[available_gas(1_000_000_000)]
     #[should_panic]
+    #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_existing() {
         let world = setup_world();
-        world.execute('mint_realms_chamber', array![1, 999]);
-        world.execute('mint_realms_chamber', array![1, 999]);
+        let token_id: u16 = 1;
+        let (location_id, dir, to_location_id) = get_from_location(token_id);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
     }
 }
