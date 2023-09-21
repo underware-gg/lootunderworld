@@ -45,9 +45,12 @@ fn count_digits_of_base(mut num: u128, base: u128) -> u128 {
 
 trait Bitwise<T> {
     fn bit(n: usize) -> T;
+    fn set(x: T, n: usize) -> T;
+    fn unset(x: T, n: usize) -> T;
     fn shl(x: T, n: usize) -> T;
     fn shr(x: T, n: usize) -> T;
     fn isSet(x: T, n: usize) -> bool;
+    fn count_bits(x: T) -> usize;
 }
 
 impl U8Bitwise of Bitwise<u8> {
@@ -62,6 +65,12 @@ impl U8Bitwise of Bitwise<u8> {
         if n == 7 { return 0x80; }
         0
     }
+    fn set(x: u8, n: usize) -> u8 {
+        x | U8Bitwise::bit(n)
+    }
+    fn unset(x: u8, n: usize) -> u8 {
+        x & ~U8Bitwise::bit(n)
+    }
     fn shl(x: u8, n: usize) -> u8 {
         if n >= 8 { return 0; }
         x * U8Bitwise::bit(n)
@@ -73,6 +82,16 @@ impl U8Bitwise of Bitwise<u8> {
     fn isSet(x: u8, n: usize) -> bool {
         ((U8Bitwise::shr(x, n) & 1) != 0)
     }
+    fn count_bits(x: u8) -> usize {
+        let mut result: usize = 0;
+        let mut n: usize = 0;
+        loop {
+            if n == 8 { break; }
+            if(U8Bitwise::isSet(x, n)) { result += 1; };
+            n += 1;
+        };
+        result
+    }
 }
 
 impl U16Bitwise of Bitwise<u16> {
@@ -80,6 +99,12 @@ impl U16Bitwise of Bitwise<u16> {
         if n < 8 { return U8Bitwise::bit(n).into(); }
         if n < 16 { return U8Bitwise::bit(n-8).into() * 0x100; }
         0
+    }
+    fn set(x: u16, n: usize) -> u16 {
+        x | U16Bitwise::bit(n)
+    }
+    fn unset(x: u16, n: usize) -> u16 {
+        x & ~U16Bitwise::bit(n)
     }
     fn shl(x: u16, n: usize) -> u16 {
         if n >= 16 { return 0; }
@@ -92,6 +117,16 @@ impl U16Bitwise of Bitwise<u16> {
     fn isSet(x: u16, n: usize) -> bool {
         ((U16Bitwise::shr(x, n) & 1) != 0)
     }
+    fn count_bits(x: u16) -> usize {
+        let mut result: usize = 0;
+        let mut n: usize = 0;
+        loop {
+            if n == 16 { break; }
+            if(U16Bitwise::isSet(x, n)) { result += 1; };
+            n += 1;
+        };
+        result
+    }
 }
 
 impl U32Bitwise of Bitwise<u32> {
@@ -99,6 +134,12 @@ impl U32Bitwise of Bitwise<u32> {
         if n < 16 { return U16Bitwise::bit(n).into(); }
         if n < 32 { return U16Bitwise::bit(n-16).into() * 0x10000; }
         0
+    }
+    fn set(x: u32, n: usize) -> u32 {
+        x | U32Bitwise::bit(n)
+    }
+    fn unset(x: u32, n: usize) -> u32 {
+        x & ~U32Bitwise::bit(n)
     }
     fn shl(x: u32, n: usize) -> u32 {
         if n >= 32 { return 0; }
@@ -111,6 +152,16 @@ impl U32Bitwise of Bitwise<u32> {
     fn isSet(x: u32, n: usize) -> bool {
         ((U32Bitwise::shr(x, n) & 1) != 0)
     }
+    fn count_bits(x: u32) -> usize {
+        let mut result: usize = 0;
+        let mut n: usize = 0;
+        loop {
+            if n == 32 { break; }
+            if(U32Bitwise::isSet(x, n)) { result += 1; };
+            n += 1;
+        };
+        result
+    }
 }
 
 impl U64Bitwise of Bitwise<u64> {
@@ -118,6 +169,12 @@ impl U64Bitwise of Bitwise<u64> {
         if n < 32 { return U32Bitwise::bit(n).into(); }
         if n < 64 { return U32Bitwise::bit(n-32).into() * 0x100000000; }
         0
+    }
+    fn set(x: u64, n: usize) -> u64 {
+        x | U64Bitwise::bit(n)
+    }
+    fn unset(x: u64, n: usize) -> u64 {
+        x &  ~U64Bitwise::bit(n)
     }
     fn shl(x: u64, n: usize) -> u64 {
         if n >= 64 { return 0; }
@@ -130,6 +187,16 @@ impl U64Bitwise of Bitwise<u64> {
     fn isSet(x: u64, n: usize) -> bool {
         ((U64Bitwise::shr(x, n) & 1) != 0)
     }
+    fn count_bits(x: u64) -> usize {
+        let mut result: usize = 0;
+        let mut n: usize = 0;
+        loop {
+            if n == 64 { break; }
+            if(U64Bitwise::isSet(x, n)) { result += 1; };
+            n += 1;
+        };
+        result
+    }
 }
 
 impl U128Bitwise of Bitwise<u128> {
@@ -137,6 +204,12 @@ impl U128Bitwise of Bitwise<u128> {
         if n < 64 { return U64Bitwise::bit(n).into(); }
         if n < 128 { return U64Bitwise::bit(n-64).into() * 0x10000000000000000; }
         0
+    }
+    fn set(x: u128, n: usize) -> u128 {
+        x | U128Bitwise::bit(n)
+    }
+    fn unset(x: u128, n: usize) -> u128 {
+        x & ~U128Bitwise::bit(n)
     }
     fn shl(x: u128, n: usize) -> u128 {
         if n >= 128 { return 0; }
@@ -149,6 +222,16 @@ impl U128Bitwise of Bitwise<u128> {
     fn isSet(x: u128, n: usize) -> bool {
         ((U128Bitwise::shr(x, n) & 1) != 0)
     }
+    fn count_bits(x: u128) -> usize {
+        let mut result: usize = 0;
+        let mut n: usize = 0;
+        loop {
+            if n == 128 { break; }
+            if(U128Bitwise::isSet(x, n)) { result += 1; };
+            n += 1;
+        };
+        result
+    }
 }
 
 impl U256Bitwise of Bitwise<u256> {
@@ -156,6 +239,12 @@ impl U256Bitwise of Bitwise<u256> {
         if n < 128 { return u256 { low: U128Bitwise::bit(n), high: 0x0 }; }
         if n < 256 { return u256 { low: 0x0, high: U128Bitwise::bit(n-128) }; }
         0
+    }
+    fn set(x: u256, n: usize) -> u256 {
+        x | U256Bitwise::bit(n)
+    }
+    fn unset(x: u256, n: usize) -> u256 {
+        x & ~U256Bitwise::bit(n)
     }
     fn shl(x: u256, n: usize) -> u256 {
         if n >= 256 { return 0; }
@@ -168,13 +257,23 @@ impl U256Bitwise of Bitwise<u256> {
     fn isSet(x: u256, n: usize) -> bool {
         ((U256Bitwise::shr(x, n) & 1) != 0)
     }
+    fn count_bits(x: u256) -> usize {
+        let mut result: usize = 0;
+        let mut n: usize = 0;
+        loop {
+            if n == 256 { break; }
+            if(U256Bitwise::isSet(x, n)) { result += 1; };
+            n += 1;
+        };
+        result
+    }
 }
 
 
 
 #[test]
 #[available_gas(50_000_000)]
-fn test_bit() {
+fn test_bitwise_bit() {
     let mut bit: u256 = 0x1;
     let mut n: usize = 0;
     loop {
@@ -226,7 +325,7 @@ const U256_ONE_LEFT: u256 = 0x80000000000000000000000000000000000000000000000000
 
 #[test]
 #[available_gas(300_000)]
-fn test_shift_u8() {
+fn test_bitwise_shift_u8() {
     let mut n: usize = 0;
     loop {
         if n == 8 { break; }
@@ -239,7 +338,7 @@ fn test_shift_u8() {
 
 #[test]
 #[available_gas(1_000_000)]
-fn test_shift_u16() {
+fn test_bitwise_shift_u16() {
     let mut n: usize = 0;
     loop {
         if n == 16 { break; }
@@ -252,7 +351,7 @@ fn test_shift_u16() {
 
 #[test]
 #[available_gas(3_000_000)]
-fn test_shift_u32() {
+fn test_bitwise_shift_u32() {
     let mut n: usize = 0;
     loop {
         if n == 32 { break; }
@@ -265,7 +364,7 @@ fn test_shift_u32() {
 
 #[test]
 #[available_gas(7_000_000)]
-fn test_shift_u64() {
+fn test_bitwise_shift_u64() {
     let mut n: usize = 0;
     loop {
         if n == 64 { break; }
@@ -278,7 +377,7 @@ fn test_shift_u64() {
 
 #[test]
 #[available_gas(20_000_000)]
-fn test_shift_u128() {
+fn test_bitwise_shift_u128() {
     let mut n: usize = 0;
     loop {
         if n == 128 { break; }
@@ -291,7 +390,7 @@ fn test_shift_u128() {
 
 #[test]
 #[available_gas(50_000_000)]
-fn test_shift_u256() {
+fn test_bitwise_shift_u256() {
     let mut n: usize = 0;
     loop {
         if n == 256 { break; }
@@ -301,3 +400,264 @@ fn test_shift_u256() {
         n += 1;
     };
 }
+
+
+#[test]
+#[available_gas(1_000_000)]
+fn test_bitwise_set_u8() {
+    let ok: u8 = 0x55;
+    let mut bitmap: u8 = ok;
+    let mut n: usize = 0;
+    loop {
+        if n == 8 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 0;
+        assert(U8Bitwise::isSet(bitmap, n) == shouldBeSet, 'u8_shouldBeSet_1');
+        if(shouldBeSet) { bitmap = U8Bitwise::unset(bitmap, n); }
+        else { bitmap = U8Bitwise::set(bitmap, n); }
+        assert(U8Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u8_!shouldBeSet_1');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ~ok, '~ok');
+    n = 0;
+    loop {
+        if n == 8 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 1;
+        assert(U8Bitwise::isSet(bitmap, n) == shouldBeSet, 'u8_shouldBeSet_2');
+        if(shouldBeSet) { bitmap = U8Bitwise::unset(bitmap, n); }
+        else { bitmap = U8Bitwise::set(bitmap, n); }
+        assert(U8Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u8_!shouldBeSet_2');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ok, 'ok');
+}
+
+#[test]
+#[available_gas(10_000_000)]
+fn test_bitwise_set_u16() {
+    let ok: u16 = 0x5555;
+    let mut bitmap: u16 = ok;
+    let mut n: usize = 0;
+    loop {
+        if n == 16 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 0;
+        assert(U16Bitwise::isSet(bitmap, n) == shouldBeSet, 'u16_shouldBeSet_1');
+        if(shouldBeSet) { bitmap = U16Bitwise::unset(bitmap, n); }
+        else { bitmap = U16Bitwise::set(bitmap, n); }
+        assert(U16Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u16_!shouldBeSet_1');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ~ok, '~ok');
+    n = 0;
+    loop {
+        if n == 16 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 1;
+        assert(U16Bitwise::isSet(bitmap, n) == shouldBeSet, 'u16_shouldBeSet_2');
+        if(shouldBeSet) { bitmap = U16Bitwise::unset(bitmap, n); }
+        else { bitmap = U16Bitwise::set(bitmap, n); }
+        assert(U16Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u16_!shouldBeSet_2');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ok, 'ok');
+}
+
+#[test]
+#[available_gas(100_000_000)]
+fn test_bitwise_set_u32() {
+    let ok: u32 = 0x55555555;
+    let mut bitmap: u32 = ok;
+    let mut n: usize = 0;
+    loop {
+        if n == 32 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 0;
+        assert(U32Bitwise::isSet(bitmap, n) == shouldBeSet, 'u32_shouldBeSet_1');
+        if(shouldBeSet) { bitmap = U32Bitwise::unset(bitmap, n); }
+        else { bitmap = U32Bitwise::set(bitmap, n); }
+        assert(U32Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u32_!shouldBeSet_1');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ~ok, '~ok');
+    n = 0;
+    loop {
+        if n == 32 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 1;
+        assert(U32Bitwise::isSet(bitmap, n) == shouldBeSet, 'u32_shouldBeSet_2');
+        if(shouldBeSet) { bitmap = U32Bitwise::unset(bitmap, n); }
+        else { bitmap = U32Bitwise::set(bitmap, n); }
+        assert(U32Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u32_!shouldBeSet_2');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ok, 'ok');
+}
+
+#[test]
+#[available_gas(1_000_000_000)]
+fn test_bitwise_set_u64() {
+    let ok: u64 = 0x5555555555555555;
+    let mut bitmap: u64 = ok;
+    let mut n: usize = 0;
+    loop {
+        if n == 64 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 0;
+        assert(U64Bitwise::isSet(bitmap, n) == shouldBeSet, 'u64_shouldBeSet_1');
+        if(shouldBeSet) { bitmap = U64Bitwise::unset(bitmap, n); }
+        else { bitmap = U64Bitwise::set(bitmap, n); }
+        assert(U64Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u64_!shouldBeSet_1');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ~ok, '~ok');
+    n = 0;
+    loop {
+        if n == 64 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 1;
+        assert(U64Bitwise::isSet(bitmap, n) == shouldBeSet, 'u64_shouldBeSet_2');
+        if(shouldBeSet) { bitmap = U64Bitwise::unset(bitmap, n); }
+        else { bitmap = U64Bitwise::set(bitmap, n); }
+        assert(U64Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u64_!shouldBeSet_2');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ok, 'ok');
+}
+
+#[test]
+#[available_gas(10_000_000_000)]
+fn test_bitwise_set_u128() {
+    let ok: u128 = 0x55555555555555555555555555555555;
+    let mut bitmap: u128 = ok;
+    let mut n: usize = 0;
+    loop {
+        if n == 128 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 0;
+        assert(U128Bitwise::isSet(bitmap, n) == shouldBeSet, 'u128_shouldBeSet_1');
+        if(shouldBeSet) { bitmap = U128Bitwise::unset(bitmap, n); }
+        else { bitmap = U128Bitwise::set(bitmap, n); }
+        assert(U128Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u128_!shouldBeSet_1');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ~ok, '~ok');
+    n = 0;
+    loop {
+        if n == 128 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 1;
+        assert(U128Bitwise::isSet(bitmap, n) == shouldBeSet, 'u128_shouldBeSet_2');
+        if(shouldBeSet) { bitmap = U128Bitwise::unset(bitmap, n); }
+        else { bitmap = U128Bitwise::set(bitmap, n); }
+        assert(U128Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u128_!shouldBeSet_2');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ok, 'ok');
+}
+
+#[test]
+#[available_gas(100_000_000_000)]
+fn test_bitwise_set_u256() {
+    let ok: u256 = 0x5555555555555555555555555555555555555555555555555555555555555555;
+    let mut bitmap: u256 = ok;
+    let mut n: usize = 0;
+    loop {
+        if n == 256 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 0;
+        assert(U256Bitwise::isSet(bitmap, n) == shouldBeSet, 'u256_shouldBeSet_1');
+        if(shouldBeSet) { bitmap = U256Bitwise::unset(bitmap, n); }
+        else { bitmap = U256Bitwise::set(bitmap, n); }
+        assert(U256Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u256_!shouldBeSet_1');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ~ok, '~ok');
+    n = 0;
+    loop {
+        if n == 256 { break; }
+        //-----
+        let shouldBeSet: bool = (n % 2) == 1;
+        assert(U256Bitwise::isSet(bitmap, n) == shouldBeSet, 'u256_shouldBeSet_2');
+        if(shouldBeSet) { bitmap = U256Bitwise::unset(bitmap, n); }
+        else { bitmap = U256Bitwise::set(bitmap, n); }
+        assert(U256Bitwise::isSet(bitmap, n) == !shouldBeSet, 'u256_!shouldBeSet_2');
+        //-----
+        n += 1;
+    };
+    assert(bitmap == ok, 'ok');
+}
+
+
+#[test]
+#[available_gas(1_000_000)]
+fn test_bitwise_count_u8() {
+    let full: u8 = 0xff;
+    let half: u8 = 0x55;
+    assert(U8Bitwise::count_bits(0x0) == 0, 'u8_count_0x0');
+    assert(U8Bitwise::count_bits(full) == 8, 'u8_count_0x0');
+    assert(U8Bitwise::count_bits(half) == (8 / 2), 'u8_count_0x0');
+}
+
+#[test]
+#[available_gas(10_000_000)]
+fn test_bitwise_count_u16() {
+    let full: u16 = 0xffff;
+    let half: u16 = 0x5555;
+    assert(U16Bitwise::count_bits(0x0) == 0, 'u16_count_0x0');
+    assert(U16Bitwise::count_bits(full) == 16, 'u16_count_0x0');
+    assert(U16Bitwise::count_bits(half) == (16 / 2), 'u16_count_0x0');
+}
+
+#[test]
+#[available_gas(10_000_000)]
+fn test_bitwise_count_u32() {
+    let full: u32 = 0xffffffff;
+    let half: u32 = 0x55555555;
+    assert(U32Bitwise::count_bits(0x0) == 0, 'u32_count_0x0');
+    assert(U32Bitwise::count_bits(full) == 32, 'u32_count_0x0');
+    assert(U32Bitwise::count_bits(half) == (32 / 2), 'u32_count_0x0');
+}
+
+#[test]
+#[available_gas(10_000_000)]
+fn test_bitwise_count_u64() {
+    let full: u64 = 0xffffffffffffffff;
+    let half: u64 = 0x5555555555555555;
+    assert(U64Bitwise::count_bits(0x0) == 0, 'u64_count_0x0');
+    assert(U64Bitwise::count_bits(full) == 64, 'u64_count_0x0');
+    assert(U64Bitwise::count_bits(half) == (64 / 2), 'u64_count_0x0');
+}
+
+#[test]
+#[available_gas(100_000_000)]
+fn test_bitwise_count_u128() {
+    let full: u128 = 0xffffffffffffffffffffffffffffffff;
+    let half: u128 = 0x55555555555555555555555555555555;
+    assert(U128Bitwise::count_bits(0x0) == 0, 'u128_count_0x0');
+    assert(U128Bitwise::count_bits(full) == 128, 'u128_count_0x0');
+    assert(U128Bitwise::count_bits(half) == (128 / 2), 'u128_count_0x0');
+}
+
+#[test]
+#[available_gas(100_000_000)]
+fn test_bitwise_count_u256() {
+    let full: u256 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
+    let half: u256 = 0x5555555555555555555555555555555555555555555555555555555555555555;
+    assert(U256Bitwise::count_bits(0x0) == 0, 'u256_count_0x0');
+    assert(U256Bitwise::count_bits(full) == 256, 'u256_count_0x0');
+    assert(U256Bitwise::count_bits(half) == (256 / 2), 'u256_count_0x0');
+}
+
