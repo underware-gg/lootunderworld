@@ -22,6 +22,7 @@ export type Scalars = {
   bool: { input: any; output: any; }
   felt252: { input: any; output: any; }
   u8: { input: any; output: any; }
+  u16: { input: any; output: any; }
   u32: { input: any; output: any; }
   u128: { input: any; output: any; }
   u256: { input: any; output: any; }
@@ -30,11 +31,12 @@ export type Scalars = {
 export type Chamber = {
   __typename?: 'Chamber';
   chamber_id?: Maybe<Scalars['u128']['output']>;
+  domain_id?: Maybe<Scalars['u16']['output']>;
   entity?: Maybe<Entity>;
-  location?: Maybe<Scalars['u128']['output']>;
   minter?: Maybe<Scalars['ContractAddress']['output']>;
   seed?: Maybe<Scalars['u256']['output']>;
-  token_id?: Maybe<Scalars['u128']['output']>;
+  token_id?: Maybe<Scalars['u16']['output']>;
+  yonder?: Maybe<Scalars['u16']['output']>;
 };
 
 export type ChamberConnection = {
@@ -56,10 +58,11 @@ export type ChamberOrder = {
 
 export enum ChamberOrderOrderField {
   ChamberId = 'CHAMBER_ID',
-  Location = 'LOCATION',
+  DomainId = 'DOMAIN_ID',
   Minter = 'MINTER',
   Seed = 'SEED',
-  TokenId = 'TOKEN_ID'
+  TokenId = 'TOKEN_ID',
+  Yonder = 'YONDER'
 }
 
 export type ChamberWhereInput = {
@@ -69,12 +72,12 @@ export type ChamberWhereInput = {
   chamber_idLT?: InputMaybe<Scalars['String']['input']>;
   chamber_idLTE?: InputMaybe<Scalars['String']['input']>;
   chamber_idNEQ?: InputMaybe<Scalars['String']['input']>;
-  location?: InputMaybe<Scalars['String']['input']>;
-  locationGT?: InputMaybe<Scalars['String']['input']>;
-  locationGTE?: InputMaybe<Scalars['String']['input']>;
-  locationLT?: InputMaybe<Scalars['String']['input']>;
-  locationLTE?: InputMaybe<Scalars['String']['input']>;
-  locationNEQ?: InputMaybe<Scalars['String']['input']>;
+  domain_id?: InputMaybe<Scalars['Int']['input']>;
+  domain_idGT?: InputMaybe<Scalars['Int']['input']>;
+  domain_idGTE?: InputMaybe<Scalars['Int']['input']>;
+  domain_idLT?: InputMaybe<Scalars['Int']['input']>;
+  domain_idLTE?: InputMaybe<Scalars['Int']['input']>;
+  domain_idNEQ?: InputMaybe<Scalars['Int']['input']>;
   minter?: InputMaybe<Scalars['String']['input']>;
   minterGT?: InputMaybe<Scalars['String']['input']>;
   minterGTE?: InputMaybe<Scalars['String']['input']>;
@@ -87,12 +90,18 @@ export type ChamberWhereInput = {
   seedLT?: InputMaybe<Scalars['String']['input']>;
   seedLTE?: InputMaybe<Scalars['String']['input']>;
   seedNEQ?: InputMaybe<Scalars['String']['input']>;
-  token_id?: InputMaybe<Scalars['String']['input']>;
-  token_idGT?: InputMaybe<Scalars['String']['input']>;
-  token_idGTE?: InputMaybe<Scalars['String']['input']>;
-  token_idLT?: InputMaybe<Scalars['String']['input']>;
-  token_idLTE?: InputMaybe<Scalars['String']['input']>;
-  token_idNEQ?: InputMaybe<Scalars['String']['input']>;
+  token_id?: InputMaybe<Scalars['Int']['input']>;
+  token_idGT?: InputMaybe<Scalars['Int']['input']>;
+  token_idGTE?: InputMaybe<Scalars['Int']['input']>;
+  token_idLT?: InputMaybe<Scalars['Int']['input']>;
+  token_idLTE?: InputMaybe<Scalars['Int']['input']>;
+  token_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  yonder?: InputMaybe<Scalars['Int']['input']>;
+  yonderGT?: InputMaybe<Scalars['Int']['input']>;
+  yonderGTE?: InputMaybe<Scalars['Int']['input']>;
+  yonderLT?: InputMaybe<Scalars['Int']['input']>;
+  yonderLTE?: InputMaybe<Scalars['Int']['input']>;
+  yonderNEQ?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type Component = {

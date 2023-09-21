@@ -795,12 +795,12 @@
           "type": "core::integer::u128"
         },
         {
-          "name": "from_dir",
+          "name": "dir",
           "type": "core::integer::u8"
         }
       ],
       "outputs": [],
-      "class_hash": "0xce81249c68ae2e764c2e7ca511f0b6b7ddc2e61c4e93b76da816f7d7928736",
+      "class_hash": "0x330c36027eda944b1c961f2508d671bba8b692dd6189af61c2c68da9e8223fd",
       "dependencies": [],
       "abi": [
         {
@@ -859,7 +859,7 @@
               "type": "core::integer::u128"
             },
             {
-              "name": "from_dir",
+              "name": "dir",
               "type": "core::integer::u8"
             },
             {
@@ -1154,16 +1154,6 @@
           "key": true
         },
         {
-          "name": "token_id",
-          "type": "u128",
-          "key": false
-        },
-        {
-          "name": "location",
-          "type": "u128",
-          "key": false
-        },
-        {
           "name": "seed",
           "type": "u256",
           "key": false
@@ -1172,9 +1162,24 @@
           "name": "minter",
           "type": "ContractAddress",
           "key": false
+        },
+        {
+          "name": "domain_id",
+          "type": "u16",
+          "key": false
+        },
+        {
+          "name": "token_id",
+          "type": "u16",
+          "key": false
+        },
+        {
+          "name": "yonder",
+          "type": "u16",
+          "key": false
         }
       ],
-      "class_hash": "0x78abfcb3aa4b5bcc8c72b587904680629d7b4a4b9e0e7834f9546ba4d11fc75",
+      "class_hash": "0x6a7286d7082cc710f4e4eabf1c36c656229a5c12187227c6442caf50802afcb",
       "abi": [
         {
           "type": "function",

@@ -5,7 +5,7 @@ use loot_underworld::components::tile::{Door};
 use loot_underworld::types::tile_type::{TileType};
 use loot_underworld::types::dir::{Dir};
 
-fn create_door(world: IWorldDispatcher, chamber_id: u128, dir: Dir, pos: u8) -> u128 {
+fn create_door(world: IWorldDispatcher, chamber_id: u128, dir: Dir, pos: u8) -> u8 {
 
     let entity_id: u128 = create_tile(world, chamber_id, pos, TileType::Exit);
 
@@ -22,6 +22,6 @@ fn create_door(world: IWorldDispatcher, chamber_id: u128, dir: Dir, pos: u8) -> 
         }
     ));
 
-    entity_id
+    // return door position
+    pos
 }
-
