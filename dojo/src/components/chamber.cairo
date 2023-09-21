@@ -9,6 +9,7 @@ struct Chamber {
     minter: ContractAddress,
     domain_id: u16,
     token_id: u16,
+    yonder: u16,
 }
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]

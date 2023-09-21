@@ -5,64 +5,42 @@ mod tests {
     use debug::PrintTrait;
 
     use dojo::world::{IWorldDispatcherTrait, IWorldDispatcher};
-    use dojo::test_utils::spawn_test_world;
 
     use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
-    use loot_underworld::components::chamber::{chamber, Chamber};
-    use loot_underworld::components::chamber::{map, Map};
-    use loot_underworld::components::tile::{tile, Tile};
-    use loot_underworld::components::tile::{door, Door};
+    use loot_underworld::components::chamber::{Chamber};
     use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir};
     use loot_underworld::types::constants::{DOMAINS};
-
-    // helper setup function
-    // reuse this function for all tests
-    fn setup_world() -> IWorldDispatcher {
-        // components
-        let mut components = array![chamber::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH, door::TEST_CLASS_HASH];
-
-        // systems
-        let mut systems = array![mint_realms_chamber::TEST_CLASS_HASH];
-
-        // deploy executor, world and register components/systems
-        spawn_test_world(components, systems)
-    }
-
-    fn get_from_location(token_id: u16) -> (u128, u8, u128) {
-        let location: Location = Location{ domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        let location_id: u128 = location.to_id();
-        let dir: u8 = Dir::Under.into();
-        let to_location: Location = location.offset(Dir::Under);
-        let to_location_id : u128 = to_location.to_id();
-        (location_id, dir, to_location_id)
-    }
+    use loot_underworld::tests::utils::utils::{
+        setup_world,
+        make_from_location,
+        mint_get_realms_chamber,
+        get_world_Chamber,
+        get_world_Map,
+    };
 
     #[test]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber() {
         let world = setup_world();
         let token_id: u16 = 255;
-        let (location_id, dir, to_location_id) = get_from_location(token_id);
+        let (location_id, dir, to_location_id) = make_from_location(token_id);
         world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
 
         // check Chamber component
-        let query = array![to_location_id.into()].span();
-        let chamber = world.entity('Chamber', query, 0, dojo::SerdeLen::<Chamber>::len());
-        assert(*chamber[0] != 0, 'Chamber: bad seed.low');
-        assert(*chamber[1] != 0, 'Chamber: bad seed.high');
-        assert(*chamber[0] != *chamber[1], 'Chamber: seed.low != seed.high');
-        // assert(*chamber[2] == call_data.into(), 'Chamber: bad minter');
-        assert(*chamber[3] == DOMAINS::REALMS.into(), 'Chamber: bad domain_id');
-        assert(*chamber[4] == token_id.into(), 'Chamber: bad token_id');
+        let chamber = get_world_Chamber(world, to_location_id);
+        assert(chamber.seed != 0, 'Chamber: bad seed');
+        assert(chamber.seed.low != chamber.seed.high, 'Chamber: seed.low != seed.high');
+        // assert(chamber.minter == call_data.into(), 'Chamber: bad minter');
+        assert(chamber.domain_id == DOMAINS::REALMS.into(), 'Chamber: bad domain_id');
+        assert(chamber.token_id == token_id.into(), 'Chamber: bad token_id');
+        assert(chamber.yonder == 1, 'Chamber: bad yonder');
 
         // check Map component
-        let map = world.entity('Map', query, 0, dojo::SerdeLen::<Map>::len());
-        assert(*map[0] != 0, 'Map: map.low != 0');
-        assert(*map[1] != 0, 'Map: map.low != 0');
-        assert(*map[0] != *map[1], 'Map: map.low != map.high');
-        assert(*map[0] != *chamber[0], 'Map: map.low != seed.low');
-        assert(*map[1] != *chamber[1], 'Map: map.high != seed.high');
+        let map = get_world_Map(world, to_location_id);
+        assert(map.bitmap != 0, 'Map: map != 0');
+        assert(map.bitmap.low != map.bitmap.high, 'Map: map.low != map.high');
+        assert(map.bitmap != chamber.seed, 'Map: map.high != seed.high');
     }
 
     #[test]
@@ -71,7 +49,7 @@ mod tests {
     fn test_mint_realms_chamber_invalid_token_id() {
         let world = setup_world();
         let token_id: u16 = 0;
-        let (location_id, dir, to_location_id) = get_from_location(token_id);
+        let (location_id, dir, to_location_id) = make_from_location(token_id);
         world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
     }
 
@@ -81,8 +59,32 @@ mod tests {
     fn test_mint_realms_chamber_existing() {
         let world = setup_world();
         let token_id: u16 = 1;
-        let (location_id, dir, to_location_id) = get_from_location(token_id);
+        let (location_id, dir, to_location_id) = make_from_location(token_id);
         world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
         world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
+    }
+
+    #[test]
+    #[available_gas(10_000_000_000)]
+    fn test_yonder() {
+        let world = setup_world();
+        let token_id: u16 = 123;
+        let loc_y1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        let chamber_y1: Chamber = mint_get_realms_chamber(world, token_id, loc_y1, Dir::Under);
+        let chamber_y2_1: Chamber = mint_get_realms_chamber(world, token_id, LocationTrait::from_id(chamber_y1.chamber_id), Dir::North);
+        let chamber_y3_1: Chamber = mint_get_realms_chamber(world, token_id, LocationTrait::from_id(chamber_y2_1.chamber_id), Dir::West);
+        let chamber_y4_1: Chamber = mint_get_realms_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.chamber_id), Dir::North);
+        let chamber_y4_2: Chamber = mint_get_realms_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.chamber_id), Dir::West);
+        let chamber_y4_3: Chamber = mint_get_realms_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.chamber_id), Dir::South);
+        let chamber_y2_2: Chamber = mint_get_realms_chamber(world, token_id, LocationTrait::from_id(chamber_y1.chamber_id), Dir::South);
+        let chamber_y3_2: Chamber = mint_get_realms_chamber(world, token_id, LocationTrait::from_id(chamber_y2_2.chamber_id), Dir::South);
+        assert(chamber_y1.yonder == 1, 'chamber_y1');
+        assert(chamber_y2_1.yonder == 2, 'chamber_y2_1');
+        assert(chamber_y2_2.yonder == 2, 'chamber_y2_2');
+        assert(chamber_y3_1.yonder == 3, 'chamber_y3_1');
+        assert(chamber_y3_2.yonder == 3, 'chamber_y3_2');
+        assert(chamber_y4_1.yonder == 4, 'chamber_y4_1');
+        assert(chamber_y4_2.yonder == 4, 'chamber_y4_2');
+        assert(chamber_y4_3.yonder == 4, 'chamber_y4_3');
     }
 }

@@ -25,6 +25,10 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     let to_chamber = get!(world, chamber_id, (Chamber));
     assert(to_chamber.token_id == 0, 'Chamber already exists');
 
+    // increment yonder
+    let from_chamber = get!(world, from_location.to_id(), (Chamber));
+    let yonder: u16 = from_chamber.yonder + 1;
+
     let seed: u256 = make_seed(to_location.token_id.into(), chamber_id);
 
     // let mut bitmap: u256 = carve(seed, 0x0, 5);
@@ -40,6 +44,7 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
                 minter: caller,
                 domain_id: to_location.domain_id,
                 token_id: to_location.token_id,
+                yonder,
             },
             Map {
                 entity_id: chamber_id,
