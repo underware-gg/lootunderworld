@@ -12,7 +12,7 @@ enum TileType {
     Path,       // 255
 }
 
-impl IntoU8TileType of Into<TileType, u8> {
+impl TileTypeIntoU8 of Into<TileType, u8> {
     fn into(self: TileType) -> u8 {
         match self {
             TileType::Void => 0,
@@ -25,7 +25,7 @@ impl IntoU8TileType of Into<TileType, u8> {
         }
     }
 }
-impl TryIntoTileTypeU8 of TryInto<u8, TileType> {
+impl TryU8IntoTileType of TryInto<u8, TileType> {
     fn try_into(self: u8) -> Option<TileType> {
         if self == 0 {
             Option::Some(TileType::Void)
@@ -47,7 +47,7 @@ impl TryIntoTileTypeU8 of TryInto<u8, TileType> {
     }
 }
 
-impl IntoFelt252TileType of Into<TileType, felt252> {
+impl TileTypeIntoFelt252 of Into<TileType, felt252> {
     fn into(self: TileType) -> felt252 {
         match self {
             TileType::Void => 'Void',
@@ -60,7 +60,7 @@ impl IntoFelt252TileType of Into<TileType, felt252> {
         }
     }
 }
-impl TryIntoTileTypeFelt252 of TryInto<felt252, TileType> {
+impl TryFelt252IntoTileType of TryInto<felt252, TileType> {
     fn try_into(self: felt252) -> Option<TileType> {
         if self == 'Void' {
             Option::Some(TileType::Void)
@@ -82,20 +82,9 @@ impl TryIntoTileTypeFelt252 of TryInto<felt252, TileType> {
     }
 }
 
-impl TileTypePrint of PrintTrait<TileType> {
+impl PrintTileType of PrintTrait<TileType> {
     fn print(self: TileType) {
         let felt: felt252 = self.into();
         felt.print();
     }
 }
-
-// impl TileTypeStorageSize of dojo::StorageSize<TileType> {
-//     #[inline(always)]
-//     fn unpacked_size() -> usize {
-//         1
-//     }
-//     #[inline(always)]
-//     fn packed_size() -> usize {
-//         252
-//     }
-// }

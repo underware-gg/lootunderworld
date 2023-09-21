@@ -1,79 +1,27 @@
 #[system]
 mod mint_realms_chamber {
+    use core::option::OptionTrait;
+use traits::{Into, TryInto};
     use debug::PrintTrait;
-    use traits::{Into, TryInto};
-    use dojo::world::{Context}; //{Context, IWorldDispatcher, IWorldDispatcherTrait};
 
-    use loot_underworld::systems::actions::create_door::{create_door};
-    use loot_underworld::components::chamber::{Chamber, Map};
-    use loot_underworld::core::seeder::{make_seed};
-    use loot_underworld::core::carver::{carve};
-    use loot_underworld::core::collapsor::{collapse};
+    use dojo::world::{Context};
+
+    use loot_underworld::systems::actions::generate_chamber::{generate_chamber};
+    use loot_underworld::types::constants::{DOMAINS};
+    use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir};
 
-    fn execute(ctx: Context, token_id: u128, coord: u128) {
-
-        // TODO: from_coord
-        // TODO: from_dir
+    fn execute(ctx: Context, token_id: u128, from_coord: u128, from_dir: u8) {
 
         assert(token_id > 0, 'Invalid token id');
+        assert(from_dir < 6, 'Invalid direction');
 
         // TODO: verify ownership
-
-        // TODO: add domain, token_id to location
-        let location: u128 = coord;
         
-        // assert chamber is new
-        let _chamber = get!(ctx.world, location, (Chamber));
-        assert(_chamber.token_id == 0, 'Chamber already exists');
-
-        let seed: u256 = make_seed(token_id, location);
-        // let seed: u256 = 0xffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa9999999988888888;
-
-        // let mut bitmap: u256 = carve(seed, 0x0, 5);
-        let mut bitmap: u256 = collapse(seed, false);
-        // bitmap = carve(bitmap, 0x0, 4);
-        // bitmap = collapse(bitmap, false);
-
-        // let chamber_id: u128 = ctx.world.uuid().into();
-        let chamber_id: u128 = location;
-
-        set!(ctx.world,
-            (
-                Chamber {
-                    chamber_id,
-                    token_id,
-                    location,
-                    seed,
-                    minter: ctx.origin,
-                },
-                Map {
-                    entity_id: chamber_id,
-                    bitmap,
-                },
-            )
-        );
-
-        create_door(ctx.world, chamber_id, location,
-            Dir::Over.into(),
-            0x88, //136, // (128+8),
-        );
-        create_door(ctx.world, chamber_id, location,
-            Dir::North.into(),
-            0x8, //8,
-        );
-        create_door(ctx.world, chamber_id, location,
-            Dir::East.into(),
-            0x8f, //143, // (8*16+15),
-        );
-        create_door(ctx.world, chamber_id, location,
-            Dir::West.into(),
-            0x80, //128, // (8*16),
-        );
-        create_door(ctx.world, chamber_id, location,
-            Dir::South.into(),
-            0xf8, //248, // (15*16+8),
-        );
+        let from_location: Location = LocationTrait::from_coord(DOMAINS::REALMS, token_id.try_into().unwrap(), from_coord);
+        let dir: Option<Dir> = from_dir.try_into();
+        
+        generate_chamber(ctx.world, ctx.origin, from_location, dir.unwrap());
 
         return ();
     }

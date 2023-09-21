@@ -7,6 +7,7 @@ import { Direction, } from './dojo/createSystemCalls'
 import { getFirstComponentByType } from './utils';
 import { Moves, Position } from './generated/graphql';
 import ChamberMap from './underworld/components/Map';
+import { Dir } from './underworld/underworld';
 
 function App() {
   const {
@@ -72,7 +73,7 @@ function App() {
       <hr />
 
       <div className="card">
-        <button onClick={() => mint_realms_chamber(account, 1, Date.now())}>Mint Chamber</button>
+        <button onClick={() => mint_realms_chamber(account, 1, BigInt(Date.now()%999) | (BigInt(Date.now()%999) << 32n), Dir.Under)}>Mint Chamber</button>
         <div>
           <select onChange={e => setSelectedChamberId(e.target.value as Entity)}>
             {chamberIds.map((entityId) => {

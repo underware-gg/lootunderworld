@@ -791,12 +791,16 @@
           "type": "core::integer::u128"
         },
         {
-          "name": "coord",
+          "name": "from_coord",
           "type": "core::integer::u128"
+        },
+        {
+          "name": "from_dir",
+          "type": "core::integer::u8"
         }
       ],
       "outputs": [],
-      "class_hash": "0x444b368b63289dbe55ddb5b3df5df06e21371b5b494ce6984cad0550f28cc4b",
+      "class_hash": "0xce81249c68ae2e764c2e7ca511f0b6b7ddc2e61c4e93b76da816f7d7928736",
       "dependencies": [],
       "abi": [
         {
@@ -851,8 +855,12 @@
               "type": "core::integer::u128"
             },
             {
-              "name": "coord",
+              "name": "from_coord",
               "type": "core::integer::u128"
+            },
+            {
+              "name": "from_dir",
+              "type": "core::integer::u8"
             },
             {
               "name": "ctx",

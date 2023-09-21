@@ -10,7 +10,21 @@ enum Dir {
     Under,  // 5
 }
 
-impl IntoU8Dir of Into<Dir, u8> {
+#[generate_trait]
+impl DirFlipImpl of DirFlip {
+    fn flip(self: Dir) -> Dir {
+        match self {
+            Dir::North => Dir::South,
+            Dir::East => Dir::West,
+            Dir::West => Dir::East,
+            Dir::South => Dir::North,
+            Dir::Over => Dir::Under,
+            Dir::Under => Dir::Over,
+        }
+    }
+}
+
+impl DirIntoU8 of Into<Dir, u8> {
     fn into(self: Dir) -> u8 {
         match self {
             Dir::North => 0,
@@ -22,7 +36,7 @@ impl IntoU8Dir of Into<Dir, u8> {
         }
     }
 }
-impl TryIntoDirU8 of TryInto<u8, Dir> {
+impl TryU8IntoDir of TryInto<u8, Dir> {
     fn try_into(self: u8) -> Option<Dir> {
         if self == 0 {
             Option::Some(Dir::North)
@@ -42,7 +56,7 @@ impl TryIntoDirU8 of TryInto<u8, Dir> {
     }
 }
 
-impl IntoFelt252Dir of Into<Dir, felt252> {
+impl DirIntoFelt252 of Into<Dir, felt252> {
     fn into(self: Dir) -> felt252 {
         match self {
             Dir::North => 'North',
@@ -54,7 +68,7 @@ impl IntoFelt252Dir of Into<Dir, felt252> {
         }
     }
 }
-impl TryIntoDirFelt252 of TryInto<felt252, Dir> {
+impl TryFelt252IntoDir of TryInto<felt252, Dir> {
     fn try_into(self: felt252) -> Option<Dir> {
         if self == 'North' {
             Option::Some(Dir::North)
@@ -74,20 +88,9 @@ impl TryIntoDirFelt252 of TryInto<felt252, Dir> {
     }
 }
 
-impl DirPrint of PrintTrait<Dir> {
+impl PrintDir of PrintTrait<Dir> {
     fn print(self: Dir) {
         let felt: felt252 = self.into();
         felt.print();
     }
 }
-
-// impl DirStorageSize of dojo::StorageSize<Dir> {
-//     #[inline(always)]
-//     fn unpacked_size() -> usize {
-//         1
-//     }
-//     #[inline(always)]
-//     fn packed_size() -> usize {
-//         252
-//     }
-// }
