@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useDojo } from '../../DojoContext';
 import { Entity, setComponent, HasValue, Has } from '@latticexyz/recs';
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 
 interface ChamberMapProps {
   entity: Entity,

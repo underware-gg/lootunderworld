@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import { useDojo } from './DojoContext';
 import { Entity, setComponent, HasValue, Has } from '@latticexyz/recs';
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Direction, } from './dojo/createSystemCalls'
 import { getFirstComponentByType } from './utils';
 import { Moves, Position } from './generated/graphql';
