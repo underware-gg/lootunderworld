@@ -7,6 +7,9 @@ enum TileType {
     Exit,       // 2
     LockedExit, // 3
     Gem,        // 4
+    //---- NEW
+    OverExit,   // 5
+    UnderExit,  // 6
     //----
     Empty,      // 254
     Path,       // 255
@@ -20,6 +23,8 @@ impl TileTypeIntoU8 of Into<TileType, u8> {
             TileType::Exit => 2,
             TileType::LockedExit => 3,
             TileType::Gem => 4,
+            TileType::OverExit => 5,
+            TileType::UnderExit => 6,
             TileType::Empty => 254,
             TileType::Path => 255,
         }
@@ -37,6 +42,10 @@ impl TryU8IntoTileType of TryInto<u8, TileType> {
             Option::Some(TileType::LockedExit)
         } else if self == 4 {
             Option::Some(TileType::Gem)
+        } else if self == 5 {
+            Option::Some(TileType::OverExit)
+        } else if self == 6 {
+            Option::Some(TileType::UnderExit)
         } else if self == 254 {
             Option::Some(TileType::Empty)
         } else if self == 255 {
@@ -55,6 +64,8 @@ impl TileTypeIntoFelt252 of Into<TileType, felt252> {
             TileType::Exit => 'Exit',
             TileType::LockedExit => 'LockedExit',
             TileType::Gem => 'Gem',
+            TileType::OverExit => 'OverExit',
+            TileType::UnderExit => 'UnderExit',
             TileType::Empty => 'Empty',
             TileType::Path => 'Path',
         }
@@ -72,6 +83,10 @@ impl TryFelt252IntoTileType of TryInto<felt252, TileType> {
             Option::Some(TileType::LockedExit)
         } else if self == 'Gem' {
             Option::Some(TileType::Gem)
+        } else if self == 'OverExit' {
+            Option::Some(TileType::OverExit)
+        } else if self == 'UnderExit' {
+            Option::Some(TileType::UnderExit)
         } else if self == 'Empty' {
             Option::Some(TileType::Empty)
         } else if self == 'Path' {

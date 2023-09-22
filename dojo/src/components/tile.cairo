@@ -1,6 +1,3 @@
-use array::ArrayTrait;
-use starknet::ContractAddress;
-
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Tile {
     #[key]
@@ -13,10 +10,8 @@ struct Tile {
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Door {
     #[key]
-    entity_id: u128,
-    location_id: u128,
+    entity_id: u128, // same as Tile
     dir: u8,
-    to_location: u128,
-    open: bool,
+    to_location_id: u128,
+    is_open: bool,
 }
-

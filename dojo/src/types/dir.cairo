@@ -10,8 +10,11 @@ enum Dir {
     Under,  // 5
 }
 
-#[generate_trait]
-impl DirFlipImpl of DirFlip {
+trait DirTrait {
+    fn flip(self: Dir) -> Dir;
+}
+
+impl DirFlipImpl of DirTrait {
     fn flip(self: Dir) -> Dir {
         match self {
             Dir::North => Dir::South,

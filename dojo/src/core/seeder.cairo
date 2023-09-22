@@ -24,7 +24,7 @@ fn _make_seed(realm_id: u128, location: u128, block_hash: u128) -> u256 {
 
 
 #[test]
-#[available_gas(100000)]
+#[available_gas(100_000)]
 fn test_get_block_hash() {
     let h = get_block_hash();
     // h.print()
@@ -33,7 +33,7 @@ fn test_get_block_hash() {
 
 
 #[test]
-// #[available_gas(1000000)]
+// #[available_gas(1_000_000)]
 fn test_make_seed() {
     let s1 = _make_seed(1, 1, 1);
     let s2 = _make_seed(1, 1, 2);

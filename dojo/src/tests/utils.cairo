@@ -57,6 +57,7 @@ mod utils {
         Map {
             entity_id,
             bitmap: u256 { low:(*component[0]).try_into().unwrap(), high:(*component[1]).try_into().unwrap() },
+            protected: u256 { low:(*component[2]).try_into().unwrap(), high:(*component[3]).try_into().unwrap() },
         }
     }
 
