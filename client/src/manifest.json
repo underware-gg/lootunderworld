@@ -1149,7 +1149,7 @@
       "name": "Chamber",
       "members": [
         {
-          "name": "chamber_id",
+          "name": "location_id",
           "type": "u128",
           "key": true
         },
@@ -1179,7 +1179,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x6a7286d7082cc710f4e4eabf1c36c656229a5c12187227c6442caf50802afcb",
+      "class_hash": "0x68e450502447458b6032d8f3f741f8c3683519ccc0fa367bc03b3142318df1e",
       "abi": [
         {
           "type": "function",
@@ -1316,7 +1316,7 @@
           "key": true
         },
         {
-          "name": "chamber_id",
+          "name": "location_id",
           "type": "u128",
           "key": false
         },
@@ -1331,7 +1331,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x621c378ae7e4e970a54e41042d6366fad35bfb42ab13a102d31052a7763b0dc",
+      "class_hash": "0x309756030d70d48e7fc3f6194b3612fa3283791939c9cfbd858b39c1bfb620e",
       "abi": [
         {
           "type": "function",
@@ -1397,7 +1397,7 @@
           "key": true
         },
         {
-          "name": "chamber_id",
+          "name": "location_id",
           "type": "u128",
           "key": false
         },
@@ -1417,7 +1417,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x769e504e4fe026c31a25775cdcc7c1158a79b3a2882d822352d7cd3bc9b1b1c",
+      "class_hash": "0x7347e288d75e70c2ccacf4beb3686d48c318fde3123bedf0bd7ee08add434f7",
       "abi": [
         {
           "type": "function",

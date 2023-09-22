@@ -30,9 +30,9 @@ export type Scalars = {
 
 export type Chamber = {
   __typename?: 'Chamber';
-  chamber_id?: Maybe<Scalars['u128']['output']>;
   domain_id?: Maybe<Scalars['u16']['output']>;
   entity?: Maybe<Entity>;
+  location_id?: Maybe<Scalars['u128']['output']>;
   minter?: Maybe<Scalars['ContractAddress']['output']>;
   seed?: Maybe<Scalars['u256']['output']>;
   token_id?: Maybe<Scalars['u16']['output']>;
@@ -57,8 +57,8 @@ export type ChamberOrder = {
 };
 
 export enum ChamberOrderOrderField {
-  ChamberId = 'CHAMBER_ID',
   DomainId = 'DOMAIN_ID',
+  LocationId = 'LOCATION_ID',
   Minter = 'MINTER',
   Seed = 'SEED',
   TokenId = 'TOKEN_ID',
@@ -66,18 +66,18 @@ export enum ChamberOrderOrderField {
 }
 
 export type ChamberWhereInput = {
-  chamber_id?: InputMaybe<Scalars['String']['input']>;
-  chamber_idGT?: InputMaybe<Scalars['String']['input']>;
-  chamber_idGTE?: InputMaybe<Scalars['String']['input']>;
-  chamber_idLT?: InputMaybe<Scalars['String']['input']>;
-  chamber_idLTE?: InputMaybe<Scalars['String']['input']>;
-  chamber_idNEQ?: InputMaybe<Scalars['String']['input']>;
   domain_id?: InputMaybe<Scalars['Int']['input']>;
   domain_idGT?: InputMaybe<Scalars['Int']['input']>;
   domain_idGTE?: InputMaybe<Scalars['Int']['input']>;
   domain_idLT?: InputMaybe<Scalars['Int']['input']>;
   domain_idLTE?: InputMaybe<Scalars['Int']['input']>;
   domain_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  location_id?: InputMaybe<Scalars['String']['input']>;
+  location_idGT?: InputMaybe<Scalars['String']['input']>;
+  location_idGTE?: InputMaybe<Scalars['String']['input']>;
+  location_idLT?: InputMaybe<Scalars['String']['input']>;
+  location_idLTE?: InputMaybe<Scalars['String']['input']>;
+  location_idNEQ?: InputMaybe<Scalars['String']['input']>;
   minter?: InputMaybe<Scalars['String']['input']>;
   minterGT?: InputMaybe<Scalars['String']['input']>;
   minterGTE?: InputMaybe<Scalars['String']['input']>;
@@ -134,10 +134,10 @@ export enum Direction {
 
 export type Door = {
   __typename?: 'Door';
-  chamber_id?: Maybe<Scalars['u128']['output']>;
   dir?: Maybe<Scalars['u8']['output']>;
   entity?: Maybe<Entity>;
   entity_id?: Maybe<Scalars['u128']['output']>;
+  location_id?: Maybe<Scalars['u128']['output']>;
   open?: Maybe<Scalars['bool']['output']>;
   to_location?: Maybe<Scalars['u128']['output']>;
 };
@@ -160,20 +160,14 @@ export type DoorOrder = {
 };
 
 export enum DoorOrderOrderField {
-  ChamberId = 'CHAMBER_ID',
   Dir = 'DIR',
   EntityId = 'ENTITY_ID',
+  LocationId = 'LOCATION_ID',
   Open = 'OPEN',
   ToLocation = 'TO_LOCATION'
 }
 
 export type DoorWhereInput = {
-  chamber_id?: InputMaybe<Scalars['String']['input']>;
-  chamber_idGT?: InputMaybe<Scalars['String']['input']>;
-  chamber_idGTE?: InputMaybe<Scalars['String']['input']>;
-  chamber_idLT?: InputMaybe<Scalars['String']['input']>;
-  chamber_idLTE?: InputMaybe<Scalars['String']['input']>;
-  chamber_idNEQ?: InputMaybe<Scalars['String']['input']>;
   dir?: InputMaybe<Scalars['Int']['input']>;
   dirGT?: InputMaybe<Scalars['Int']['input']>;
   dirGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -186,6 +180,12 @@ export type DoorWhereInput = {
   entity_idLT?: InputMaybe<Scalars['String']['input']>;
   entity_idLTE?: InputMaybe<Scalars['String']['input']>;
   entity_idNEQ?: InputMaybe<Scalars['String']['input']>;
+  location_id?: InputMaybe<Scalars['String']['input']>;
+  location_idGT?: InputMaybe<Scalars['String']['input']>;
+  location_idGTE?: InputMaybe<Scalars['String']['input']>;
+  location_idLT?: InputMaybe<Scalars['String']['input']>;
+  location_idLTE?: InputMaybe<Scalars['String']['input']>;
+  location_idNEQ?: InputMaybe<Scalars['String']['input']>;
   open?: InputMaybe<Scalars['Int']['input']>;
   openGT?: InputMaybe<Scalars['Int']['input']>;
   openGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -550,9 +550,9 @@ export type SystemEdge = {
 
 export type Tile = {
   __typename?: 'Tile';
-  chamber_id?: Maybe<Scalars['u128']['output']>;
   entity?: Maybe<Entity>;
   entity_id?: Maybe<Scalars['u128']['output']>;
+  location_id?: Maybe<Scalars['u128']['output']>;
   pos?: Maybe<Scalars['u8']['output']>;
   tile_type?: Maybe<Scalars['u8']['output']>;
 };
@@ -575,25 +575,25 @@ export type TileOrder = {
 };
 
 export enum TileOrderOrderField {
-  ChamberId = 'CHAMBER_ID',
   EntityId = 'ENTITY_ID',
+  LocationId = 'LOCATION_ID',
   Pos = 'POS',
   TileType = 'TILE_TYPE'
 }
 
 export type TileWhereInput = {
-  chamber_id?: InputMaybe<Scalars['String']['input']>;
-  chamber_idGT?: InputMaybe<Scalars['String']['input']>;
-  chamber_idGTE?: InputMaybe<Scalars['String']['input']>;
-  chamber_idLT?: InputMaybe<Scalars['String']['input']>;
-  chamber_idLTE?: InputMaybe<Scalars['String']['input']>;
-  chamber_idNEQ?: InputMaybe<Scalars['String']['input']>;
   entity_id?: InputMaybe<Scalars['String']['input']>;
   entity_idGT?: InputMaybe<Scalars['String']['input']>;
   entity_idGTE?: InputMaybe<Scalars['String']['input']>;
   entity_idLT?: InputMaybe<Scalars['String']['input']>;
   entity_idLTE?: InputMaybe<Scalars['String']['input']>;
   entity_idNEQ?: InputMaybe<Scalars['String']['input']>;
+  location_id?: InputMaybe<Scalars['String']['input']>;
+  location_idGT?: InputMaybe<Scalars['String']['input']>;
+  location_idGTE?: InputMaybe<Scalars['String']['input']>;
+  location_idLT?: InputMaybe<Scalars['String']['input']>;
+  location_idLTE?: InputMaybe<Scalars['String']['input']>;
+  location_idNEQ?: InputMaybe<Scalars['String']['input']>;
   pos?: InputMaybe<Scalars['Int']['input']>;
   posGT?: InputMaybe<Scalars['Int']['input']>;
   posGTE?: InputMaybe<Scalars['Int']['input']>;

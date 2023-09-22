@@ -5,7 +5,7 @@ use starknet::ContractAddress;
 struct Tile {
     #[key]
     entity_id: u128,
-    chamber_id: u128,
+    location_id: u128,
     pos: u8,
     tile_type: u8,
 }
@@ -14,7 +14,7 @@ struct Tile {
 struct Door {
     #[key]
     entity_id: u128,
-    chamber_id: u128,
+    location_id: u128,
     dir: u8,
     to_location: u128,
     open: bool,

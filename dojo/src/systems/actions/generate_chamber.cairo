@@ -23,14 +23,14 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     assert(to_location.validate() == true, 'Invalid to_location');
 
     // assert chamber is new
-    let chamber_id: u128 = to_location.to_id();
-    let to_chamber = get!(world, chamber_id, (Chamber));
+    let location_id: u128 = to_location.to_id();
+    let to_chamber = get!(world, location_id, (Chamber));
     assert(to_chamber.token_id == 0, 'Chamber already exists');
 
     //---------------------
     // Chamber
     //
-    let seed: u256 = make_seed(to_location.token_id.into(), chamber_id);
+    let seed: u256 = make_seed(to_location.token_id.into(), location_id);
 
     // increment yonder
     let from_chamber = get!(world, from_location.to_id(), (Chamber));
@@ -38,7 +38,7 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
 
     set!(world, (
         Chamber {
-            chamber_id,
+            location_id,
             seed,
             minter: caller,
             domain_id: to_location.domain_id,
@@ -53,31 +53,31 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     let mut protected: u256 = 0;
     let mut pos: u8 = 0;
 
-    pos = create_door(world, chamber_id,
+    pos = create_door(world, location_id,
         Dir::Over.into(),
         0x88, //136, // (128+8),
     );
     protected = U256Bitwise::set(protected, pos.into());
 
-    pos = create_door(world, chamber_id,
+    pos = create_door(world, location_id,
         Dir::North.into(),
         0x8, //8,
     );
     protected = U256Bitwise::set(protected, pos.into());
 
-    pos = create_door(world, chamber_id,
+    pos = create_door(world, location_id,
         Dir::East.into(),
         0x8f, //143, // (8*16+15),
     );
     protected = U256Bitwise::set(protected, pos.into());
 
-    pos = create_door(world, chamber_id,
+    pos = create_door(world, location_id,
         Dir::West.into(),
         0x80, //128, // (8*16),
     );
     protected = U256Bitwise::set(protected, pos.into());
 
-    pos = create_door(world, chamber_id,
+    pos = create_door(world, location_id,
         Dir::South.into(),
         0xf8, //248, // (15*16+8),
     );
@@ -99,10 +99,10 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
 
     set!(world, (
         Map {
-            entity_id: chamber_id,
+            entity_id: location_id,
             bitmap,
         },
     ) );
 
-    chamber_id
+    location_id
 }

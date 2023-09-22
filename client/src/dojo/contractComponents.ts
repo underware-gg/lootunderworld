@@ -74,7 +74,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          chamber_id: RecsType.BigInt,
+          location_id: RecsType.BigInt,
           pos: RecsType.Number,
           tile_type: RecsType.Number,
         },
@@ -91,7 +91,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          chamber_id: RecsType.BigInt,
+          location_id: RecsType.BigInt,
           dir: RecsType.Number,
           to_location: RecsType.BigInt,
           open: RecsType.Boolean,

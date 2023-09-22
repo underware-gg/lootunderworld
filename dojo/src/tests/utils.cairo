@@ -38,11 +38,11 @@ mod utils {
         get_world_Chamber(world, to_location.to_id())
     }
 
-    fn get_world_Chamber(world: IWorldDispatcher, chamber_id: u128) -> Chamber {
-        let query = array![chamber_id.into()].span();
+    fn get_world_Chamber(world: IWorldDispatcher, location_id: u128) -> Chamber {
+        let query = array![location_id.into()].span();
         let component = world.entity('Chamber', query, 0, dojo::SerdeLen::<Chamber>::len());
         Chamber {
-            chamber_id,
+            location_id,
             seed: u256 { low:(*component[0]).try_into().unwrap(), high:(*component[1]).try_into().unwrap() },
             minter: (*component[2]).try_into().unwrap(),
             domain_id: (*component[3]).try_into().unwrap(),
