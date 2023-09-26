@@ -1,15 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
 import './index.css';
+//@ts-ignore
+import React from 'react';
+//@ts-ignore
+import ReactDOM from 'react-dom/client';
+import App from './components/App.tsx';
 import { setup } from './dojo/setup';
-import { DojoProvider } from './DojoContext';
+import { DojoProvider } from './DojoContext.tsx';
 
 async function init() {
   const rootElement = document.getElementById('root');
   if (!rootElement) throw new Error('React root not found');
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
-
   const setupResult = await setup();
   root.render(
     <React.StrictMode>

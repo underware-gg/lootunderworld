@@ -29,14 +29,7 @@ export function createSystemCalls(
       console.log(`mint_realms_chamber tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
       console.log(`mint_realms_chamber receipt:`, receipt)
-
-      // console.log(`mint_realms_chamber contract:`, provider.contract)
-      // console.log(`mint_realms_chamber contract.parseEvents():`, provider.contract.parseEvents(receipt))
-
-      const events = getEvents(receipt);
-      console.log(`mint_realms_chamber events:`, events)
-      setComponentsFromEvents(contractComponents, events);
-
+      processReceipt(receipt, contractComponents);
     } catch (e) {
       console.log(`mint_realms_chamber exception:`, e)
     } finally {
@@ -66,9 +59,10 @@ export function createSystemCalls(
     try {
       const tx = await execute(signer, "spawn", []);
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-      const events = getEvents(receipt);
-      setComponentsFromEvents(contractComponents, events);
-      entity_id = getEntityIdFromEvents(events, "Moves");
+      console.log(`spawn receipt:`, receipt)
+      const { events } = processReceipt(receipt, contractComponents);
+      // const events = getEvents(receipt);
+      // entity_id = getEntityIdFromEvents(events, "Moves");
     } catch (e) {
       console.log(`spawn exception:`, e)
       // Position.removeOverride(positionId);
@@ -99,9 +93,10 @@ export function createSystemCalls(
     try {
       const tx = await execute(signer, "move", [direction]);
       const receipt = await signer.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-      const events = getEvents(receipt);
-      setComponentsFromEvents(contractComponents, events);
-      entity_id = getEntityIdFromEvents(events, "Moves");
+      console.log(`move receipt:`, receipt)
+      const { events } = processReceipt(receipt, contractComponents);
+      // const events = getEvents(receipt);
+      // entity_id = getEntityIdFromEvents(events, "Moves");
     } catch (e) {
       console.log(`move exception:`, e)
       // Position.removeOverride(positionId);
@@ -121,15 +116,29 @@ export function createSystemCalls(
 }
 
 
+export function processReceipt(receipt: any, components: any): any {
+  if (receipt.execution_status == 'REVERTED') {
+    console.error(`Transaction reverted:`, receipt.revert_reason)
+    return {}
+  } else if (receipt.execution_status != 'SUCCEEDED') {
+    console.error(`Transaction error [${receipt.execution_status}]:`, receipt)
+    return {}
+  }
+
+  const events = getEvents(receipt);
+  // console.log(`receipt events:`, events)
+  events.forEach((event) => setComponentFromEvent(components, event.data));
+
+  return {
+    events,
+  }
+}
+
+
 export function getEvents(receipt: any): any[] {
   return receipt.events.filter((event: any) => {
     return event.keys.length === 1 && event.keys[0] === import.meta.env.VITE_EVENT_KEY;
   });
-}
-
-export function setComponentsFromEvents(components: Components, events: Event[]) {
-  //@ts-ignore
-  events.forEach((event) => setComponentFromEvent(components, event.data));
 }
 
 export function setComponentFromEvent(components: Components, eventData: string[]) {
@@ -140,15 +149,15 @@ export function setComponentFromEvent(components: Components, eventData: string[
   // get keys
   const keysCount = parseInt(eventData[1]);
   const keys = eventData.slice(2, 2 + keysCount).map((key) => BigInt(key));
-  const entityIndex = getEntityIdFromKeys(keys);
-  // console.log(`EVENT [${componentName}] keys [${keysCount}]`, keys, entityIndex)
+  const entity = getEntityIdFromKeys(keys);
+  // console.log(`EVENT [${componentName}] keys [${keysCount}]:`, keys, `Entity:`, entity)
 
   // shift to values
   let dataIndex =
     1 +   // component name
     1 +   // keys count
-    keysCount + // keys
-    + 1   // 0x0
+    keysCount + // the keys
+    + 1   // 0x0 (?!)
     + 1;  // values count
 
   // const valuesCount = parseInt(eventData[dataIndex]);
@@ -176,10 +185,10 @@ export function setComponentFromEvent(components: Components, eventData: string[
     acc[key] = value;
     return acc;
   }, {});
-  console.log(`VALUES:`, componentValues)
+  console.log(`VALUES:`, componentValues, entity)
 
   // set component
-  setComponent(component, entityIndex, componentValues);
+  setComponent(component, entity, componentValues);
 }
 
 function hexToAscii(hex: string) {

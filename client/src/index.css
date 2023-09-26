@@ -1,6 +1,7 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: Menlo, monospace, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
   font-weight: 400;
 
   color-scheme: light dark;

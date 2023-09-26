@@ -11,7 +11,7 @@ function ChamberMap(props: ChamberMapProps) {
   const {
     setup: {
       // systemCalls: { spawn, move, mint_realms_chamber },
-      components: { Chamber, Map, Door },
+      components: { Chamber, Map },
     },
     // account: { create, list, select, account, isDeploying }
   } = useDojo();
@@ -23,10 +23,10 @@ function ChamberMap(props: ChamberMapProps) {
   const bitmap = BigInt(map?.bitmap ?? 0)
   // useEffect(() => console.log(`map:`, map, typeof map?.bitmap, bitmap), [bitmap])
 
-  const doorsIds = useEntityQuery([HasValue(Door, { to_location: chamber?.location ?? 0n })]);
-  useEffect(() => console.log(`doorsIds:`, doorsIds), [doorsIds])
-  const door0 = useComponentValue(Door, (doorsIds?.[0] ?? '0') as Entity);
-  useEffect(() => console.log(`door0:`, door0), [door0])
+  // const doorsIds = useEntityQuery([HasValue(Door, { to_location: chamber?.location ?? 0n })]);
+  // useEffect(() => console.log(`doorsIds:`, doorsIds), [doorsIds])
+  // const door0 = useComponentValue(Door, (doorsIds?.[0] ?? '0') as Entity);
+  // useEffect(() => console.log(`door0:`, door0), [door0])
 
   const rows = useMemo(() => {
     const result: any = []
