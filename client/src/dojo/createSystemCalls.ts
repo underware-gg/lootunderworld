@@ -185,7 +185,7 @@ export function setComponentFromEvent(components: Components, eventData: string[
     acc[key] = value;
     return acc;
   }, {});
-  console.log(`VALUES:`, componentValues, entity)
+  // console.log(`VALUES:`, componentValues, entity)
 
   // set component
   setComponent(component, entity, componentValues);

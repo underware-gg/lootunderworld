@@ -18,7 +18,7 @@ function Example() {
   } = useDojo();
 
   // entity id - this example uses the account address as the entity id
-  const entityId = account.address as Entity;
+  const entityId = BigInt(account.address).toString() as Entity;
 
   // get current component values
   const position = useComponentValue(Position, entityId);
