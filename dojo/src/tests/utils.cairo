@@ -8,16 +8,15 @@ mod utils {
     use dojo::test_utils::spawn_test_world;
 
     use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
-    use loot_underworld::components::chamber::{chamber, Chamber};
+    use loot_underworld::components::chamber::{chamber, Chamber, doors, Doors};
     use loot_underworld::components::chamber::{map, Map};
     use loot_underworld::components::tile::{tile, Tile};
-    use loot_underworld::components::tile::{door, Door};
     use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir};
     use loot_underworld::types::constants::{DOMAINS};
 
     fn setup_world() -> IWorldDispatcher {
-        let mut components = array![chamber::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH, door::TEST_CLASS_HASH];
+        let mut components = array![chamber::TEST_CLASS_HASH, doors::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH];
         let mut systems = array![mint_realms_chamber::TEST_CLASS_HASH];
         spawn_test_world(components, systems)
     }
@@ -31,33 +30,55 @@ mod utils {
         (location_id, dir, to_location_id)
     }
 
-    fn mint_get_realms_chamber(world: IWorldDispatcher, token_id: u16, from_location: Location, dir: Dir) -> Chamber {
-        let dir_u8: u8 = dir.into();
-        world.execute('mint_realms_chamber', array![token_id.into(), from_location.to_id().into(), dir_u8.into()]);
-        let to_location: Location = from_location.offset(dir);
+    fn mint_get_realms_get_chamber(world: IWorldDispatcher, token_id: u16, from_coord: Location, from_dir: Dir) -> Chamber {
+        let dir_u8: u8 = from_dir.into();
+        world.execute('mint_realms_chamber', array![token_id.into(), from_coord.to_id().into(), dir_u8.into()]);
+        let to_location: Location = from_coord.offset(from_dir);
         get_world_Chamber(world, to_location.to_id())
     }
 
     fn get_world_Chamber(world: IWorldDispatcher, location_id: u128) -> Chamber {
-        let query = array![location_id.into()].span();
-        let component = world.entity('Chamber', query, 0, dojo::SerdeLen::<Chamber>::len());
-        Chamber {
-            location_id,
-            seed: u256 { low:(*component[0]).try_into().unwrap(), high:(*component[1]).try_into().unwrap() },
-            minter: (*component[2]).try_into().unwrap(),
-            domain_id: (*component[3]).try_into().unwrap(),
-            token_id: (*component[4]).try_into().unwrap(),
-            yonder: (*component[5]).try_into().unwrap(),
-        }
+        // let query = array![location_id.into()].span();
+        // let component = world.entity('Chamber', query, 0, dojo::SerdeLen::<Chamber>::len());
+        // Chamber {
+        //     location_id,
+        //     seed: u256 { low:(*component[0]).try_into().unwrap(), high:(*component[1]).try_into().unwrap() },
+        //     minter: (*component[2]).try_into().unwrap(),
+        //     domain_id: (*component[3]).try_into().unwrap(),
+        //     token_id: (*component[4]).try_into().unwrap(),
+        //     yonder: (*component[5]).try_into().unwrap(),
+        // }
+        let result: Chamber = get!(world, location_id, Chamber);
+        result
     }
 
     fn get_world_Map(world: IWorldDispatcher, entity_id: u128) -> Map {
-        let query = array![entity_id.into()].span();
-        let component = world.entity('Map', query, 0, dojo::SerdeLen::<Map>::len());
-        Map {
-            entity_id,
-            bitmap: u256 { low:(*component[0]).try_into().unwrap(), high:(*component[1]).try_into().unwrap() },
-            protected: u256 { low:(*component[2]).try_into().unwrap(), high:(*component[3]).try_into().unwrap() },
+        let result: Map = get!(world, entity_id, Map);
+        result
+    }
+
+    fn get_world_Doors(world: IWorldDispatcher, location_id: u128) -> Doors {
+        let result: Doors = get!(world, location_id, Doors);
+        result
+    }
+
+    fn get_world_Tile_type(world: IWorldDispatcher, location_id: u128, pos: u8) -> u8 {
+        // let query = array![location_id.into(), pos.into()].span();
+        // let component = world.entity('Tile', query, 0, dojo::SerdeLen::<Tile>::len());
+        let tile: Tile = get!(world, (location_id, pos), Tile);
+        tile.tile_type
+    }
+
+    fn get_world_Doors_as_Tiles(world: IWorldDispatcher, location_id: u128) -> Doors {
+        let doors: Doors = get_world_Doors(world, location_id);
+        Doors {
+            location_id,
+            north: get_world_Tile_type(world, location_id, doors.north),
+            east: get_world_Tile_type(world, location_id, doors.east),
+            west: get_world_Tile_type(world, location_id, doors.west),
+            south: get_world_Tile_type(world, location_id, doors.south),
+            over: get_world_Tile_type(world, location_id, doors.over),
+            under: get_world_Tile_type(world, location_id, doors.under),
         }
     }
 

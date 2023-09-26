@@ -5,25 +5,21 @@ use loot_underworld::types::tile_type::{TileType};
 
 // TODO:  make this internal!
 #[inline(always)]
-fn create_tile(world: IWorldDispatcher, location_id: u128, tile_type: TileType, pos: u8) -> u128 {
-
-    let entity_id: u128 = world.uuid().into();
-
+fn create_tile(world: IWorldDispatcher, location_id: u128, pos: u8, tile_type: TileType) {
     set!(world, (
         Tile { 
-            entity_id,
+            key_location_id: location_id,
+            key_pos: pos,
             location_id,
             pos,
             tile_type: tile_type.into(),
         }
     ));
-
-    entity_id
 }
 
 
 #[inline(always)]
-fn generate_tile(world: IWorldDispatcher, location_id: u128, tile_type: TileType) -> u128 {
+fn generate_tile(world: IWorldDispatcher, location_id: u128, tile_type: TileType) {
 
     // TODO: Get Map component (bitmap, protected)
 
@@ -33,9 +29,8 @@ fn generate_tile(world: IWorldDispatcher, location_id: u128, tile_type: TileType
     let pos: u8 = 0;
 
     // TODO...
-    let entity_id: u128 = create_tile(world, location_id, tile_type, pos);
+    create_tile(world, location_id, pos, tile_type);
     
     // TODO: Update chamber protected bitmap
 
-    entity_id
 }

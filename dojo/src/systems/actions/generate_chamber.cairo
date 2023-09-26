@@ -5,7 +5,7 @@ use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 use loot_underworld::systems::actions::create_door::{create_door};
-use loot_underworld::components::chamber::{Chamber, Map, ChamberDoors};
+use loot_underworld::components::chamber::{Chamber, Map, Doors};
 use loot_underworld::core::seeder::{make_seed};
 use loot_underworld::core::carver::{carve};
 use loot_underworld::core::collapsor::{collapse};
@@ -17,6 +17,15 @@ use loot_underworld::utils::bitwise::{U256Bitwise};
 
 #[inline(always)]
 fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_location: Location, from_dir: Dir) -> u128 {
+
+    let from_chamber = get!(world, from_location.to_id(), (Chamber));
+
+    // From location must exist
+    // (under == 0 && under == 0) is ok! minting new from the surface
+    if( !(from_location.under == 0 && from_location.under == 0) ) {
+        assert(from_location.validate() == true, 'Invalid from_location');
+        assert(from_chamber.yonder > 0, 'From location does not exist');
+    }
 
     // Shift to location
     let chamber_location: Location = from_location.offset(from_dir);
@@ -33,7 +42,6 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     let seed: u256 = make_seed(chamber_location.token_id.into(), location_id);
 
     // increment yonder
-    let from_chamber = get!(world, from_location.to_id(), (Chamber));
     let yonder: u16 = from_chamber.yonder + 1;
 
     set!(world, (
@@ -89,7 +97,7 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
             bitmap,
             protected,
         },
-        ChamberDoors {
+        Doors {
             location_id,
             north,
             east,

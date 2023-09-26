@@ -21,7 +21,7 @@ struct Map {
 
 // Used by generator to match doors from chamber to chamber
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
-struct ChamberDoors {
+struct Doors {
     #[key]
     location_id: u128,
     north: u8,

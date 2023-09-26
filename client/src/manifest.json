@@ -795,12 +795,12 @@
           "type": "core::integer::u128"
         },
         {
-          "name": "dir",
+          "name": "from_dir",
           "type": "core::integer::u8"
         }
       ],
       "outputs": [],
-      "class_hash": "0x330c36027eda944b1c961f2508d671bba8b692dd6189af61c2c68da9e8223fd",
+      "class_hash": "0x4e3c63dc956f4af6a851ddc442d2f7af84864e9fe8edc307bd0280cc2fc2a94",
       "dependencies": [],
       "abi": [
         {
@@ -859,7 +859,7 @@
               "type": "core::integer::u128"
             },
             {
-              "name": "dir",
+              "name": "from_dir",
               "type": "core::integer::u8"
             },
             {
@@ -1248,9 +1248,14 @@
           "name": "bitmap",
           "type": "u256",
           "key": false
+        },
+        {
+          "name": "protected",
+          "type": "u256",
+          "key": false
         }
       ],
-      "class_hash": "0x109678c8c71a2fe9703e7e936e90a798702ce73ead07d079a3898a3ce261bc0",
+      "class_hash": "0x28dec727d55d315b78d5164cb9ba35cdfecc3c36bc25936f4ca0845a571bbc7",
       "abi": [
         {
           "type": "function",
@@ -1308,11 +1313,112 @@
       ]
     },
     {
+      "name": "Doors",
+      "members": [
+        {
+          "name": "location_id",
+          "type": "u128",
+          "key": true
+        },
+        {
+          "name": "north",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "east",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "west",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "south",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "over",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "under",
+          "type": "u8",
+          "key": false
+        }
+      ],
+      "class_hash": "0x3df59fa59efe904eceea2fb6b6edd708b180870581e3a9c6c20c8bb136aa90e",
+      "abi": [
+        {
+          "type": "function",
+          "name": "name",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::felt252"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "function",
+          "name": "size",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::integer::u32"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "schema",
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "core::array::Array::<(core::felt252, core::felt252, core::bool)>"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "event",
+          "name": "loot_underworld::components::chamber::doors::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ]
+    },
+    {
       "name": "Tile",
       "members": [
         {
-          "name": "entity_id",
+          "name": "key_location_id",
           "type": "u128",
+          "key": true
+        },
+        {
+          "name": "key_pos",
+          "type": "u8",
           "key": true
         },
         {
@@ -1331,7 +1437,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x309756030d70d48e7fc3f6194b3612fa3283791939c9cfbd858b39c1bfb620e",
+      "class_hash": "0x3c3fa9bdeed493625a6ee94428273030ced811846b0fee4bc846284c9f7a978",
       "abi": [
         {
           "type": "function",
@@ -1383,92 +1489,6 @@
         {
           "type": "event",
           "name": "loot_underworld::components::tile::tile::Event",
-          "kind": "enum",
-          "variants": []
-        }
-      ]
-    },
-    {
-      "name": "Door",
-      "members": [
-        {
-          "name": "entity_id",
-          "type": "u128",
-          "key": true
-        },
-        {
-          "name": "location_id",
-          "type": "u128",
-          "key": false
-        },
-        {
-          "name": "dir",
-          "type": "u8",
-          "key": false
-        },
-        {
-          "name": "to_location",
-          "type": "u128",
-          "key": false
-        },
-        {
-          "name": "open",
-          "type": "bool",
-          "key": false
-        }
-      ],
-      "class_hash": "0x7347e288d75e70c2ccacf4beb3686d48c318fde3123bedf0bd7ee08add434f7",
-      "abi": [
-        {
-          "type": "function",
-          "name": "name",
-          "inputs": [],
-          "outputs": [
-            {
-              "type": "core::felt252"
-            }
-          ],
-          "state_mutability": "view"
-        },
-        {
-          "type": "function",
-          "name": "size",
-          "inputs": [],
-          "outputs": [
-            {
-              "type": "core::integer::u32"
-            }
-          ],
-          "state_mutability": "view"
-        },
-        {
-          "type": "enum",
-          "name": "core::bool",
-          "variants": [
-            {
-              "name": "False",
-              "type": "()"
-            },
-            {
-              "name": "True",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "function",
-          "name": "schema",
-          "inputs": [],
-          "outputs": [
-            {
-              "type": "core::array::Array::<(core::felt252, core::felt252, core::bool)>"
-            }
-          ],
-          "state_mutability": "view"
-        },
-        {
-          "type": "event",
-          "name": "loot_underworld::components::tile::door::Event",
           "kind": "enum",
           "variants": []
         }

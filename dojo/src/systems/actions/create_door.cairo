@@ -1,9 +1,8 @@
 use traits::Into;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use loot_underworld::core::randomizer::{randomize_door_slot, randomize_door_pos};
+use loot_underworld::core::randomizer::{randomize_door_slot, randomize_door_pos, randomize_under_passage};
 use loot_underworld::systems::actions::create_tile::{create_tile};
-use loot_underworld::components::chamber::{ChamberDoors};
-use loot_underworld::components::tile::{Door};
+use loot_underworld::components::chamber::{Doors};
 use loot_underworld::types::tile_type::{TileType};
 use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir};
@@ -13,68 +12,68 @@ fn create_door(world: IWorldDispatcher, location: Location, location_id: u128, s
     // which chamber is this door leading to?
     let to_location: Location = location.offset(dir);
     let to_location_id: u128 = to_location.to_id();
-    let to_doors = get!(world, to_location_id, (ChamberDoors));
-
-    let mut tile_type: TileType = TileType::Exit;
-    let mut is_open: bool = false;
-    let mut pos: u8 = 0;
+    let to_doors = get!(world, to_location_id, (Doors));
 
     let is_entry: bool = (entry_dir == dir);
-    if(is_entry) {
-        tile_type = TileType::Entry;
-    }
+
+    let mut tile_type: TileType = TileType::LockedExit; // default is locked, generated here
+    let mut pos: u8 = 0;
 
     match dir {
         Dir::North => {
             if(to_doors.south > 0) {
-                pos = to_doors.south - (15 * 16);
-                is_open = true;
+                tile_type = TileType::Exit;
+                pos = to_doors.south - (15 * 16); // flip pos
+                create_tile(world, to_location_id, to_doors.south, TileType::Exit); // open other chamber's door
             } else {
-                pos = randomize_door_slot(seed, dir.into());
+                pos = randomize_door_pos(seed, dir);
             }
         },
         Dir::East => {
             if(to_doors.west > 0) {
-                pos = to_doors.west + 15;
-                is_open = true;
+                tile_type = TileType::Exit;
+                pos = to_doors.west + 15; // flip pos
+                create_tile(world, to_location_id, to_doors.west, TileType::Exit); // open other chamber's door
             } else {
-                pos = randomize_door_slot(seed, dir.into()) * 16 + 15;
+                pos = randomize_door_pos(seed, dir);
             }
         },
         Dir::West => {
             if(to_doors.east > 0) {
-                pos = to_doors.east - 15;
-                is_open = true;
+                tile_type = TileType::Exit;
+                pos = to_doors.east - 15; // flip pos
+                create_tile(world, to_location_id, to_doors.east, TileType::Exit); // open other chamber's door
             } else {
-                pos = randomize_door_slot(seed, dir.into()) * 16;
+                pos = randomize_door_pos(seed, dir);
             }
         },
         Dir::South => {
             if(to_doors.north > 0) {
-                pos = to_doors.north + (15 * 16);
-                is_open = true;
+                tile_type = TileType::Exit;
+                pos = to_doors.north + (15 * 16); // flip pos
+                create_tile(world, to_location_id, to_doors.north, TileType::Exit); // open other chamber's door
             } else {
-                pos = randomize_door_slot(seed, dir.into()) + (15 * 16);
+                pos = randomize_door_pos(seed, dir);
             }
         },
         Dir::Over => {
-            tile_type = TileType::OverExit;
             if(to_doors.under > 0) {
-                pos = to_doors.under;
-                is_open = true;
+                tile_type = TileType::Exit;
+                pos = to_doors.under; // as above, so below
+                create_tile(world, to_location_id, to_doors.under, TileType::Exit); // open other chamber's door
             } else if (is_entry) {
-                // TODO: Maybe this should be blocked???
-                // can we dig UP ???
-                pos = randomize_door_pos(seed, dir.into());
+                // create the Over door only if it is the entry
+                pos = randomize_door_pos(seed, dir);
             }
         },
         Dir::Under => {
-            tile_type = TileType::UnderExit;
             if(to_doors.over > 0) {
-                pos = to_doors.over;
-                is_open = true;
-            } else if (is_entry) {
-                pos = randomize_door_pos(seed, dir.into());
+                tile_type = TileType::Exit;
+                pos = to_doors.over; // as above, so below
+                create_tile(world, to_location_id, to_doors.over, TileType::Exit); // open other chamber's door
+            } else if (randomize_under_passage(seed) == true) {
+                // create new Under door occasionally
+                pos = randomize_door_pos(seed, dir);
             }
         },
     }
@@ -83,19 +82,11 @@ fn create_door(world: IWorldDispatcher, location: Location, location_id: u128, s
         return 0;
     }
 
-    let entity_id: u128 = create_tile(world, location_id, tile_type, pos);
+    if(is_entry) {
+        tile_type = TileType::Entry;
+    }
 
-    set!(world, (
-        Door { 
-            entity_id,
-            dir: dir.into(),
-            to_location_id,
-            is_open: (is_open || is_entry),
-        }
-    ));
-
-    // TODO: Need to update other chambers????
-    // (Map.protected), Door, ChamberDoors
+    create_tile(world, location_id, pos, tile_type);
 
     // return door position
     pos

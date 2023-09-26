@@ -60,11 +60,32 @@ export function defineContractComponents(world: World) {
         world,
         {
           bitmap: RecsType.BigInt,
+          protected: RecsType.BigInt,
         },
         {
           metadata: {
             name: name,
-            types: ["u256"],
+            types: ["u256","u256"],
+          },
+        }
+      );
+    })(),
+    Doors: (() => {
+      const name = "Doors";
+      return defineComponent(
+        world,
+        {
+          north: RecsType.Number,
+          east: RecsType.Number,
+          west: RecsType.Number,
+          south: RecsType.Number,
+          over: RecsType.Number,
+          under: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+            types: ["u8","u8","u8","u8","u8","u8"],
           },
         }
       );
@@ -82,24 +103,6 @@ export function defineContractComponents(world: World) {
           metadata: {
             name: name,
             types: ["u128","u8","u8"],
-          },
-        }
-      );
-    })(),
-    Door: (() => {
-      const name = "Door";
-      return defineComponent(
-        world,
-        {
-          location_id: RecsType.BigInt,
-          dir: RecsType.Number,
-          to_location: RecsType.BigInt,
-          open: RecsType.Boolean,
-        },
-        {
-          metadata: {
-            name: name,
-            types: ["u128","u8","u128","bool"],
           },
         }
       );

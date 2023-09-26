@@ -9,13 +9,16 @@ fn create_array<T, impl TDrop: Drop<T>, impl TCopy: Copy<T>>(size: usize, defaul
     let mut result: Array<T> = ArrayTrait::new();
     let mut i: usize = 0;
     loop {
-        if i >= size { break; }
+        if(i >= size) { break; }
         result.append(default_value);
         i += 1;
     };
     result
 }
 
+//----------------------------------------
+// Unit  tests
+//
 #[test]
 #[available_gas(1000000)]
 fn test_create_array_u8() {
@@ -27,7 +30,7 @@ fn test_create_array_u8() {
     // test default values
     let mut i: usize = 0;
     loop {
-        if i >= arr1.len() { break; }
+        if(i >= arr1.len()) { break; }
         assert(*arr1[i] == 255_u8, 'array 1 value');
         i += 1;
     };

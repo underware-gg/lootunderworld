@@ -6,7 +6,7 @@ mod tests {
     use debug::PrintTrait;
 
     fn bitset(bitmap: u256, x: usize, y: usize) -> u256 {
-        U256Bitwise::set(bitmap, ((y * 16) + x))
+        U256Bitwise::set(bitmap, (y * 16 + x))
     }
 
     fn bitsetter(bitmap: u256, x: usize, y: usize) -> u256 {
