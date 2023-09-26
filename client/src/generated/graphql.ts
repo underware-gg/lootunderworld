@@ -639,14 +639,14 @@ export type TileWhereInput = {
   tile_typeNEQ?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type GetEntitiesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetExampleEntitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetEntitiesQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Chamber' } | { __typename: 'Doors' } | { __typename: 'Map' } | { __typename: 'Moves', remaining?: any | null } | { __typename: 'Position', x?: any | null, y?: any | null } | { __typename: 'Tile' } | null> | null } | null } | null> | null } | null };
+export type GetExampleEntitiesQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Chamber' } | { __typename: 'Doors' } | { __typename: 'Map' } | { __typename: 'Moves', remaining?: any | null } | { __typename: 'Position', x?: any | null, y?: any | null } | { __typename: 'Tile' } | null> | null } | null } | null> | null } | null };
 
 
-export const GetEntitiesDocument = gql`
-    query getEntities {
+export const GetExampleEntitiesDocument = gql`
+    query getExampleEntities {
   entities(keys: ["%"]) {
     edges {
       node {
@@ -671,11 +671,11 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
-const GetEntitiesDocumentString = print(GetEntitiesDocument);
+const GetExampleEntitiesDocumentString = print(GetExampleEntitiesDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getEntities(variables?: GetEntitiesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetEntitiesQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetEntitiesQuery>(GetEntitiesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getEntities', 'query');
+    getExampleEntities(variables?: GetExampleEntitiesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetExampleEntitiesQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetExampleEntitiesQuery>(GetExampleEntitiesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getExampleEntities', 'query');
     }
   };
 }

@@ -1,4 +1,4 @@
-query getEntities {
+query getExampleEntities {
   entities(keys: ["%"]) {
     edges {
       node {

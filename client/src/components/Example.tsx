@@ -29,7 +29,8 @@ function Example() {
     if (!entityId) return;
 
     const fetchData = async () => {
-      const { data } = await graphSdk.getEntities();
+      const { data } = await graphSdk.getExampleEntities();
+      console.log(`graphSdk.getExampleEntities()`, data)
 
       if (data) {
         let remaining = getFirstComponentByType(data.entities?.edges, 'Moves') as Moves;
