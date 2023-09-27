@@ -35,7 +35,9 @@ type getEntitiesQuery = {
 export const useSyncWorld = (): { loading: boolean } => {
   // Added async since await is used inside
   const {
-    setup: { components },
+    // setup overridableComponents throw error: js Method Map.prototype.set called on incompatible receiver #<Map>
+    // setup: { components },
+    setup: { network: { contractComponents: components }  },
   } = useDojo();
 
   const [loading, setLoading] = useState(true);
