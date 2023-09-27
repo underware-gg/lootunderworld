@@ -6,7 +6,7 @@ import {
 } from "@latticexyz/recs";
 import { Account } from "starknet";
 import { SetupNetworkResult } from "./setupNetwork";
-import { getEntityIdFromKeys } from "../utils";
+import { getEntityIdFromKeys } from "../utils/utils";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -186,6 +186,7 @@ export function setComponentFromEvent(components: Components, eventData: string[
     return acc;
   }, {});
   // console.log(`VALUES:`, componentValues, entity)
+  // console.log(`component:`, component)
 
   // set component
   setComponent(component, entity, componentValues);

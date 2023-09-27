@@ -1,51 +1,25 @@
 import './App.css';
-import { useEffect } from 'react';
 import { useDojo } from '../DojoContext';
-import { Entity, setComponent } from '@latticexyz/recs';
+import { Entity } from '@latticexyz/recs';
 import { useComponentValue } from "@latticexyz/react";
 import { Direction, } from '../dojo/createSystemCalls'
-import { getFirstComponentByType } from '../utils';
-import { Moves, Position } from '../generated/graphql';
 
 function Example() {
   const {
     setup: {
       systemCalls: { spawn, move },
       components: { Moves, Position },
-      network: { graphSdk, call }
+      // network: { graphSdk, call }
     },
     account: { account }
   } = useDojo();
 
   // entity id - this example uses the account address as the entity id
-  const entityId = BigInt(account.address).toString() as Entity;
+  const entityId = ('0x' + BigInt(account.address).toString(16)) as Entity;
 
   // get current component values
   const position = useComponentValue(Position, entityId);
   const moves = useComponentValue(Moves, entityId);
-
-  useEffect(() => {
-
-    if (!entityId) return;
-
-    const fetchData = async () => {
-      const { data } = await graphSdk.getExampleEntities();
-      console.log(`graphSdk.getExampleEntities()`, data)
-
-      if (data) {
-        let remaining = getFirstComponentByType(data.entities?.edges, 'Moves') as Moves;
-        let position = getFirstComponentByType(data.entities?.edges, 'Position') as Position;
-
-        if (remaining) {
-          setComponent(Moves, entityId, { remaining: remaining.remaining })
-        }
-        if (position) {
-          setComponent(Position, entityId, { x: position.x, y: position.y })
-        }
-      }
-    }
-    fetchData();
-  }, [account.address]);
 
   return (
     <div className="card">
