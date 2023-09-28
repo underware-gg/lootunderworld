@@ -28,9 +28,10 @@ function IndexPage() {
       <pre ref={Text1Ref}></pre>
       {/* @ts-ignore */}
       <pre ref={Text2Ref}></pre>
-      <hr />
+      
       <div className='Spacer20' />
       <h2><button onClick={() => { location.href = '/underworld/'}}>ENTER</button></h2>
+
       <br/>
       <div className='Spacer20' />
       <a href='/test/'>test page</a>

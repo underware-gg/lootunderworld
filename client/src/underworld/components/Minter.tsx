@@ -1,43 +1,42 @@
-import { useEffect, useState } from 'react';
-import { useDojo } from '../../DojoContext';
-import { Entity, Has } from '@latticexyz/recs';
-import { useEntityQuery } from "@latticexyz/react";
-import ChamberMap from './Map';
-import { Dir } from '../underworld';
-
+import { useEffect, useState } from 'react'
+import { useDojoSystemCalls, useDojoAccount } from '../../DojoContext'
+import { useRealmChamberIds } from '../hooks/useChamber'
+import { Dir } from '../utils/underworld'
+import ChamberMap from './ChamberMap'
+import { bigintToHex } from '../utils/utils'
+ 
 function Minter() {
-  const {
-    setup: {
-      systemCalls: { mint_realms_chamber },
-      components: { Chamber },
-    },
-    account: { account }
-  } = useDojo();
+  const { mint_realms_chamber } = useDojoSystemCalls()
+  const { account } = useDojoAccount()
 
-  // const chamberIds = useEntityQuery([HasValue(Chamber, { realm_id: 1 })]);
-  const chamberIds = useEntityQuery([Has(Chamber)]);
+  const [realmId, setRealmId] = useState(1);
 
-  const [selectedChamberId, setSelectedChamberId] = useState('0')
+  const { chamberIds } = useRealmChamberIds(realmId)
+
+  const [selectedChamberId, setSelectedChamberId] = useState(0n)
   useEffect(() => {
-    setSelectedChamberId(chamberIds[chamberIds.length - 1] ?? 0)
+    setSelectedChamberId(chamberIds.length > 0 ? chamberIds[chamberIds.length - 1] : 0n)
   }, [chamberIds])
 
   return (
     <div className="card">
-      <button onClick={() => mint_realms_chamber(account, 1, BigInt(Date.now() % 999) | (BigInt(Date.now() % 999) << 32n), Dir.Under)}>Mint Chamber</button>
       <div>
-        <select onChange={e => setSelectedChamberId(e.target.value as Entity)}>
-          {chamberIds.map((entityId) => {
-            const _id = entityId.toString()
-            return <option value={_id} key={_id}>{_id}</option>
+        <button onClick={() => mint_realms_chamber(account, realmId, BigInt(Date.now() % 999) | (BigInt(Date.now() % 999) << 32n), Dir.Under)}>Mint Chamber</button>
+      </div>
+      <br />
+      <div>
+        <select onChange={e => setSelectedChamberId(BigInt(e.target.value))}>
+          {chamberIds.map((locationId) => {
+            const _id = locationId.toString()
+            return <option value={_id} key={_id}>{bigintToHex(locationId)}</option>
           })}
         </select>
       </div>
       <div>
-        <ChamberMap entity={selectedChamberId as Entity} />
+        <ChamberMap locationId={selectedChamberId} />
       </div>
     </div>
-  );
+  )
 }
 
-export default Minter;
+export default Minter
