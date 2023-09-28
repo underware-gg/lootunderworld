@@ -1,4 +1,3 @@
-import './App.css';
 import { useDojo } from '../DojoContext';
 import { Entity } from '@latticexyz/recs';
 import { useComponentValue } from "@latticexyz/react";

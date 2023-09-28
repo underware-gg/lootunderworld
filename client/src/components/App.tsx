@@ -1,7 +1,6 @@
-import './App.css';
 import Burner from './Burner';
 import Example from './Example';
-import Minter from '../underworld/components/Minter';
+import TestMinter from '../underworld/components/TestMinter';
 import { useSyncWorld } from '../underworld/hooks/useGraphQLQueries';
 
 function App() {
@@ -15,7 +14,7 @@ function App() {
     <>
       <Burner />
       <hr />
-      <Minter />
+      <TestMinter />
       <hr />
       <Example />
     </>

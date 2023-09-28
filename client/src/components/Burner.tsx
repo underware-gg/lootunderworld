@@ -1,4 +1,3 @@
-import './App.css';
 import { useDojo } from '../DojoContext';
 
 function Burner() {
