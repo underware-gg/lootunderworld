@@ -44,3 +44,24 @@ export const useDojo = () => {
     account: { create, list, get, select, account: account ? account : masterAccount, isDeploying }
   };
 };
+
+export const useDojoAccount = () => {
+  const { account } = useDojo()
+  return {
+    ...account,
+  }
+}
+
+export const useDojoSystemCalls = () => {
+  const { setup: { systemCalls } } = useDojo()
+  return {
+    ...systemCalls,
+  }
+}
+
+export const useDojoComponents = () => {
+  const { setup: { components } } = useDojo()
+  return {
+    ...components,
+  }
+}
