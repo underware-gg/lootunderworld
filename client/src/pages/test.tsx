@@ -1,7 +1,5 @@
 import './index.css';
-//@ts-ignore
 import React from 'react';
-//@ts-ignore
 import ReactDOM from 'react-dom/client';
 import App from '../components/App.tsx';
 import { setup } from '../dojo/setup.ts';
