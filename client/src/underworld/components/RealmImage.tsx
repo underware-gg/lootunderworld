@@ -1,4 +1,5 @@
-import { useRealmMetadata } from '../hooks/useRealm'
+import { useRealmSvgMetadata } from '../hooks/useRealm'
+import Svg from './Svg';
 
 interface ChamberMapProps {
   realmId: number,
@@ -7,13 +8,11 @@ interface ChamberMapProps {
 function RealmImage({
   realmId,
 }: ChamberMapProps) {
-  const { metadata } = useRealmMetadata(realmId)
+  const { metadata, svgData } = useRealmSvgMetadata(realmId)
 
   return (
     <div className='RealmImage'>
-      {metadata.image &&
-        <img className='RealmImage' src={metadata.image} />
-      }
+      <Svg className='RealmImage' content={svgData} />
     </div>
   )
 }

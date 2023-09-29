@@ -10,15 +10,17 @@ import realmsMetadata from '../data/database.json'
 // Constants
 //
 export const initialState = {
-  realmId: 1,
-  cityIndex: 0,
-  logo: '/pubic/logo.png',
+  realmId: 6915,
+  cityIndex: null,
+  city: {},
   realmsMetadata,
+  logo: '/pubic/logo.png',
 }
 
 const UnderworldActions = {
   SET_REALM_ID: 'SET_REALM_ID',
   SET_CITY_INDEX: 'SET_CITY_INDEX',
+  SET_CITY: 'SET_CITY',
 }
 
 //--------------------------------
@@ -26,7 +28,8 @@ const UnderworldActions = {
 //
 type UnderworldStateType = {
   realmId: number,
-  cityIndex: number,
+  cityIndex: number|null,
+  city: any,
   logo: string,
   realmsMetadata: any,
 }
@@ -34,6 +37,7 @@ type UnderworldStateType = {
 type ActionType =
   | { type: 'SET_REALM_ID', payload: number }
   | { type: 'SET_CITY_INDEX', payload: number }
+  | { type: 'SET_CITY', payload: any }
 
 
 
@@ -62,11 +66,15 @@ const UnderworldProvider = ({
     switch (action.type) {
       case UnderworldActions.SET_REALM_ID: {
         newState.realmId = action.payload as number
-        newState.cityIndex = 0
+        newState.cityIndex = null
         break
       }
       case UnderworldActions.SET_CITY_INDEX: {
         newState.cityIndex = action.payload as number
+        break
+      }
+      case UnderworldActions.SET_CITY: {
+        newState.city = action.payload
         break
       }
       default:
@@ -95,6 +103,7 @@ export const useUnderworldContext = () => {
   return {
     ...state,
     dispatch,
+    UnderworldActions,
   }
 }
 

@@ -33,8 +33,13 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2.2em;
+  line-height: 0.5em;
+}
+
+hr {
+  color: rgba(255, 255, 255, 0.5);
+  border: 0.5px solid;
 }
 
 button {
@@ -128,13 +133,16 @@ canvas {
 }
 
 .RealmPanel {
-  width: 600px;
+  width: 620px;
   height: 300px;
   display: block;
 }
 
-.RealmImage {
+.RealmImage, .RealmData {
   width: 300px;
   height: 300px;
   display: inline-block;
+}
+.RealmImage {
+  border: 1px solid #444;
 }
