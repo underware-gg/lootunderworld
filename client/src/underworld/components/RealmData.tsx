@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { useRealmMetadata, useRealmSvgMetadata } from '../hooks/useRealm'
+import { compassToSlug } from '../utils/underworld'
+import { bigintToHex } from '../utils/utils'
 
 interface ChamberMapProps {
   realmId: number,
@@ -53,15 +55,24 @@ function RealmData({
         Realm #{realmId}
       </h3>
 
-      <div>
-        City: <RealmCitySelector realmId={realmId} />
-        <p>
-          Size: {city.radius}
-        </p>
-        <p>
-          Elevation: {city.elevation}
-        </p>
-      </div>
+      City: <RealmCitySelector realmId={realmId} />
+
+      {city.name &&
+        <div>
+          <p>
+            Size: <b>{city.radius}</b>
+          </p>
+          <p>
+            Elevation: <b>{city.elevation}</b>
+          </p>
+          <p>
+            Compass: <b>{compassToSlug(city.compass)}</b>
+          </p>
+          <p>
+            Coord: <b>{bigintToHex(city.coord)}</b>
+          </p>
+        </div>
+      }
     </div>
   )
 }

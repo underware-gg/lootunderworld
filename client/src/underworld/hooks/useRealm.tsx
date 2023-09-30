@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
+import { convertCityCenterToMeters, convertCityCenterToCompass } from '../utils/realms'
+import { compassToCoord } from '../utils/underworld'
 
 import useSWR from 'swr'
 const textFetcher = (url: string) => fetch(url).then((res) => res.text())
@@ -70,12 +72,19 @@ circle.SelectedCity {
         let city = {
           name: cityNames[i].innerHTML,
           radius: center.r.baseVal.value,
-          center: [center.cx.baseVal.value, center.cy.baseVal.value],
+          center: { x:center.cx.baseVal.value, y:center.cy.baseVal.value },
           selected: false,
           elevation: '?',
+          // calc
           description: '',
+          meters: {},
+          compass: {},
+          coord: 0n,
         }
         city.description = `${city.name} (${city.radius})`
+        city.meters = convertCityCenterToMeters(city.center)
+        city.compass = convertCityCenterToCompass(city.center)
+        city.coord = compassToCoord(city.compass)
         if (i === cityIndex) {
           city.selected = true
           cityNames[i].setAttribute('class', 'city SelectedCity')
