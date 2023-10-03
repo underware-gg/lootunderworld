@@ -1,14 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useDojo } from '../../DojoContext';
-import { Entity, setComponent, HasValue, Has } from '@latticexyz/recs';
+import { Entity, Has } from '@latticexyz/recs';
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Dir } from '../utils/underworld';
 
-interface ChamberMapProps {
+interface TestMapProps {
   entity: Entity,
 }
 
-function ChamberMap(props: ChamberMapProps) {
+function TestMap(props: TestMapProps) {
   const {
     setup: {
       // systemCalls: { spawn, move, mint_realms_chamber },
@@ -64,7 +64,7 @@ function ChamberMap(props: ChamberMapProps) {
   );
 }
 
-function Minter() {
+function TestMinter() {
   const {
     setup: {
       systemCalls: { mint_realms_chamber },
@@ -93,10 +93,10 @@ function Minter() {
         </select>
       </div>
       <div>
-        <ChamberMap entity={selectedChamberId as Entity} />
+        <TestMap entity={selectedChamberId as Entity} />
       </div>
     </div>
   );
 }
 
-export default Minter;
+export default TestMinter;

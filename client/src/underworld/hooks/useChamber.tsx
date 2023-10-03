@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from "react"
+import { useMemo } from "react"
 import { Entity, HasValue, Has, getComponentValue } from '@latticexyz/recs'
 import { useComponentValue, useEntityQuery } from "@latticexyz/react"
 import { useDojoComponents } from '../../DojoContext'
