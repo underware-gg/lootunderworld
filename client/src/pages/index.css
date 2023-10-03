@@ -132,17 +132,27 @@ canvas {
   min-height: 50px;
 }
 
-.RealmPanel {
+.RealmPanel,
+.MinterPanel {
   width: 620px;
-  height: 300px;
+  height: 350px;
   display: block;
 }
 
-.RealmImage, .RealmData {
-  width: 300px;
-  height: 300px;
+.RealmImage,
+.RealmData,
+.MinterMap,
+.MinterData {
+  width: 250px;
+  height: 350px;
   display: inline-block;
 }
-.RealmImage {
-  border: 1px solid #444;
+.RealmImage,
+.MinterMap {
+  width: 350px;
+  border: 0.5px solid #444;
+}
+
+hr {
+  border: 0.5px solid #444;
 }

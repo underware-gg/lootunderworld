@@ -1,14 +1,16 @@
+import { useUnderworldContext } from '../hooks/UnderworldContext';
 import { useRealmSvgMetadata } from '../hooks/useRealm'
 import Svg from './Svg';
 
 interface ChamberMapProps {
-  realmId: number,
+  // realmId: number,
 }
 
 function RealmImage({
-  realmId,
+  // realmId,
 }: ChamberMapProps) {
-  const { metadata, svgData } = useRealmSvgMetadata(realmId)
+  const { realmId } = useUnderworldContext()
+  const { svgData } = useRealmSvgMetadata(realmId)
 
   return (
     <div className='RealmImage'>

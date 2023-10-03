@@ -3,16 +3,17 @@ import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { useRealmMetadata, useRealmSvgMetadata } from '../hooks/useRealm'
 import { compassToSlug } from '../utils/underworld'
 import { bigintToHex } from '../utils/utils'
+import { City } from '../utils/realms'
 
 interface ChamberMapProps {
-  realmId: number,
+  // realmId: number,
 }
 
 function RealmCitySelector({
-  realmId,
+  // realmId,
 }: ChamberMapProps) {
-  const { cityIndex, dispatch, UnderworldActions } = useUnderworldContext()
-  const { cities, svgData } = useRealmSvgMetadata(realmId)
+  const { realmId, cityIndex, dispatch, UnderworldActions } = useUnderworldContext()
+  const { cities } = useRealmSvgMetadata(realmId)
 
   useEffect(() => {
     if (cityIndex === null && cities.length > 0) {
@@ -33,7 +34,7 @@ function RealmCitySelector({
 
   return (
     <select value={cityIndex ?? 999} onChange={(e) => _setSelectedCity(parseInt(e.target.value))}>
-      {cities.map((city: any, index: number) => {
+      {cities.map((city: City, index: number) => {
         return <option value={index} key={city.name}>{city.description}</option>
       })}
     </select>
@@ -41,9 +42,9 @@ function RealmCitySelector({
 }
 
 function RealmData({
-  realmId,
+  // realmId,
 }: ChamberMapProps) {
-  const { city } = useUnderworldContext()
+  const { realmId, city } = useUnderworldContext()
   const { metadata } = useRealmMetadata(realmId)
 
   return (
@@ -55,15 +56,15 @@ function RealmData({
         Realm #{realmId}
       </h3>
 
-      City: <RealmCitySelector realmId={realmId} />
+      City: <RealmCitySelector />
 
-      {city.name &&
+      {city && city.name &&
         <div>
           <p>
             Size: <b>{city.radius}</b>
           </p>
           <p>
-            Elevation: <b>{city.elevation}</b>
+            Elevation: <b>{city?.elevation ?? '?'}</b>
           </p>
           <p>
             Compass: <b>{compassToSlug(city.compass)}</b>

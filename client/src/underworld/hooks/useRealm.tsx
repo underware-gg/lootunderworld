@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
-import { convertCityCenterToMeters, convertCityCenterToCompass } from '../utils/realms'
+import { convertCityCenterToMeters, convertCityCenterToCompass, City } from '../utils/realms'
 import { compassToCoord } from '../utils/underworld'
 
 import useSWR from 'swr'
@@ -22,7 +22,7 @@ export const useRealmSvgMetadata = (realmId: number) => {
 
   const { svgData, cities } = useMemo(() => {
     let svgData: string | null = null
-    let cities: any[] = []
+    let cities: City[] = []
 
     if (data) {
       // convert svg text to HTMLDocument
@@ -68,23 +68,22 @@ circle.SelectedCity {
 
       // create cities
       for (let i = 0; i < Math.min(cityNames.length, cityCenters.length); ++i) {
-        const center = cityCenters[i] as SVGCircleElement
-        let city = {
-          name: cityNames[i].innerHTML,
-          radius: center.r.baseVal.value,
-          center: { x:center.cx.baseVal.value, y:center.cy.baseVal.value },
+        const circle = cityCenters[i] as SVGCircleElement
+        const center = { x: circle.cx.baseVal.value, y: circle.cy.baseVal.value }
+        const radius = circle.r.baseVal.value
+        const name = cityNames[i].innerHTML
+        const compass = convertCityCenterToCompass(center)
+        let city: City = {
+          name,
+          description: `${name} (${radius})`,
+          center,
+          radius,
+          elevation: -1,
+          meters: convertCityCenterToMeters(center),
+          compass,
+          coord: compassToCoord(compass),
           selected: false,
-          elevation: '?',
-          // calc
-          description: '',
-          meters: {},
-          compass: {},
-          coord: 0n,
         }
-        city.description = `${city.name} (${city.radius})`
-        city.meters = convertCityCenterToMeters(city.center)
-        city.compass = convertCityCenterToCompass(city.center)
-        city.coord = compassToCoord(city.compass)
         if (i === cityIndex) {
           city.selected = true
           cityNames[i].setAttribute('class', 'city SelectedCity')

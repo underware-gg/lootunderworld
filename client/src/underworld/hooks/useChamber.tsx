@@ -3,7 +3,7 @@ import { Entity, HasValue, Has, getComponentValue } from '@latticexyz/recs'
 import { useComponentValue, useEntityQuery } from "@latticexyz/react"
 import { useDojoComponents } from '../../DojoContext'
 import { bigintToEntity } from "../utils/utils"
-import { TileType } from "../utils/underworld"
+import { TileType, expandTilemap } from "../utils/underworld"
 
 
 //------------------
@@ -39,12 +39,13 @@ export const useChamber = (locationId: bigint) => {
   const chamber: any = useComponentValue(Chamber, bigintToEntity(locationId))
   const seed = useMemo(() => BigInt(chamber?.seed ?? 0), [chamber])
 
-  const { bitmap, tilemap } = useTilemap(locationId)
+  const { bitmap, tilemap, expandedTilemap } = useTilemap(locationId)
 
   return {
     seed,
     bitmap,
     tilemap,
+    expandedTilemap,
   }
 }
 
@@ -75,9 +76,12 @@ export const useTilemap = (locationId: bigint) => {
   }, [bitmap, tiles])
   // useEffect(() => console.log(`tilemap:`, tilemap), [tilemap])
 
+  const expandedTilemap = useMemo(() => expandTilemap(tilemap), [tilemap])
+
   return {
     bitmap,
     tilemap,
+    expandedTilemap,
   }
 }
 

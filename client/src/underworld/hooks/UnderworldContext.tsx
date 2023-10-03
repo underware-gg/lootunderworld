@@ -1,5 +1,7 @@
 import React, { ReactNode, createContext, useReducer, useContext, useEffect } from 'react'
 import realmsMetadata from '../data/database.json'
+import { makeRealmEntryChamberIdFromCoord } from '../utils/underworld'
+import { City } from '../utils/realms'
 
 //
 // React + Typescript + Context
@@ -12,15 +14,18 @@ import realmsMetadata from '../data/database.json'
 export const initialState = {
   realmId: 6915,
   cityIndex: null,
-  city: {},
-  realmsMetadata,
+  city: null,
+  chamberId: null,
+  // constants
   logo: '/pubic/logo.png',
+  realmsMetadata,
 }
 
 const UnderworldActions = {
   SET_REALM_ID: 'SET_REALM_ID',
   SET_CITY_INDEX: 'SET_CITY_INDEX',
   SET_CITY: 'SET_CITY',
+  SET_CHAMBER: 'SET_CHAMBER',
 }
 
 //--------------------------------
@@ -29,7 +34,9 @@ const UnderworldActions = {
 type UnderworldStateType = {
   realmId: number,
   cityIndex: number|null,
-  city: any,
+  city: City | null,
+  chamberId: bigint | null,
+  // constants
   logo: string,
   realmsMetadata: any,
 }
@@ -38,6 +45,7 @@ type ActionType =
   | { type: 'SET_REALM_ID', payload: number }
   | { type: 'SET_CITY_INDEX', payload: number }
   | { type: 'SET_CITY', payload: any }
+  | { type: 'SET_CHAMBER', payload: bigint }
 
 
 
@@ -67,6 +75,7 @@ const UnderworldProvider = ({
       case UnderworldActions.SET_REALM_ID: {
         newState.realmId = action.payload as number
         newState.cityIndex = null
+        newState.chamberId = null
         break
       }
       case UnderworldActions.SET_CITY_INDEX: {
@@ -74,7 +83,13 @@ const UnderworldProvider = ({
         break
       }
       case UnderworldActions.SET_CITY: {
-        newState.city = action.payload
+        newState.city = action.payload ? { ...action.payload } : null
+        newState.chamberId = action.payload ? makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord) : null
+        console.log(`SET_CITY`, newState.city, makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord))
+        break
+      }
+      case UnderworldActions.SET_CHAMBER: {
+        newState.chamberId = action.payload
         break
       }
       default:

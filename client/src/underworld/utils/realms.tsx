@@ -6,6 +6,18 @@ export interface Point {
   y: number
 }
 
+export interface City {
+  name: string,
+  description: string,
+  center: Point,
+  radius: number
+  elevation?: number,
+  meters: Point,
+  compass: Compass,
+  coord: bigint,
+  selected: boolean,
+}
+
 export const convertCityCenterToMeters = (center: Point): Point => {
   return {
     x: map(center.x, -450, 450, 0, 80000),
