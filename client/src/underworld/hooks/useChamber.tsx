@@ -3,7 +3,7 @@ import { Entity, HasValue, Has, getComponentValue } from '@latticexyz/recs'
 import { useComponentValue, useEntityQuery } from "@latticexyz/react"
 import { useDojoComponents } from '../../DojoContext'
 import { bigintToEntity } from "../utils/utils"
-import { TileType, expandTilemap } from "../utils/underworld"
+import { Dir, TileType, expandTilemap, offsetCoord } from "../utils/underworld"
 
 
 //------------------
@@ -33,23 +33,32 @@ export const useRealmChamberIds = (realmId: number) => {
 // Single Chamber
 //
 
-export const useChamber = (locationId: bigint) => {
+export const useChamber = (chamberId: bigint) => {
   const { Chamber } = useDojoComponents()
 
-  const chamber: any = useComponentValue(Chamber, bigintToEntity(locationId))
+  const chamber: any = useComponentValue(Chamber, bigintToEntity(chamberId))
   const seed = useMemo(() => BigInt(chamber?.seed ?? 0), [chamber])
-
-  const { bitmap, tilemap, expandedTilemap } = useTilemap(locationId)
+  const minter = useMemo(() => BigInt(chamber?.minter ?? 0), [chamber])
 
   return {
     seed,
-    bitmap,
-    tilemap,
-    expandedTilemap,
+    minter,
+    domain_id: chamber?.domain_id ?? 0,
+    token_id: chamber?.token_id ?? 0,
+    yonder: chamber?.yonder ?? 0,
   }
 }
 
-export const useTilemap = (locationId: bigint) => {
+export const useChamberOffset = (chamberId: bigint, dir: Dir) => {
+  const locationId = useMemo(() => offsetCoord(chamberId, dir), [chamberId, dir])
+  const result = useChamber(locationId)
+  return {
+    locationId,
+    ...result,
+  }
+}
+
+export const useChamberMap = (locationId: bigint) => {
   const { Map, Tile } = useDojoComponents()
 
   const map: any = useComponentValue(Map, bigintToEntity(locationId))

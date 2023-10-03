@@ -12,7 +12,16 @@ export enum Dir {
   West = 2,
   South = 3,
   Over = 4,
-  Under = 5
+  Under = 5,
+}
+
+export const DirNames = {
+  [Dir.North]: 'North',
+  [Dir.East]: 'East',
+  [Dir.West]: 'West',
+  [Dir.South]: 'South',
+  [Dir.Over]: 'Over',
+  [Dir.Under]: 'Under',
 }
 
 export enum TileType {
@@ -66,10 +75,10 @@ export const validateCompass = (compass: Compass | null): boolean => {
 }
 
 export const validatedCompass = (compass: Compass | null): Compass | null => {
-  let result = compass
-  if (!result || !validateCompass(result)) {
+  if (!compass || !validateCompass(compass)) {
     return null
   }
+  let result = { ...compass }
   if (!result.domainId) delete result.domainId
   if (!result.tokenId) delete result.tokenId
   if (!result.over) delete result.over
@@ -78,18 +87,23 @@ export const validatedCompass = (compass: Compass | null): Compass | null => {
   if (!result.east) delete result.east
   if (!result.west) delete result.west
   if (!result.south) delete result.south
-  return compass
+  return result
 }
 
 export const slugSeparators = [null, '', ',', '.', ';', '-'] as const
 export const defaultSlugSeparator = ','
 export type SlugSeparator = typeof slugSeparators[number]
 
-export const compassToSlug = (compass: Compass | null, separator: SlugSeparator = defaultSlugSeparator): string => {
+export const compassToSlug = (compass: Compass | null, yonder: number = 0, separator: SlugSeparator = defaultSlugSeparator): string => {
   if (!compass || !validateCompass(compass)) return ''
   let result = ''
   if (compass.tokenId) {
     result += `#${compass.tokenId}`
+    if (separator) result += separator
+  }
+  if (compass.over || compass.under) {
+    if (compass.over && compass.over > 0) result += `O${compass.over}`
+    if (compass.under && compass.under > 0) result += `U${compass.under}`
     if (separator) result += separator
   }
   if (compass.north && compass.north > 0) result += `N${compass.north}`
@@ -97,6 +111,10 @@ export const compassToSlug = (compass: Compass | null, separator: SlugSeparator 
   if (separator) result += separator
   if (compass.east && compass.east > 0) result += `E${compass.east}`
   if (compass.west && compass.west > 0) result += `W${compass.west}`
+  if (yonder) {
+    if (separator) result += separator
+    result += `Y${yonder}`
+  }
   return result
 }
 
@@ -129,10 +147,40 @@ export const coordToCompass = (coord: bigint): Compass | null => {
   return validatedCompass(result)
 }
 
-export const coordToSlug = (coord: bigint): string => {
-  return compassToSlug(coordToCompass(coord))
+export const coordToSlug = (coord: bigint, yonder: number = 0): string => {
+  return compassToSlug(coordToCompass(coord), yonder)
 }
 
+export const offsetCompass = (compass: Compass | null, dir: Dir): Compass | null => {
+  const _add = (v: number | undefined) => (v ? v + 1 : 1)
+  const _sub = (v: number | undefined) => (v && v > 1 ? v - 1 : 0)
+  if (!compass) return null
+  let result = { ...compass }
+  if (dir == Dir.North) {
+    result.south = _sub(result.south)
+    if (!result.south) result.north = _add(result.north)
+  } else if (dir == Dir.South) {
+    result.north = _sub(result.north)
+    if (!result.north) result.south = _add(result.south)
+  } else if (dir == Dir.East) {
+    result.west = _sub(result.west)
+    if (!result.west) result.east = _add(result.east)
+  } else if (dir == Dir.West) {
+    result.east = _sub(result.east)
+    if (!result.east) result.west = _add(result.west)
+  } else if (dir == Dir.Over) {
+    result.under = _sub(result.under)
+    if (!result.under) result.over = _add(result.over)
+  } else if (dir == Dir.Under) {
+    result.over = _sub(result.over)
+    if (!result.over) result.under = _add(result.under)
+  }
+  return validatedCompass(result)
+}
+
+export const offsetCoord = (coord: bigint, dir: Dir): bigint => {
+  return compassToCoord(offsetCompass(coordToCompass(coord), dir))
+}
 
 //-----------------------------------
 // Move to Crawler SDK

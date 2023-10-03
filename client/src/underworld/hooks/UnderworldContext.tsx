@@ -15,7 +15,7 @@ export const initialState = {
   realmId: 6915,
   cityIndex: null,
   city: null,
-  chamberId: null,
+  chamberId: 0n,
   // constants
   logo: '/pubic/logo.png',
   realmsMetadata,
@@ -35,7 +35,7 @@ type UnderworldStateType = {
   realmId: number,
   cityIndex: number|null,
   city: City | null,
-  chamberId: bigint | null,
+  chamberId: bigint,
   // constants
   logo: string,
   realmsMetadata: any,
@@ -75,7 +75,7 @@ const UnderworldProvider = ({
       case UnderworldActions.SET_REALM_ID: {
         newState.realmId = action.payload as number
         newState.cityIndex = null
-        newState.chamberId = null
+        newState.chamberId = 0n
         break
       }
       case UnderworldActions.SET_CITY_INDEX: {
@@ -84,8 +84,7 @@ const UnderworldProvider = ({
       }
       case UnderworldActions.SET_CITY: {
         newState.city = action.payload ? { ...action.payload } : null
-        newState.chamberId = action.payload ? makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord) : null
-        console.log(`SET_CITY`, newState.city, makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord))
+        newState.chamberId = action.payload ? makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord) : 0n
         break
       }
       case UnderworldActions.SET_CHAMBER: {

@@ -4,6 +4,7 @@ import { convertCityCenterToMeters, convertCityCenterToCompass, City } from '../
 import { compassToCoord } from '../utils/underworld'
 
 import useSWR from 'swr'
+import { RealmsColors } from '../utils/colors'
 const textFetcher = (url: string) => fetch(url).then((res) => res.text())
 
 export const useRealmMetadata = (realmId: number) => {
@@ -30,31 +31,34 @@ export const useRealmSvgMetadata = (realmId: number) => {
       const doc = parser.parseFromString(data as string, "application/xml")
 
       // modify style
+      const _escapeColor = (c: string): string => c.replace('#', '%23')
       let style = doc.getElementsByTagName('style')[0]
       style.innerHTML += `
 svg {
-  background-color: rgb(27, 27, 27);
+  background-color: ${_escapeColor(RealmsColors.BG)};
 }
 path {
-  stroke: rgb(193, 150, 93);
+  stroke: ${_escapeColor(RealmsColors.BORDERS)};
 }
 line {
-  stroke: rgb(148, 99, 31);
+  stroke: ${_escapeColor(RealmsColors.HILLS)};
 }
 text {
-  // color: rgb(251, 246, 192);
-  fill: rgba(251, 246, 192, 0.8)!important;
+  fill: ${_escapeColor(RealmsColors.TEXT)}!important;
   stroke: none!important;
 }
 .SelectedCity {
-  fill: rgb(251, 246, 192)!important;
+  fill: ${_escapeColor(RealmsColors.SELECTED)}!important;
   font-size: 50px!important;
 }
 text.SelectedCity {
   font-weight: bold;
 }
+circle {
+  fill: ${_escapeColor(RealmsColors.SELECTED)}!important;
+  stroke: ${_escapeColor(RealmsColors.SELECTED)}!important;
+}
 circle.SelectedCity {
-  stroke: rgb(251, 246, 192)!important;
   stroke-width: 10!important;
 }
 `

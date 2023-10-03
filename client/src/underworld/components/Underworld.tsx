@@ -18,7 +18,6 @@ function Underworld() {
         <RealmImage />
         <RealmData />
       </div>
-      <hr />
       <div className="card MinterPanel">
         <MinterMap />
         <MinterData />
