@@ -198,7 +198,7 @@ export const makeRealmEntryChamberIdFromCoord = (realmId: number, coord: bigint)
 }
 
 export const expandTilemap = (tilemap: number[]) => {
-  let result = Array(400).fill(TileType.Void)
+  let result = Array(400).fill(tilemap.length > 0 ? TileType.Void : TileType.Path)
   const _set = (xx: number, yy: number, tileType: number) => { result[yy * 20 + xx] = tileType }
   for (let i = 0; i < tilemap.length; ++i) {
     const tileType = tilemap[i]

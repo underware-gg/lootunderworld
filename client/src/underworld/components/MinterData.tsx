@@ -32,9 +32,9 @@ function DirectionButton({
   }
 
   if (!exists) {
-    return <button className='DirectionButton Locked' onClick={() => _mint()}>Mint {DirNames[dir]}</button>
+    return <button className='DirectionButton Locked' onClick={() => _mint()}>Unlock<br/>{DirNames[dir]}</button>
   }
-  return <button className='DirectionButton Unocked' onClick={() => _open()}>Open {DirNames[dir]}</button>
+  return <button className='DirectionButton Unocked' onClick={() => _open()}>Go<br />{DirNames[dir]}</button>
 }
 
 

@@ -1,7 +1,6 @@
 import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { useChamberMap } from '../hooks/useChamber'
-// import { MapAscii } from './MapAscii'
-import { Map } from './Map'
+import { MapView } from './MapView'
 
 function MinterMap() {
   const { chamberId } = useUnderworldContext()
@@ -10,8 +9,7 @@ function MinterMap() {
 
   return (
     <div className='MinterMap'>
-      <Map tilemap={expandedTilemap} tileSize={8} />
-      {/* <MapAscii tilemap={tilemap} /> */}
+      <MapView tilemaps={[expandedTilemap]} tileSize={8} />
     </div>
   )
 }
