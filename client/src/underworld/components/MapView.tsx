@@ -3,41 +3,49 @@ import { TileType } from '../utils/underworld'
 import { MapColors } from '../utils/colors'
 
 
+//----------------------------
+// Maps View
+//
 interface MapViewProps {
   tilemaps: number[][]
-  tileSize: number
-  viewboxSize?: number
+  tileSize?: number
+  viewSize?: number
 }
 export function MapView({
   tilemaps,
-  tileSize = 10,
-  viewboxSize = 350,
+  tileSize = 8,
+  viewSize = 350,
 }: MapViewProps) {
 
+  // view size in pixels
   const gridSize = Math.sqrt(tilemaps[0]?.length ?? 0)
   const chamberSize = tileSize * gridSize
-  const viewStart = (viewboxSize - chamberSize) / 2
+
+  // viewbox unit is a <Map>
+  const viewboxSize = viewSize / chamberSize
+  const viewboxStart = (viewboxSize - 1) / 2
 
   return (
-    <svg width={viewboxSize} height={viewboxSize} viewBox={`${-viewStart} ${-viewStart} ${viewboxSize} ${viewboxSize}`}>
+    <svg width={viewSize} height={viewSize} viewBox={`${-viewboxStart} ${-viewboxStart} ${viewboxSize} ${viewboxSize}`}>
       <style>{`svg{background-color:${MapColors.BG1}}`}</style>
       {tilemaps.map((tilemap: number[], index: number) => {
-        return <Map key={`map_${index}`} tilemap={tilemap} gridSize={gridSize} chamberSize={chamberSize} />
+        return <Map key={`map_${index}`} tilemap={tilemap} gridSize={gridSize} />
       })}
     </svg>
   )
 }
 
 
+//----------------------------
+// Single Map
+//
 interface MapProps {
   tilemap: number[]
   gridSize: number
-  chamberSize: number
 }
 export function Map({
   tilemap,
   gridSize,
-  chamberSize,
 }: MapProps) {
 
   // const strokeWidth = 1.0 / tileSize
@@ -84,7 +92,7 @@ export function Map({
   }, [tilemap])
 
   return (
-    <svg width={chamberSize} height={chamberSize} viewBox={`0 0 ${gridSize} ${gridSize}`}>
+    <svg width='1' height='1' viewBox={`0 0 ${gridSize} ${gridSize}`}>
       {tiles}
     </svg>
   )

@@ -9,7 +9,7 @@ function MinterMap() {
 
   return (
     <div className='MinterMap'>
-      <MapView tilemaps={[expandedTilemap]} tileSize={8} />
+      <MapView tilemaps={[expandedTilemap]} />
     </div>
   )
 }
