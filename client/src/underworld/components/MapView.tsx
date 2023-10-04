@@ -1,24 +1,28 @@
 import { useMemo } from 'react'
-import { TileType } from '../utils/underworld'
+import { Compass, TileType } from '../utils/underworld'
 import { MapColors } from '../utils/colors'
 
 
 //----------------------------
 // Maps View
 //
+export interface MapChamber {
+  coord: bigint
+  tilemap: number[]
+}
 interface MapViewProps {
-  tilemaps: number[][]
+  chambers: MapChamber[]
   tileSize?: number
   viewSize?: number
 }
 export function MapView({
-  tilemaps,
+  chambers,
   tileSize = 8,
   viewSize = 350,
 }: MapViewProps) {
 
   // view size in pixels
-  const gridSize = Math.sqrt(tilemaps[0]?.length ?? 0)
+  const gridSize = Math.sqrt(chambers[0]?.tilemap?.length ?? 0)
   const chamberSize = tileSize * gridSize
 
   // viewbox unit is a <Map>
@@ -28,8 +32,8 @@ export function MapView({
   return (
     <svg width={viewSize} height={viewSize} viewBox={`${-viewboxStart} ${-viewboxStart} ${viewboxSize} ${viewboxSize}`}>
       <style>{`svg{background-color:${MapColors.BG1}}`}</style>
-      {tilemaps.map((tilemap: number[], index: number) => {
-        return <Map key={`map_${index}`} tilemap={tilemap} gridSize={gridSize} />
+      {chambers.map((chamber: MapChamber, index: number) => {
+        return <Map key={`map_${index}`} tilemap={chamber.tilemap} gridSize={gridSize} />
       })}
     </svg>
   )

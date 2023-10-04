@@ -1,15 +1,20 @@
+import { useMemo } from 'react'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { useChamberMap } from '../hooks/useChamber'
-import { MapView } from './MapView'
+import { MapChamber, MapView } from './MapView'
 
 function MinterMap() {
   const { chamberId } = useUnderworldContext()
 
-  const { tilemap, expandedTilemap } = useChamberMap(chamberId)
+  const { expandedTilemap } = useChamberMap(chamberId)
+  const chamber: MapChamber = useMemo(() => ({
+    coord: chamberId,
+    tilemap: expandedTilemap,
+  }), [expandedTilemap])
 
   return (
     <div className='MinterMap'>
-      <MapView tilemaps={[expandedTilemap]} />
+      <MapView chambers={[chamber]} />
     </div>
   )
 }
