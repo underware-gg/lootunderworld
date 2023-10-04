@@ -3,7 +3,7 @@ import { Compass, TileType } from '../utils/underworld'
 import { MapColors } from '../utils/colors'
 import { Point } from '../utils/realms'
 
-export const compassToMapPos = (compass: Compass | null): Point => {
+export const compassToMapViewPos = (compass: Compass | null): Point => {
   const north = (compass?.north ?? 0)
   const east = (compass?.east ?? 0)
   const west = (compass?.west ?? 0)
@@ -19,6 +19,7 @@ export interface MapChamber {
   compass: Compass | null
   mapPos: Point
   tilemap: number[]
+  exists: boolean
 }
 
 //----------------------------
@@ -46,16 +47,16 @@ export function MapView({
 
   // viewbox unit is a <Map>
   const viewboxSize = viewSize / chamberSize
-  const viewboxStart = {
+  const viewboxOrigin = {
     x: targetChamber.mapPos.x - ((viewboxSize - 1) / 2),
     y: targetChamber.mapPos.y - ((viewboxSize - 1) / 2),
   }
 
   return (
-    <svg width={viewSize} height={viewSize} viewBox={`${viewboxStart.x} ${viewboxStart.y} ${viewboxSize} ${viewboxSize}`}>
+    <svg width={viewSize} height={viewSize} viewBox={`${viewboxOrigin.x} ${viewboxOrigin.y} ${viewboxSize} ${viewboxSize}`}>
       <style>{`svg{background-color:${MapColors.BG1}}`}</style>
       {chambers.map((chamber: MapChamber, index: number) => {
-        const isTarget = (chamber.coord == targetChamber.coord)
+        const isTarget = (chamber.coord == targetChamber.coord && chamber.exists)
         return (
           <g key={`map_${chamber.coord.toString()}`} transform={`translate(${chamber.mapPos.x},${chamber.mapPos.y})`} >
             <Map tilemap={chamber.tilemap} gridSize={gridSize} strokeWidth={strokeWidth} isTarget={isTarget} />
@@ -113,8 +114,8 @@ export function Map({
           width='1'
           height='1'
           fill={tileColor}
-          stroke='#8881'
-          strokeWidth={strokeWidth}
+          // stroke='#8881'
+          // strokeWidth={strokeWidth}
         />
       }
       if (tile) {

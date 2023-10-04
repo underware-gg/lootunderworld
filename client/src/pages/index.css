@@ -124,6 +124,11 @@ canvas {
   margin: 0.25em;
 }
 
+.SmallButton {
+  margin: 0 0.1em;
+  padding: 0.1em 0.4em;
+}
+
 .Locked {
   background-color: #94631f;
 }

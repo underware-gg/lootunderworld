@@ -104,11 +104,11 @@ function MinterData() {
         </div>
 
         <p>
-          Compass: <b>{coordToSlug(chamberId, yonder)}</b>
+          <b>{coordToSlug(chamberId, yonder)}</b>
           <br />
-          <b>{bigintToHex(chamberId)}</b>
+          {bigintToHex(chamberId)}
           <br />
-          <b>{chamberId.toString()}</b>
+          {chamberId.toString()}
         </p>
         <p>
           Yonder: <b>{yonder}</b>
