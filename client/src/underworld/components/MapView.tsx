@@ -8,21 +8,26 @@ import { MapColors } from '../utils/colors'
 //
 export interface MapChamber {
   coord: bigint
+  compass: Compass | null
   tilemap: number[]
 }
 interface MapViewProps {
+  targetChamber: MapChamber
   chambers: MapChamber[]
   tileSize?: number
   viewSize?: number
 }
 export function MapView({
+  targetChamber,
   chambers,
   tileSize = 8,
   viewSize = 350,
 }: MapViewProps) {
 
+  if (!targetChamber?.tilemap?.length) return <></>
+
   // view size in pixels
-  const gridSize = Math.sqrt(chambers[0]?.tilemap?.length ?? 0)
+  const gridSize = Math.sqrt(targetChamber.tilemap.length)
   const chamberSize = tileSize * gridSize
 
   // viewbox unit is a <Map>
@@ -33,6 +38,8 @@ export function MapView({
     <svg width={viewSize} height={viewSize} viewBox={`${-viewboxStart} ${-viewboxStart} ${viewboxSize} ${viewboxSize}`}>
       <style>{`svg{background-color:${MapColors.BG1}}`}</style>
       {chambers.map((chamber: MapChamber, index: number) => {
+        // tODO: REMOVE ME
+        if(targetChamber.coord != chamber.coord) return
         return <Map key={`map_${index}`} tilemap={chamber.tilemap} gridSize={gridSize} />
       })}
     </svg>

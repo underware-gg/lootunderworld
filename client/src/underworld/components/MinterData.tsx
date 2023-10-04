@@ -107,6 +107,8 @@ function MinterData() {
           Compass: <b>{coordToSlug(chamberId, yonder)}</b>
           <br />
           <b>{bigintToHex(chamberId)}</b>
+          <br />
+          <b>{chamberId.toString()}</b>
         </p>
         <p>
           Yonder: <b>{yonder}</b>

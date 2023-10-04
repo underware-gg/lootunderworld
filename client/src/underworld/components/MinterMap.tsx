@@ -1,22 +1,69 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { useChamberMap } from '../hooks/useChamber'
 import { MapChamber, MapView } from './MapView'
+import { coordToCompass } from '../utils/underworld'
 
 function MinterMap() {
-  const { chamberId } = useUnderworldContext()
+  const { chamberId: currentChamberId } = useUnderworldContext()
 
-  const { expandedTilemap } = useChamberMap(chamberId)
-  const chamber: MapChamber = useMemo(() => ({
-    coord: chamberId,
-    tilemap: expandedTilemap,
-  }), [expandedTilemap])
+  useEffect(() => {
+    _addLoader(currentChamberId)
+  }, [currentChamberId])
+
+  // tilemap loaders
+  const [loaders, setLoaders] = useState<bigint[]>([])
+  const _addLoader = (chamberId: bigint) => {
+    if (!loaders.includes(chamberId)) {
+      setLoaders([...loaders, chamberId])
+    }
+  }
+  // console.log(`LOADERS:`, loaders)
+
+  // loaded tilemaps
+  const [chambers, setChambers] = useState<{ [key: string]: MapChamber }>({})
+  const _addChamber = (chamber: MapChamber) => {
+    const _key = chamber.coord.toString()
+    setChambers({
+      ...chambers,
+      [_key]: chamber,
+    })
+  }
+  const mapChambers = useMemo(() => Object.values(chambers), [chambers])
+  const targetChamber = useMemo(() => { 
+    return (chambers[currentChamberId.toString()] ?? {})
+  }, [currentChamberId, chambers])
 
   return (
     <div className='MinterMap'>
-      <MapView chambers={[chamber]} />
+      {loaders.map((coord: bigint) => {
+        return <MapLoader key={`loader_${coord.toString()}`} coord={coord} addChamber={_addChamber} />
+      })}
+      <MapView targetChamber={targetChamber} chambers={mapChambers} />
     </div>
   )
 }
+
+interface MapLoaderProps {
+  coord: bigint,
+  addChamber: (chamber: MapChamber) => void,
+}
+function MapLoader({
+  coord,
+  addChamber,
+}: MapLoaderProps) {
+  const { expandedTilemap } = useChamberMap(coord)
+  useEffect(() => {
+    if (expandedTilemap) {
+      addChamber({
+        coord,
+        compass: coordToCompass(coord),
+        tilemap: expandedTilemap,
+      })
+    }
+  }, [coord, expandedTilemap])
+  return <></>
+}
+
 
 export default MinterMap
