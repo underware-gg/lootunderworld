@@ -44,8 +44,15 @@ function RealmCitySelector({
 function RealmData({
   // realmId,
 }: ChamberMapProps) {
-  const { realmId, city } = useUnderworldContext()
+  const { realmId, city, dispatch, UnderworldActions } = useUnderworldContext()
   const { metadata } = useRealmMetadata(realmId)
+
+  const _setSelectedRealm = (newRealmId: number) => {
+    dispatch({
+      type: UnderworldActions.SET_REALM_ID,
+      payload: newRealmId,
+    })
+  }
 
   return (
     <div className='RealmData AlignTop'>
@@ -53,7 +60,7 @@ function RealmData({
         {metadata.name}
       </h1>
       <h3>
-        Realm #{realmId}
+        Realm #{realmId} <span className='Anchor' onClick={() => _setSelectedRealm(Math.floor(Math.random()*8000)+1)}>🔄</span>
       </h3>
 
       City: <RealmCitySelector />
@@ -64,7 +71,7 @@ function RealmData({
             Size: <b>{city.radius}</b>
           </p>
           <p>
-            Elevation: <b>{city?.elevation ?? '?'}</b>
+            Elevation: <b>{city.elevation >= 0 ? city.elevation : '?'}</b>
           </p>
           <p>
             Compass: <b>{compassToSlug(city.compass)}</b>

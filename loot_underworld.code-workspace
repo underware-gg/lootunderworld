@@ -24,6 +24,7 @@
       "**/.gitignore": true,
       "**/.gitmodules": true,
       "**/manifest.json": true,
+      "**/database.json": true,
       "**/generated/*": true,
     },
     "typescript.validate.enable": true,

@@ -12,7 +12,7 @@ import { City } from '../utils/realms'
 // Constants
 //
 export const initialState = {
-  realmId: 6915,
+  realmId: 1, //6915,
   cityIndex: null,
   city: null,
   chamberId: 0n,

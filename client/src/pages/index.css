@@ -90,6 +90,10 @@ canvas {
 .NoPadding { padding: 0; }
 .Padded { padding: 0.5em; }
 
+.Anchor {
+  cursor: pointer;
+}
+
 .Spacer20 {
   width: '100%';
   min-height: 20px;

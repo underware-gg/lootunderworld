@@ -11,7 +11,7 @@ export interface City {
   description: string,
   center: Point,
   radius: number
-  elevation?: number,
+  elevation: number,
   meters: Point,
   compass: Compass,
   coord: bigint,
