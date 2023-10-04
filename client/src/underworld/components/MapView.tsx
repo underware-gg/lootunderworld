@@ -1,16 +1,29 @@
 import { useMemo } from 'react'
 import { Compass, TileType } from '../utils/underworld'
 import { MapColors } from '../utils/colors'
+import { Point } from '../utils/realms'
 
+export const compassToMapPos = (compass: Compass | null): Point => {
+  const north = (compass?.north ?? 0)
+  const east = (compass?.east ?? 0)
+  const west = (compass?.west ?? 0)
+  const south = (compass?.south ?? 0)
+  return {
+    x: compass ? (east > 0 ? east : -west + 1) : 0,
+    y: compass ? (south > 0 ? south : -north + 1) : 0,
+  }
+}
+
+export interface MapChamber {
+  coord: bigint
+  compass: Compass | null
+  mapPos: Point
+  tilemap: number[]
+}
 
 //----------------------------
 // Maps View
 //
-export interface MapChamber {
-  coord: bigint
-  compass: Compass | null
-  tilemap: number[]
-}
 interface MapViewProps {
   targetChamber: MapChamber
   chambers: MapChamber[]
@@ -20,7 +33,7 @@ interface MapViewProps {
 export function MapView({
   targetChamber,
   chambers,
-  tileSize = 8,
+  tileSize = 4,
   viewSize = 350,
 }: MapViewProps) {
 
@@ -29,18 +42,25 @@ export function MapView({
   // view size in pixels
   const gridSize = Math.sqrt(targetChamber.tilemap.length)
   const chamberSize = tileSize * gridSize
+  const strokeWidth = 1.0 / tileSize
 
   // viewbox unit is a <Map>
   const viewboxSize = viewSize / chamberSize
-  const viewboxStart = (viewboxSize - 1) / 2
+  const viewboxStart = {
+    x: targetChamber.mapPos.x - ((viewboxSize - 1) / 2),
+    y: targetChamber.mapPos.y - ((viewboxSize - 1) / 2),
+  }
 
   return (
-    <svg width={viewSize} height={viewSize} viewBox={`${-viewboxStart} ${-viewboxStart} ${viewboxSize} ${viewboxSize}`}>
+    <svg width={viewSize} height={viewSize} viewBox={`${viewboxStart.x} ${viewboxStart.y} ${viewboxSize} ${viewboxSize}`}>
       <style>{`svg{background-color:${MapColors.BG1}}`}</style>
       {chambers.map((chamber: MapChamber, index: number) => {
-        // tODO: REMOVE ME
-        if(targetChamber.coord != chamber.coord) return
-        return <Map key={`map_${index}`} tilemap={chamber.tilemap} gridSize={gridSize} />
+        const isTarget = (chamber.coord == targetChamber.coord)
+        return (
+          <g key={`map_${chamber.coord.toString()}`} transform={`translate(${chamber.mapPos.x},${chamber.mapPos.y})`} >
+            <Map tilemap={chamber.tilemap} gridSize={gridSize} strokeWidth={strokeWidth} isTarget={isTarget} />
+          </g>
+        )
       })}
     </svg>
   )
@@ -53,13 +73,15 @@ export function MapView({
 interface MapProps {
   tilemap: number[]
   gridSize: number
+  strokeWidth: number,
+  isTarget: boolean
 }
 export function Map({
   tilemap,
   gridSize,
+  strokeWidth,
+  isTarget,
 }: MapProps) {
-
-  // const strokeWidth = 1.0 / tileSize
 
   const tiles = useMemo(() => {
     const result: any = []
@@ -91,8 +113,8 @@ export function Map({
           width='1'
           height='1'
           fill={tileColor}
-        // stroke='#8882'
-        // strokeWidth={strokeWidth}
+          stroke='#8881'
+          strokeWidth={strokeWidth}
         />
       }
       if (tile) {
@@ -105,6 +127,7 @@ export function Map({
   return (
     <svg width='1' height='1' viewBox={`0 0 ${gridSize} ${gridSize}`}>
       {tiles}
+      <rect x='0' y='0' width='100%' height='100%' fill='none' stroke={isTarget ? MapColors.EXIT : 'none'} strokeWidth={strokeWidth*2} />
     </svg>
   )
 }

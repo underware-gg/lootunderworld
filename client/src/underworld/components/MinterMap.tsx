@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { useChamberMap } from '../hooks/useChamber'
-import { MapChamber, MapView } from './MapView'
+import { MapChamber, MapView, compassToMapPos } from './MapView'
 import { coordToCompass } from '../utils/underworld'
 
 function MinterMap() {
@@ -18,7 +18,6 @@ function MinterMap() {
       setLoaders([...loaders, chamberId])
     }
   }
-  // console.log(`LOADERS:`, loaders)
 
   // loaded tilemaps
   const [chambers, setChambers] = useState<{ [key: string]: MapChamber }>({})
@@ -55,9 +54,11 @@ function MapLoader({
   const { expandedTilemap } = useChamberMap(coord)
   useEffect(() => {
     if (expandedTilemap) {
+      const compass = coordToCompass(coord)
       addChamber({
         coord,
-        compass: coordToCompass(coord),
+        compass,
+        mapPos: compassToMapPos(compass),
         tilemap: expandedTilemap,
       })
     }
