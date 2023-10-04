@@ -29,7 +29,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 255;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 0]);
 
         // check Chamber component
         let chamber = get_world_Chamber(world, to_location_id);
@@ -78,8 +78,8 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 1;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 0]);
     }
 
     #[test]
@@ -89,7 +89,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 0;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 0]);
     }
 
     #[test]
@@ -99,7 +99,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 123;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), DIR::OVER.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), DIR::OVER.into(), 0]);
     }
 
     #[test]
@@ -108,7 +108,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 212;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into(), 0]);
     }
 
     #[test]
@@ -118,7 +118,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 212;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::WEST.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::WEST.into(), 0]);
     }
 
     #[test]
@@ -128,7 +128,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 232;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:1, north:1, east:1, west:0, south:1 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into(), 0]);
     }
 
     #[test]
@@ -138,7 +138,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 434;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:1, north:1, east:1, west:0, south:0 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::EAST.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::EAST.into(), 0]);
     }
 
     fn assert_doors(prefix: felt252, world: IWorldDispatcher, location_id: u128, north: u8, east: u8, west: u8, south: u8, over: u8, under: u8) {

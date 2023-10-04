@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDojoSystemCalls, useDojoAccount } from '../../DojoContext'
 import { useChamber, useChamberOffset, useRealmChamberIds } from '../hooks/useChamber'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
@@ -8,11 +8,13 @@ import { Dir, DirNames, coordToCompass, coordToSlug, offsetCompass } from '../ut
 interface DirectionButtonProps {
   chamberId: bigint,
   dir: Dir,
+  algo: number,
 }
 
 function DirectionButton({
   chamberId,
   dir,
+  algo,
 }: DirectionButtonProps) {
   const { realmId, dispatch, UnderworldActions } = useUnderworldContext()
   const { mint_realms_chamber } = useDojoSystemCalls()
@@ -22,7 +24,7 @@ function DirectionButton({
   const exists = useMemo(() => (seed > 0n), [seed, locationId])
 
   const _mint = () => {
-    mint_realms_chamber(account, realmId, chamberId, dir)
+    mint_realms_chamber(account, realmId, chamberId, dir, algo)
   }
   const _open = () => {
     dispatch({
@@ -38,10 +40,11 @@ function DirectionButton({
 }
 
 
-
 function MinterData() {
   const { mint_realms_chamber } = useDojoSystemCalls()
   const { account } = useDojoAccount()
+
+  const [algo, setAlgo] = useState(0)
 
   // Current Realm / Chamber
   const { realmId, city, chamberId, dispatch, UnderworldActions } = useUnderworldContext()
@@ -65,7 +68,7 @@ function MinterData() {
 
   const _mintFirst = () => {
     if (canMintFirst && city) {
-      mint_realms_chamber(account, realmId, city.coord, Dir.Under)
+      mint_realms_chamber(account, realmId, city.coord, Dir.Under, algo)
     }
   }
 
@@ -114,12 +117,12 @@ function MinterData() {
           Yonder: <b>{yonder}</b>
         </p>
         <div className='Padded'>
-          <DirectionButton chamberId={chamberId} dir={Dir.North} />
+          <DirectionButton chamberId={chamberId} dir={Dir.North} algo={algo} />
           <div>
-            <DirectionButton chamberId={chamberId} dir={Dir.West} />
-            <DirectionButton chamberId={chamberId} dir={Dir.East} />
+            <DirectionButton chamberId={chamberId} dir={Dir.West} algo={algo} />
+            <DirectionButton chamberId={chamberId} dir={Dir.East} algo={algo} />
           </div>
-          <DirectionButton chamberId={chamberId} dir={Dir.South} />
+          <DirectionButton chamberId={chamberId} dir={Dir.South} algo={algo} />
         </div>
       </>}
 

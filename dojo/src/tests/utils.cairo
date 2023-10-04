@@ -32,7 +32,7 @@ mod utils {
 
     fn mint_get_realms_get_chamber(world: IWorldDispatcher, token_id: u16, from_coord: Location, from_dir: Dir) -> Chamber {
         let dir_u8: u8 = from_dir.into();
-        world.execute('mint_realms_chamber', array![token_id.into(), from_coord.to_id().into(), dir_u8.into()]);
+        world.execute('mint_realms_chamber', array![token_id.into(), from_coord.to_id().into(), dir_u8.into(), 0]);
         let to_location: Location = from_coord.offset(from_dir);
         get_world_Chamber(world, to_location.to_id())
     }

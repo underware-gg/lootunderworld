@@ -23,9 +23,9 @@ export function createSystemCalls(
 ) {
 
 
-  const mint_realms_chamber = async (signer: Account, realmId: number, from_coord: bigint, from_dir: number) => {
+  const mint_realms_chamber = async (signer: Account, realmId: number, from_coord: bigint, from_dir: number, algo: number) => {
     try {
-      const tx = await execute(signer, "mint_realms_chamber", [realmId, from_coord, from_dir]);
+      const tx = await execute(signer, "mint_realms_chamber", [realmId, from_coord, from_dir, algo]);
       console.log(`mint_realms_chamber tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
       console.log(`mint_realms_chamber receipt:`, receipt)

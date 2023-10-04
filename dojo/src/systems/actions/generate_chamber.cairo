@@ -16,7 +16,7 @@ use loot_underworld::utils::bitwise::{U256Bitwise};
 
 
 #[inline(always)]
-fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_location: Location, from_dir: Dir) -> u128 {
+fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_location: Location, from_dir: Dir, algo: u8) -> u128 {
 
     let from_chamber = get!(world, from_location.to_id(), (Chamber));
 
