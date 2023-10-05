@@ -23,7 +23,7 @@ fn maze_binary_tree(seed: u256, entry_dir: Dir) -> u256 {
         let xx = (x * 2) + 1;
         let yy = (y * 2);
         let ii = (yy * 16) + xx;
-        let rnd = U256Bitwise::isSet(seed, 255 - ii);
+        let rnd = U256Bitwise::is_set(seed, 255 - ii);
         // set self
         result = U256Bitwise::set(result, ii);
         if (yy == 0 || rnd) {
@@ -62,7 +62,7 @@ fn maze_binary_fuzz(seed: u256, protected: u256) -> u256 {
         let yy = (y * 2) + 1;
         let ii = (yy * 16) + xx;
         result = U256Bitwise::set(result, ii);
-        if (U256Bitwise::isSet(seed, 255 - ii)) {
+        if (U256Bitwise::is_set(seed, 255 - ii)) {
             result = U256Bitwise::set(result, (yy * 16) + xx - 1);
             result = U256Bitwise::unset(result, ((yy - 1) * 16) + xx);
         } else {
