@@ -147,7 +147,7 @@ function MinterData() {
             { value: 146, name: 'carve(%)' },
             { value: 147, name: 'carve(%)' },
             { value: 154, name: 'carve(%)' },
-            { value: 155, name: 'carve(%)' },
+            { value: 155, name: 'carve(%)-OK' },
             { value: 160, name: 'carve(%)' },
             { value: 163, name: 'carve(%)' },
             { value: 164, name: 'carve(%)' },

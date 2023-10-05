@@ -800,11 +800,11 @@
         },
         {
           "name": "algo",
-          "type": "core::integer::u8"
+          "type": "core::integer::u128"
         }
       ],
       "outputs": [],
-      "class_hash": "0x1282e60b308fe6813212e9c372495bfa8e29d2344d745cddbb042fbb3afaf8f",
+      "class_hash": "0x2307f42b15dbb09e7c3b4150792a392e6882bc23c8b9872f6c02b2013970e0d",
       "dependencies": [],
       "abi": [
         {
@@ -868,7 +868,7 @@
             },
             {
               "name": "algo",
-              "type": "core::integer::u8"
+              "type": "core::integer::u128"
             },
             {
               "name": "ctx",

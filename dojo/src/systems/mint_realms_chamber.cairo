@@ -11,7 +11,7 @@ mod mint_realms_chamber {
     use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir, DIR, DirTrait};
 
-    fn execute(ctx: Context, token_id: u128, from_coord: u128, from_dir: u8, algo: u8) {
+    fn execute(ctx: Context, token_id: u128, from_coord: u128, from_dir: u8, algo: u128) {
 
         assert(token_id > 0, 'Invalid token id');
 

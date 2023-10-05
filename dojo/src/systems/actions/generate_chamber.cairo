@@ -6,17 +6,15 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 use loot_underworld::systems::actions::create_door::{create_door};
 use loot_underworld::components::chamber::{Chamber, Map, Doors};
-use loot_underworld::core::seeder::{make_seed};
-use loot_underworld::core::carver::{carve};
-use loot_underworld::core::collapsor::{collapse};
-use loot_underworld::core::protector::{protect};
 use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DirTrait};
+use loot_underworld::core::seeder::{make_seed};
+use loot_underworld::core::generator::{generate};
 use loot_underworld::utils::bitwise::{U256Bitwise};
 
 
 #[inline(always)]
-fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_location: Location, from_dir: Dir, algo: u8) -> u128 {
+fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_location: Location, from_dir: Dir, algo: u128) -> u128 {
 
     let from_chamber = get!(world, from_location.to_id(), (Chamber));
 
@@ -80,34 +78,7 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     //---------------------
     // Bitmap
     //
-    let mut bitmap: u256 = seed;
-    let mut postProtect: bool = false;
-
-    if(algo == 1) {
-        bitmap = collapse(bitmap, false);
-        postProtect = true;
-    } else if(algo == 2) {
-        bitmap = collapse(bitmap, true);
-        postProtect = true;
-    } else if(algo > 90 && algo < 100) {
-        let pass1: u8 = algo % 10;
-        bitmap = collapse(bitmap, true);
-        bitmap = carve(bitmap, protected, pass1);
-    } else if(algo > 100 && algo < 200) {
-        let pass1: u8 = (algo - 100) / 10;
-        let pass2: u8 = (algo - 100) % 10;
-        if(pass1 > 0) { bitmap = carve(bitmap, protected, pass1); }
-        if(pass2 > 0) { bitmap = carve(bitmap, protected, pass2); }
-    } else {
-        postProtect = true;
-    }
-    // bitmap = carve(bitmap, protected, 4);
-    // bitmap = collapse(bitmap, false);
-
-    // only needed if not using carve()
-    if(postProtect) {
-        bitmap = protect(bitmap, protected);
-    }
+    let mut bitmap: u256 = generate(seed, protected, algo);
 
     set!(world, (
         Map {
