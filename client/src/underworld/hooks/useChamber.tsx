@@ -74,7 +74,7 @@ export const useChamberMap = (locationId: bigint) => {
     let result: number[] = []
     if (bitmap && tiles.length > 0) {
       for (let i = 0; i < 256; ++i) {
-        const bit = bitmap & (BigInt(1) << BigInt(i))
+        const bit = bitmap & (BigInt(1) << BigInt(255-i))
         result.push(bit ? TileType.Path : TileType.Void)
       }
       tiles.forEach((tile) => {

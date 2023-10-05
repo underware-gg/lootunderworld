@@ -1,8 +1,12 @@
 use loot_underworld::utils::bitwise::{U256Bitwise};
 
 trait BitmapTrait {
-    fn is_set(bitmap: u256, x: usize, y: usize) -> bool;
-    fn set(bitmap: u256, x: usize, y: usize) -> u256;
+    fn bit_tile(i: usize) -> usize;
+    fn bit_xy(x: usize, y: usize) -> usize;
+    fn is_set_tile(bitmap: u256, i: usize) -> bool;
+    fn is_set_xy(bitmap: u256, x: usize, y: usize) -> bool;
+    fn set_tile(bitmap: u256, i: usize) -> u256;
+    fn set_xy(bitmap: u256, x: usize, y: usize) -> u256;
     fn unset(bitmap: u256, x: usize, y: usize) -> u256;
     fn Rotate90CW(bitmap: u256) -> u256;
     fn Rotate90CCW(bitmap: u256) -> u256;
@@ -11,19 +15,43 @@ trait BitmapTrait {
 
 impl Bitmap of BitmapTrait {
 
+    // returns the bit number of a tile position (e.g. doors)
+    // starting from the map top left
     #[inline(always)]
-    fn is_set(bitmap: u256, x: usize, y: usize) -> bool {
-        U256Bitwise::is_set(bitmap, 255 - (y * 16 + x))
+    fn bit_tile(i: usize) -> usize {
+       (255 - i)
+    }
+
+    // returns the bit number of a [x, y] position
+    // starting from the map top left
+    #[inline(always)]
+    fn bit_xy(x: usize, y: usize) -> usize {
+       (255 - (y * 16 + x))
     }
 
     #[inline(always)]
-    fn set(bitmap: u256, x: usize, y: usize) -> u256 {
-        U256Bitwise::set(bitmap, 255 - (y * 16 + x))
+    fn is_set_tile(bitmap: u256, i: usize) -> bool {
+        U256Bitwise::is_set(bitmap, Bitmap::bit_tile(i))
+    }
+
+    #[inline(always)]
+    fn is_set_xy(bitmap: u256, x: usize, y: usize) -> bool {
+        U256Bitwise::is_set(bitmap, Bitmap::bit_xy(x, y))
+    }
+
+    #[inline(always)]
+    fn set_tile(bitmap: u256, i: usize) -> u256 {
+        U256Bitwise::set(bitmap, Bitmap::bit_tile(i))
+    }
+
+    #[inline(always)]
+    fn set_xy(bitmap: u256, x: usize, y: usize) -> u256 {
+        U256Bitwise::set(bitmap, Bitmap::bit_xy(x, y))
     }
 
     #[inline(always)]
     fn unset(bitmap: u256, x: usize, y: usize) -> u256 {
-        U256Bitwise::unset(bitmap, 255 - (y * 16 + x))
+        U256Bitwise::unset(bitmap, Bitmap::bit_xy(x, y))
     }
 
     fn Rotate90CW(bitmap: u256) -> u256 {
@@ -81,8 +109,12 @@ impl Bitmap of BitmapTrait {
 #[test]
 #[available_gas(100_000_000)]
 fn test_bitmap_inline() {
-    let bmp1: u256 = Bitmap::set(0, 8, 8);
-    let bmp2: u256 = Bitmap::set(0, 4 + 4, 4 + 4);
-    assert(bmp1 != 0, 'test_bitmap_inline_zero');
-    assert(bmp1 == bmp2, 'test_bitmap_inline_equals');
+    let bit1: usize = Bitmap::bit_xy(8, 8);
+    let bit2: usize = Bitmap::bit_xy(4 + 4, 4 + 4);
+    assert(bit1 != 0, 'test_bitmap_inline_bit_zero');
+    assert(bit1 == bit2, 'test_bitmap_inline_bit_equals');
+    let bmp1: u256 = Bitmap::set_xy(0, 8, 8);
+    let bmp2: u256 = Bitmap::set_xy(0, 4 + 4, 4 + 4);
+    assert(bmp1 != 0, 'test_bitmap_inline_set_zero');
+    assert(bmp1 == bmp2, 'test_bitmap_inline_set_equals');
 }

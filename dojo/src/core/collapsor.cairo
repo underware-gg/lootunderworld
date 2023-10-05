@@ -116,16 +116,16 @@ fn collapse(seed: u256, open_spaces: bool) -> u256 {
         let x = (i % 8) * 2;
         let y = (i / 8) * 2;
         if (*cells[i] & 0x08 != 0) {
-            result = Bitmap::set(result, x, y);
+            result = Bitmap::set_xy(result, x, y);
         }
         if (*cells[i] & 0x04 != 0) {
-            result = Bitmap::set(result, x + 1, y);
+            result = Bitmap::set_xy(result, x + 1, y);
         }
         if (*cells[i] & 0x02 != 0) {
-            result = Bitmap::set(result, x, y + 1);
+            result = Bitmap::set_xy(result, x, y + 1);
         }
         if (*cells[i] & 0x01 != 0) {
-            result = Bitmap::set(result, x + 1, y + 1);
+            result = Bitmap::set_xy(result, x + 1, y + 1);
         }
         i += 1;
     };

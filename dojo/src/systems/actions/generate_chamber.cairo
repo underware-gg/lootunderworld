@@ -10,7 +10,7 @@ use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DirTrait};
 use loot_underworld::core::seeder::{make_seed};
 use loot_underworld::core::generator::{generate};
-use loot_underworld::utils::bitwise::{U256Bitwise};
+use loot_underworld::utils::bitmap::{Bitmap};
 
 
 #[inline(always)]
@@ -67,12 +67,12 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
 
     // protect doors area
     let mut protected: u256 = 0;
-    protected = U256Bitwise::set(protected, north.into());
-    protected = U256Bitwise::set(protected, east.into());
-    protected = U256Bitwise::set(protected, west.into());
-    protected = U256Bitwise::set(protected, south.into());
-    if(over > 0) { protected = U256Bitwise::set(protected, over.into()); }
-    if(under > 0) { protected = U256Bitwise::set(protected, under.into()); }
+    protected = Bitmap::set_tile(protected, north.into());
+    protected = Bitmap::set_tile(protected, east.into());
+    protected = Bitmap::set_tile(protected, west.into());
+    protected = Bitmap::set_tile(protected, south.into());
+    if(over > 0) { protected = Bitmap::set_tile(protected, over.into()); }
+    if(under > 0) { protected = Bitmap::set_tile(protected, under.into()); }
 
 
     //---------------------

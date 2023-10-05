@@ -70,7 +70,7 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
         }
         // apply rule
         if (area_count >= pass_value) {
-            result = Bitmap::set(result, x, y); // set bit
+            result = Bitmap::set_xy(result, x, y); // set bit
         }
         i += 1;
     };
