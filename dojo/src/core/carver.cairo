@@ -2,6 +2,7 @@ use array::ArrayTrait;
 use traits::Into;
 use debug::PrintTrait;
 use loot_underworld::utils::bitwise::{U256Bitwise};
+use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::utils::arrays::{create_array};
 use loot_underworld::core::seeder::{make_seed};
 
@@ -43,13 +44,13 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
         let x = (i % 16);
         let y = (i / 16);
         let mut area_count: u8 = *cell_values[i] * 2;
-        if y > 0 {
+        if (y > 0) {
             area_count += *cell_values[i-16]; // x, y-1
         }
-        if y < 15 {
+        if (y < 15) {
             area_count += *cell_values[i+16]; // x, y+1
         }
-        if x > 0 {
+        if (x > 0) {
             area_count += *cell_values[i-1]; // x-1, y
             if y > 0 {
                 area_count += *cell_values[i-16-1]; // x-1, y-1
@@ -58,7 +59,7 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
                 area_count += *cell_values[i+16-1]; // x-1, y+1
             }
         }
-        if x < 15 {
+        if (x < 15) {
             area_count += *cell_values[i+1]; // x+1, y
             if y > 0 {
                 area_count += *cell_values[i-16+1]; // x+, y-1
@@ -68,8 +69,8 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
             }
         }
         // apply rule
-        if area_count >= pass_value {
-            result = U256Bitwise::set(result, 255 - i); // set bit
+        if (area_count >= pass_value) {
+            result = Bitmap::set(result, x, y); // set bit
         }
         i += 1;
     };
@@ -88,14 +89,14 @@ fn test_calc_cell_values() {
     let values = calc_cell_values(0xff, 0x0f);
     let mut n: usize = 0;
     loop {
-        if n < 4 {
+        if (n < 4) {
             assert(*values[255 - n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PROTECTED');
-        } else if n < 8 {
+        } else if (n < 8) {
             assert(*values[255 - n] == CELL_VALUE_WALL, 'test_calc_cell_values WALL');
         } else {
             assert(*values[255 - n] == 0, 'test_calc_cell_values PATH');
         }
-        if n == 255 { break; }
+        if (n == 255) { break; }
         n += 1;
     }
 }
@@ -107,7 +108,7 @@ fn test_calc_cell_values_max() {
     let mut n: usize = 0;
     loop {
         assert(*values[n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PATH');
-        if n == 255 { break; }
+        if (n == 255) { break; }
         n += 1;
     }
 }

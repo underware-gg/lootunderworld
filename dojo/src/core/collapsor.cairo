@@ -2,6 +2,7 @@ use array::ArrayTrait;
 use traits::Into;
 use debug::PrintTrait;
 use loot_underworld::utils::bitwise::{U256Bitwise};
+use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::utils::arrays::{create_array};
 use loot_underworld::core::seeder::{make_seed};
 
@@ -112,17 +113,19 @@ fn collapse(seed: u256, open_spaces: bool) -> u256 {
     let mut i: usize = 0;
     loop {
         if i >= 64 { break; }
+        let x = (i % 8) * 2;
+        let y = (i / 8) * 2;
         if (*cells[i] & 0x08 != 0) {
-            result = U256Bitwise::set(result, 255 - ((i%8)*2 + (i/8)*2*16));
+            result = Bitmap::set(result, x, y);
         }
         if (*cells[i] & 0x04 != 0) {
-            result = U256Bitwise::set(result, 255 - ((i%8)*2+1 + (i/8)*2*16));
+            result = Bitmap::set(result, x + 1, y);
         }
         if (*cells[i] & 0x02 != 0) {
-            result = U256Bitwise::set(result, 255 - ((i%8)*2 + ((i/8)*2+1)*16));
+            result = Bitmap::set(result, x, y + 1);
         }
         if (*cells[i] & 0x01 != 0) {
-            result = U256Bitwise::set(result, 255 - ((i%8)*2+1 + ((i/8)*2+1)*16));
+            result = Bitmap::set(result, x + 1, y + 1);
         }
         i += 1;
     };

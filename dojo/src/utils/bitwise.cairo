@@ -65,9 +65,11 @@ impl U8Bitwise of Bitwise<u8> {
         if n == 7 { return 0x80; }
         0
     }
+    #[inline(always)]
     fn set(x: u8, n: usize) -> u8 {
         x | U8Bitwise::bit(n)
     }
+    #[inline(always)]
     fn unset(x: u8, n: usize) -> u8 {
         x & ~U8Bitwise::bit(n)
     }
@@ -79,6 +81,7 @@ impl U8Bitwise of Bitwise<u8> {
         if n >= 8 { return 0; }
         x / U8Bitwise::bit(n)
     }
+    #[inline(always)]
     fn is_set(x: u8, n: usize) -> bool {
         ((U8Bitwise::shr(x, n) & 1) != 0)
     }
@@ -100,9 +103,11 @@ impl U16Bitwise of Bitwise<u16> {
         if n < 16 { return U8Bitwise::bit(n-8).into() * 0x100; }
         0
     }
+    #[inline(always)]
     fn set(x: u16, n: usize) -> u16 {
         x | U16Bitwise::bit(n)
     }
+    #[inline(always)]
     fn unset(x: u16, n: usize) -> u16 {
         x & ~U16Bitwise::bit(n)
     }
@@ -114,6 +119,7 @@ impl U16Bitwise of Bitwise<u16> {
         if n >= 16 { return 0; }
         x / U16Bitwise::bit(n)
     }
+    #[inline(always)]
     fn is_set(x: u16, n: usize) -> bool {
         ((U16Bitwise::shr(x, n) & 1) != 0)
     }
@@ -135,9 +141,11 @@ impl U32Bitwise of Bitwise<u32> {
         if n < 32 { return U16Bitwise::bit(n-16).into() * 0x10000; }
         0
     }
+    #[inline(always)]
     fn set(x: u32, n: usize) -> u32 {
         x | U32Bitwise::bit(n)
     }
+    #[inline(always)]
     fn unset(x: u32, n: usize) -> u32 {
         x & ~U32Bitwise::bit(n)
     }
@@ -149,6 +157,7 @@ impl U32Bitwise of Bitwise<u32> {
         if n >= 32 { return 0; }
         x / U32Bitwise::bit(n)
     }
+    #[inline(always)]
     fn is_set(x: u32, n: usize) -> bool {
         ((U32Bitwise::shr(x, n) & 1) != 0)
     }
@@ -170,9 +179,11 @@ impl U64Bitwise of Bitwise<u64> {
         if n < 64 { return U32Bitwise::bit(n-32).into() * 0x100000000; }
         0
     }
+    #[inline(always)]
     fn set(x: u64, n: usize) -> u64 {
         x | U64Bitwise::bit(n)
     }
+    #[inline(always)]
     fn unset(x: u64, n: usize) -> u64 {
         x &  ~U64Bitwise::bit(n)
     }
@@ -184,6 +195,7 @@ impl U64Bitwise of Bitwise<u64> {
         if n >= 64 { return 0; }
         x / U64Bitwise::bit(n)
     }
+    #[inline(always)]
     fn is_set(x: u64, n: usize) -> bool {
         ((U64Bitwise::shr(x, n) & 1) != 0)
     }
@@ -205,9 +217,11 @@ impl U128Bitwise of Bitwise<u128> {
         if n < 128 { return U64Bitwise::bit(n-64).into() * 0x10000000000000000; }
         0
     }
+    #[inline(always)]
     fn set(x: u128, n: usize) -> u128 {
         x | U128Bitwise::bit(n)
     }
+    #[inline(always)]
     fn unset(x: u128, n: usize) -> u128 {
         x & ~U128Bitwise::bit(n)
     }
@@ -219,6 +233,7 @@ impl U128Bitwise of Bitwise<u128> {
         if n >= 128 { return 0; }
         x / U128Bitwise::bit(n)
     }
+    #[inline(always)]
     fn is_set(x: u128, n: usize) -> bool {
         ((U128Bitwise::shr(x, n) & 1) != 0)
     }
@@ -240,9 +255,11 @@ impl U256Bitwise of Bitwise<u256> {
         if n < 256 { return u256 { low: 0x0, high: U128Bitwise::bit(n-128) }; }
         0
     }
+    #[inline(always)]
     fn set(x: u256, n: usize) -> u256 {
         x | U256Bitwise::bit(n)
     }
+    #[inline(always)]
     fn unset(x: u256, n: usize) -> u256 {
         x & ~U256Bitwise::bit(n)
     }
@@ -254,6 +271,7 @@ impl U256Bitwise of Bitwise<u256> {
         if n >= 256 { return 0; }
         x / U256Bitwise::bit(n)
     }
+    #[inline(always)]
     fn is_set(x: u256, n: usize) -> bool {
         ((U256Bitwise::shr(x, n) & 1) != 0)
     }
