@@ -1,8 +1,8 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Entity, HasValue, Has, getComponentValue } from '@latticexyz/recs'
 import { useComponentValue, useEntityQuery } from "@latticexyz/react"
 import { useDojoComponents } from '../../DojoContext'
-import { bigintToEntity } from "../utils/utils"
+import { bigintToEntity, bigintToHex } from "../utils/utils"
 import { Dir, TileType, expandTilemap_1p, offsetCoord } from "../utils/underworld"
 
 
@@ -83,7 +83,7 @@ export const useChamberMap = (locationId: bigint) => {
     }
     return result
   }, [bitmap, tiles])
-  // useEffect(() => console.log(`tilemap:`, tilemap), [tilemap])
+  // useEffect(() => console.log(`tilemap:`, bigintToHex(bitmap), tilemap), [tilemap])
 
   const expandedTilemap = useMemo(() => expandTilemap_1p(tilemap), [tilemap])
 
@@ -94,3 +94,15 @@ export const useChamberMap = (locationId: bigint) => {
   }
 }
 
+export const useChamberDoors = (chamberId: bigint) => {
+  const { Doors } = useDojoComponents()
+  const doors: any = useComponentValue(Doors, bigintToEntity(chamberId))
+  return {
+    north: doors?.north ?? 0,
+    east: doors?.east ?? 0,
+    west: doors?.west ?? 0,
+    south: doors?.south ?? 0,
+    over: doors?.over ?? 0,
+    under: doors?.under ?? 0,
+  }
+}
