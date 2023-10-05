@@ -14,8 +14,8 @@ fn calc_cell_values(bitmap: u256, protected: u256) -> Array::<u8> {
     let mut result: Array::<u8> = ArrayTrait::new();
     let mut i: usize = 0;
     loop {
-        if i >= 256 { break; }
-        let bit: u256 = U256Bitwise::bit(i.into());
+        if (i >= 256) { break; }
+        let bit: u256 = U256Bitwise::bit(255 - i);
         if (protected & bit) != 0 {
             result.append(CELL_VALUE_PROTECTED);
         } else if (bitmap & bit) != 0 {
@@ -37,7 +37,7 @@ fn calc_cell_values(bitmap: u256, protected: u256) -> Array::<u8> {
 // http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
 fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
     let mut cell_values = calc_cell_values(bitmap, protected);
-    let mut result: u256 = bitmap;
+    let mut result: u256 = 0;
     let mut i: usize = 0;
     loop {
         if i >= 256 { break; }
@@ -70,7 +70,7 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
         }
         // apply rule
         if area_count >= pass_value {
-            result = result | U256Bitwise::bit((255 - i).into()); // set bit
+            result = U256Bitwise::set(result, 255 - i); // set bit
         }
         i += 1;
     };
@@ -83,17 +83,17 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
 #[available_gas(20_000_000)]
 fn test_calc_cell_values() {
     let values = calc_cell_values(0xff, 0x0f);
-    let mut n: usize = 255;
+    let mut n: usize = 0;
     loop {
         if n < 4 {
-            assert(*values[n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PROTECTED');
+            assert(*values[255 - n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PROTECTED');
         } else if n < 8 {
-            assert(*values[n] == CELL_VALUE_WALL, 'test_calc_cell_values WALL');
+            assert(*values[255 - n] == CELL_VALUE_WALL, 'test_calc_cell_values WALL');
         } else {
-            assert(*values[n] == 0, 'test_calc_cell_values PATH');
+            assert(*values[255 - n] == 0, 'test_calc_cell_values PATH');
         }
-        if n == 0 { break; }
-        n -= 1;
+        if n == 255 { break; }
+        n += 1;
     }
 }
 
@@ -101,11 +101,11 @@ fn test_calc_cell_values() {
 #[available_gas(20_000_000)]
 fn test_calc_cell_values_max() {
     let values = calc_cell_values(BoundedU256::max(), BoundedU256::max());
-    let mut n: usize = 255;
+    let mut n: usize = 0;
     loop {
         assert(*values[n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PATH');
-        if n == 0 { break; }
-        n -= 1;
+        if n == 255 { break; }
+        n += 1;
     }
 }
 

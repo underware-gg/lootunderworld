@@ -12,7 +12,7 @@ use loot_underworld::core::seeder::{make_seed};
 /// @dev inspired by:
 /// https://www.youtube.com/watch?v=rI_y2GAlQFM
 /// https://github.com/mxgmn/WaveFunctionCollapse (MIT)
-fn collapse(bitmap: u256, open_spaces: bool) -> u256 {
+fn collapse(seed: u256, open_spaces: bool) -> u256 {
     // final cells size will be 64
     let mut cells: Array::<u8> = ArrayTrait::new();
 
@@ -46,7 +46,7 @@ fn collapse(bitmap: u256, open_spaces: bool) -> u256 {
             if (up & 0x02 != 0) {
                 cell = cell | 0x08;
             }
-        } else if U256Bitwise::isSet(bitmap, (i*4).into()) {
+        } else if U256Bitwise::isSet(seed, (i*4).into()) {
             cell = cell | 0x08;
         }
         // bit 2: 0100 (0x04)
@@ -56,7 +56,7 @@ fn collapse(bitmap: u256, open_spaces: bool) -> u256 {
             if (up & 0x01 != 0) {
                 cell = cell | 0x04;
             }
-        } else if U256Bitwise::isSet(bitmap, (i*4+1).into()) {
+        } else if U256Bitwise::isSet(seed, (i*4+1).into()) {
             cell = cell | 0x04;
         }
         // bit 3: 0010 (0x02)
@@ -66,12 +66,12 @@ fn collapse(bitmap: u256, open_spaces: bool) -> u256 {
             if (left & 0x01 != 0) {
                 cell = cell | 0x02;
             }
-        } else if U256Bitwise::isSet(bitmap, (i*4+2).into()) {
+        } else if U256Bitwise::isSet(seed, (i*4+2).into()) {
             cell = cell | 0x02;
         }
         // bit 4: 0001 (0x01)
         // - always random
-        if U256Bitwise::isSet(bitmap, (i*4+3).into()) {
+        if U256Bitwise::isSet(seed, (i*4+3).into()) {
             cell = cell | 0x01;
         }
 
@@ -84,7 +84,7 @@ fn collapse(bitmap: u256, open_spaces: bool) -> u256 {
         if (cell == 0x06) {
             if open_spaces {
                 cell = 0x0f;
-            } else if U256Bitwise::isSet(bitmap, (i*4).into()) {
+            } else if U256Bitwise::isSet(seed, (i*4).into()) {
                 cell = 0x0e;
             } else {
                 cell = 0x07;
@@ -95,7 +95,7 @@ fn collapse(bitmap: u256, open_spaces: bool) -> u256 {
         if (cell == 0x09) {
             if open_spaces {
                 cell = 0x0f;
-            } else if U256Bitwise::isSet(bitmap, (i*4).into()) {
+            } else if U256Bitwise::isSet(seed, (i*4).into()) {
                 cell = 0x0d;
             } else {
                 cell = 0x0b;
@@ -107,23 +107,22 @@ fn collapse(bitmap: u256, open_spaces: bool) -> u256 {
         i += 1;
     };
 
-
     // print cells into bitmap
-    let mut result: u256 = bitmap;
+    let mut result: u256 = 0;
     let mut i: usize = 0;
     loop {
         if i >= 64 { break; }
         if (*cells[i] & 0x08 != 0) {
-            result = result | U256Bitwise::bit(255 - ((i%8)*2 + (i/8)*2*16));
+            result = U256Bitwise::set(result, 255 - ((i%8)*2 + (i/8)*2*16));
         }
         if (*cells[i] & 0x04 != 0) {
-            result = result | U256Bitwise::bit((255 - ((i%8)*2+1 + (i/8)*2*16)));
+            result = U256Bitwise::set(result, 255 - ((i%8)*2+1 + (i/8)*2*16));
         }
         if (*cells[i] & 0x02 != 0) {
-            result = result | U256Bitwise::bit((255 - ((i%8)*2 + ((i/8)*2+1)*16)));
+            result = U256Bitwise::set(result, 255 - ((i%8)*2 + ((i/8)*2+1)*16));
         }
         if (*cells[i] & 0x01 != 0) {
-            result = result | U256Bitwise::bit((255 - ((i%8)*2+1 + ((i/8)*2+1)*16)));
+            result = U256Bitwise::set(result, 255 - ((i%8)*2+1 + ((i/8)*2+1)*16));
         }
         i += 1;
     };
