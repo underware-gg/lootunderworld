@@ -2,9 +2,11 @@ use traits::Into;
 use debug::PrintTrait;
 use loot_underworld::core::carver::{carve};
 use loot_underworld::core::collapsor::{collapse};
+use loot_underworld::core::mazer::{maze_binary_tree, maze_binary_fuzz};
 use loot_underworld::core::protector::{protect};
+use loot_underworld::types::dir::{Dir};
 
-fn generate(seed: u256, protected: u256, algo: u128) -> u256 {
+fn generate(seed: u256, protected: u256, algo: u128, entry_dir: Dir) -> u256 {
 
     let mut bitmap: u256 = seed;
     let mut postProtect: bool = false;
@@ -14,6 +16,12 @@ fn generate(seed: u256, protected: u256, algo: u128) -> u256 {
         postProtect = true;
     } else if(algo == 2) {
         bitmap = collapse(bitmap, true);
+        postProtect = true;
+    } else if(algo == 10) {
+        bitmap = maze_binary_tree(bitmap, entry_dir);
+        postProtect = true;
+    } else if(algo == 11) {
+        bitmap = maze_binary_fuzz(bitmap, protected);
         postProtect = true;
     } else if(algo > 90 && algo < 100) {
         let pass1: u128 = algo % 10;

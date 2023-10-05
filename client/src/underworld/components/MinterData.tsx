@@ -132,10 +132,15 @@ function MinterData() {
             { value: 0, name: 'none' },
             { value: 1, name: 'collapse(false)' },
             { value: 2, name: 'collapse(true)' },
+            // mazes
+            { value: 10, name: 'maze_binary_tree()' },
+            { value: 11, name: 'maze_binary_fuzz()' },
+            // collapse
             { value: 93, name: 'collapse()+carve(%)' },
             { value: 94, name: 'collapse()+carve(%) OK' },
             { value: 95, name: 'collapse()+carve(%) OK' },
             { value: 96, name: 'collapse()+carve(%)' },
+            // carver / automata
             { value: 120, name: 'carve(%)' },
             { value: 130, name: 'carve(%)' },
             { value: 136, name: 'carve(%)' },

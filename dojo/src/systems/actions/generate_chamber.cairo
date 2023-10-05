@@ -78,7 +78,7 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     //---------------------
     // Bitmap
     //
-    let mut bitmap: u256 = generate(seed, protected, algo);
+    let mut bitmap: u256 = generate(seed, protected, algo, entry_dir);
 
     set!(world, (
         Map {

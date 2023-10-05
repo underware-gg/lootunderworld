@@ -271,6 +271,10 @@ impl U256Bitwise of Bitwise<u256> {
 
 
 
+//-----------------------------------------------
+// Unit Tests
+//
+
 #[test]
 #[available_gas(50_000_000)]
 fn test_bitwise_bit() {

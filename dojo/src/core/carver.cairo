@@ -4,7 +4,6 @@ use debug::PrintTrait;
 use loot_underworld::utils::bitwise::{U256Bitwise};
 use loot_underworld::utils::arrays::{create_array};
 use loot_underworld::core::seeder::{make_seed};
-use integer::BoundedU256;
 
 const CELL_VALUE_WALL: u8 = 0x01;
 const CELL_VALUE_PROTECTED: u8 = 0x04;
@@ -78,6 +77,10 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
 }
 
 
+//----------------------------------------------
+// test_calc_cell_values
+//
+use integer::BoundedU256;
 
 #[test]
 #[available_gas(20_000_000)]
