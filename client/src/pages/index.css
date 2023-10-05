@@ -89,6 +89,7 @@ canvas {
 
 .NoPadding { padding: 0; }
 .Padded { padding: 0.5em; }
+.NoBorder { border: 0!important }
 
 .Anchor {
   cursor: pointer;
@@ -116,6 +117,7 @@ canvas {
 .MinterData {
   width: 250px;
   height: 350px;
+  min-height: 350px;
   display: inline-block;
 }
 .RealmImage,

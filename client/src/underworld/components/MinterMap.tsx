@@ -29,9 +29,14 @@ function MinterMap() {
       [_key]: chamber,
     })
   }
-  const mapChambers = useMemo(() => Object.values(chambers), [chambers])
-  const targetChamber = useMemo(() => {
-    return (chambers[currentChamberId.toString()] ?? {})
+
+  // target (center)
+  const [targetChamber, setTargetChamber] = useState<MapChamber>({} as MapChamber)
+  useEffect(() => {
+    const _key = currentChamberId.toString()
+    if (chambers[_key]) {
+      setTargetChamber(chambers[_key])
+    }
   }, [currentChamberId, chambers])
 
   return (
@@ -39,10 +44,12 @@ function MinterMap() {
       {loaders.map((coord: bigint) => {
         return <MapLoader key={`loader_${coord.toString()}`} coord={coord} addChamber={_addChamber} />
       })}
-      <MapView targetChamber={targetChamber} chambers={mapChambers} tileSize={tileSize} />
+      <div className='MinterMap NoBorder'>
+        <MapView targetChamber={targetChamber} chambers={Object.values(chambers)} tileSize={tileSize} />
+      </div>
 
       <div className='AlignBottom'>
-        zoom&nbsp;
+        tile&nbsp;
         {[2, 3, 4, 5, 6, 8, 10, 12, 16].map((value: number) => {
           return <button key={`tileSize_${value}`} className={`SmallButton ${value == tileSize ? 'Unlocked' : 'Locked'}`} onClick={() => seTtileSize(value)}>{value}</button>
         })}

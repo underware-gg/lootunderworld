@@ -81,15 +81,33 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     // Bitmap
     //
     let mut bitmap: u256 = seed;
+    let mut postProtect: bool = false;
 
-    bitmap = collapse(bitmap, false);
-    // bitmap = carve(bitmap, protected, 5);
+    if(algo == 1) {
+        bitmap = collapse(bitmap, false);
+        postProtect = true;
+    } else if(algo == 2) {
+        bitmap = collapse(bitmap, true);
+        postProtect = true;
+    } else if(algo > 90 && algo < 100) {
+        let pass1: u8 = algo % 10;
+        bitmap = collapse(bitmap, true);
+        bitmap = carve(bitmap, protected, pass1);
+    } else if(algo > 100 && algo < 200) {
+        let pass1: u8 = (algo - 100) / 10;
+        let pass2: u8 = (algo - 100) % 10;
+        if(pass1 > 0) { bitmap = carve(bitmap, protected, pass1); }
+        if(pass2 > 0) { bitmap = carve(bitmap, protected, pass2); }
+    } else {
+        postProtect = true;
+    }
     // bitmap = carve(bitmap, protected, 4);
     // bitmap = collapse(bitmap, false);
 
     // only needed if not using carve()
-    bitmap = protect(bitmap, protected);
-
+    if(postProtect) {
+        bitmap = protect(bitmap, protected);
+    }
 
     set!(world, (
         Map {

@@ -126,6 +126,41 @@ function MinterData() {
         </div>
       </>}
 
+      <div>
+        <select value={algo} onChange={e => setAlgo(parseInt(e.target.value))}>
+          {[
+            { value: 0, name: 'none' },
+            { value: 1, name: 'collapse(false)' },
+            { value: 2, name: 'collapse(true)' },
+            { value: 93, name: 'collapse()+carve(%)' },
+            { value: 94, name: 'collapse()+carve(%) OK' },
+            { value: 95, name: 'collapse()+carve(%) OK' },
+            { value: 96, name: 'collapse()+carve(%)' },
+            { value: 120, name: 'carve(%)' },
+            { value: 130, name: 'carve(%)' },
+            { value: 136, name: 'carve(%)' },
+            { value: 137, name: 'carve(%)-OK' },
+            { value: 140, name: 'carve(%)' },
+            { value: 150, name: 'carve(%)' },
+            { value: 144, name: 'carve(%)' },
+            { value: 145, name: 'carve(%)' },
+            { value: 146, name: 'carve(%)' },
+            { value: 147, name: 'carve(%)' },
+            { value: 154, name: 'carve(%)' },
+            { value: 155, name: 'carve(%)' },
+            { value: 160, name: 'carve(%)' },
+            { value: 163, name: 'carve(%)' },
+            { value: 164, name: 'carve(%)' },
+            { value: 165, name: 'carve(%)' },
+            { value: 170, name: 'carve(%)' },
+            { value: 180, name: 'carve(%)' },
+            { value: 190, name: 'carve(%)' },
+          ].map((a:any) => {
+            return <option value={a.value} key={`k${a.value}`}>{`${a.value}: ${a.name}`}</option>
+          })}
+        </select>
+      </div>
+
     </div>
   )
 }

@@ -38,7 +38,9 @@ export function MapView({
   viewSize = 350,
 }: MapViewProps) {
 
-  if (!targetChamber?.tilemap?.length) return <></>
+  if (!targetChamber?.tilemap?.length) {
+    return <></>
+  }
 
   // view size in pixels
   const gridSize = Math.sqrt(targetChamber.tilemap.length)
@@ -55,7 +57,7 @@ export function MapView({
   return (
     <svg width={viewSize} height={viewSize} viewBox={`${viewboxOrigin.x} ${viewboxOrigin.y} ${viewboxSize} ${viewboxSize}`}>
       <style>{`svg{background-color:${MapColors.BG1}}`}</style>
-      {chambers.map((chamber: MapChamber, index: number) => {
+      {chambers.map((chamber: MapChamber) => {
         const isTarget = (chamber.coord == targetChamber.coord && chamber.exists)
         return (
           <g key={`map_${chamber.coord.toString()}`} transform={`translate(${chamber.mapPos.x},${chamber.mapPos.y})`} >
