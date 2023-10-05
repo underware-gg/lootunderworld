@@ -1,5 +1,5 @@
 use loot_underworld::utils::bitwise::{U256Bitwise};
-use loot_underworld::utils::bitmap::{BitmapRotate90CW, BitmapRotate90CCW, BitmapRotate180};
+use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::types::dir::{Dir, DirTrait};
 use integer::BoundedU256;
 
@@ -42,9 +42,9 @@ fn maze_binary_tree(seed: u256, entry_dir: Dir) -> u256 {
     // return rotated to entry door
     match entry_dir {
         Dir::North => result,
-        Dir::East => BitmapRotate90CW(result),
-        Dir::West => BitmapRotate90CCW(result),
-        Dir::South => BitmapRotate180(result),
+        Dir::East => Bitmap::Rotate90CW(result),
+        Dir::West => Bitmap::Rotate90CCW(result),
+        Dir::South => Bitmap::Rotate180(result),
         Dir::Over => result,
         Dir::Under => result,
     }
