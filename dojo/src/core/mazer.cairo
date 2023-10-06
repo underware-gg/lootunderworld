@@ -1,8 +1,6 @@
 use loot_underworld::core::seeder::{make_underseed, make_overseed};
 use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::types::dir::{Dir, DirTrait};
-use integer::BoundedU256;
-use debug::PrintTrait;
 
 //-------------------------------
 // Binary Tree maze
@@ -37,7 +35,7 @@ fn maze_binary_tree_classic(seed: u256, entry_dir: Dir) -> u256 {
         i += 1;
     };
     // rotate to keep the long row always on the entry
-    Bitmap::RotateNorthTo(result, entry_dir)
+    Bitmap::rotate_north_to(result, entry_dir)
 }
 //
 // our version tries to fix those problems by...
@@ -70,7 +68,7 @@ fn maze_binary_pro(seed: u256, entry_dir: Dir) -> u256 {
         i += 1;
     };
     // rotate to keep the long row always on the entry
-    Bitmap::RotateNorthTo(result, entry_dir)
+    Bitmap::rotate_north_to(result, entry_dir)
 }
 
 //
@@ -89,10 +87,10 @@ fn maze_binary_fuzz(seed: u256, protected: u256) -> u256 {
         result = Bitmap::set_xy(result, xx, yy);
         if (Bitmap::is_set_xy(seed, xx, yy)) {
             result = Bitmap::set_xy(result, xx - 1, yy);
-            result = Bitmap::unset(result, xx, yy - 1);
+            result = Bitmap::unset_xy(result, xx, yy - 1);
         } else {
             result = Bitmap::set_xy(result, xx, yy - 1);
-            result = Bitmap::unset(result, xx - 1, yy);
+            result = Bitmap::unset_xy(result, xx - 1, yy);
         }
         i += 1;
     };

@@ -1,36 +1,65 @@
 use loot_underworld::utils::bitwise::{U256Bitwise};
 use loot_underworld::types::dir::{Dir, DirTrait};
 
+
 //
 // use editor to create bitmaps: http://localhost:5173/editor/
-//
-// 11111111
-// 00000000
-// ...
-const FIRST_ROW: u256 = 0xffff000000000000000000000000000000000000000000000000000000000000;
-// 10000000
-// 10000000
-// ...
-const FIRST_COLUMN: u256 = 0x8000800080008000800080008000800080008000800080008000800080008000;
+mod MASK {
+    // 11111
+    // 10001
+    // 11111
+    const OUTER: u256 = 0xffff80018001800180018001800180018001800180018001800180018001ffff;
+    const INNER: u256 = 0x7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe0000;
+
+    // 10001
+    // 10001
+    // 10001
+    const OUTER_COLS: u256 = 0x8001800180018001800180018001800180018001800180018001800180018001;
+    const INNER_COLS: u256 = 0x7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe;
+    const LEFT_COL: u256 = 0x8000800080008000800080008000800080008000800080008000800080008000;
+    const RIGHT_COL: u256 = 0x1000100010001000100010001000100010001000100010001000100010001;
+
+    // 11111
+    // 00000
+    // 11111
+    const OUTER_ROWS: u256 = 0xffff00000000000000000000000000000000000000000000000000000000ffff;
+    const INNER_ROWS: u256 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000;
+    const TOP_ROW: u256 = 0xffff000000000000000000000000000000000000000000000000000000000000;
+    const BOTTOM_ROW: u256 = 0xffff;
+}
 
 trait BitmapTrait {
     fn bit_tile(i: usize) -> usize;
     fn bit_xy(x: usize, y: usize) -> usize;
+    
     fn is_set_tile(bitmap: u256, i: usize) -> bool;
     fn is_set_xy(bitmap: u256, x: usize, y: usize) -> bool;
+    
     fn set_tile(bitmap: u256, i: usize) -> u256;
     fn set_xy(bitmap: u256, x: usize, y: usize) -> u256;
-    fn unset(bitmap: u256, x: usize, y: usize) -> u256;
 
-    fn RotateNorthTo(bitmap: u256, dir: Dir) -> u256;
-    fn Rotate90CW(bitmap: u256) -> u256;
-    fn Rotate90CCW(bitmap: u256) -> u256;
-    fn Rotate180(bitmap: u256) -> u256;
+    fn unset_tile(bitmap: u256, i: usize) -> u256;
+    fn unset_xy(bitmap: u256, x: usize, y: usize) -> u256;
 
+    fn row(bitmap: u256, n: usize) -> u256;
+    fn column(bitmap: u256, n: usize) -> u256;
+
+    fn shift_left(bitmap: u256, n: usize) -> u256;
+    fn shift_right(bitmap: u256, n: usize) -> u256;
+    fn shift_up(bitmap: u256, n: usize) -> u256;
+    fn shift_down(bitmap: u256, n: usize) -> u256;
+
+    fn get_range_x(bitmap: u256) -> (usize, usize);
+    fn get_range_y(bitmap: u256) -> (usize, usize);
     fn get_min_x(bitmap: u256) -> usize;
-    fn get_min_y(bitmap: u256) -> usize;
     fn get_max_x(bitmap: u256) -> usize;
+    fn get_min_y(bitmap: u256) -> usize;
     fn get_max_y(bitmap: u256) -> usize;
+
+    fn rotate_north_to(bitmap: u256, dir: Dir) -> u256;
+    fn Rotate_90_cw(bitmap: u256) -> u256;
+    fn Rotate_90_ccw(bitmap: u256) -> u256;
+    fn Rotate_180(bitmap: u256) -> u256;
 }
 
 impl Bitmap of BitmapTrait {
@@ -53,7 +82,6 @@ impl Bitmap of BitmapTrait {
     fn is_set_tile(bitmap: u256, i: usize) -> bool {
         U256Bitwise::is_set(bitmap, Bitmap::bit_tile(i))
     }
-
     #[inline(always)]
     fn is_set_xy(bitmap: u256, x: usize, y: usize) -> bool {
         U256Bitwise::is_set(bitmap, Bitmap::bit_xy(x, y))
@@ -63,30 +91,114 @@ impl Bitmap of BitmapTrait {
     fn set_tile(bitmap: u256, i: usize) -> u256 {
         U256Bitwise::set(bitmap, Bitmap::bit_tile(i))
     }
-
     #[inline(always)]
     fn set_xy(bitmap: u256, x: usize, y: usize) -> u256 {
         U256Bitwise::set(bitmap, Bitmap::bit_xy(x, y))
     }
 
     #[inline(always)]
-    fn unset(bitmap: u256, x: usize, y: usize) -> u256 {
+    fn unset_tile(bitmap: u256, i: usize) -> u256 {
+        U256Bitwise::unset(bitmap, Bitmap::bit_tile(i))
+    }
+    #[inline(always)]
+    fn unset_xy(bitmap: u256, x: usize, y: usize) -> u256 {
         U256Bitwise::unset(bitmap, Bitmap::bit_xy(x, y))
     }
 
-    fn RotateNorthTo(bitmap: u256, dir: Dir) -> u256 {
+    #[inline(always)]
+    fn row(bitmap: u256, n: usize) -> u256 {
+        (bitmap & Bitmap::shift_down(MASK::TOP_ROW, n))
+    }
+    #[inline(always)]
+    fn column(bitmap: u256, n: usize) -> u256 {
+        (bitmap & Bitmap::shift_right(MASK::LEFT_COL, n))
+    }
+
+    #[inline(always)]
+    fn shift_left(bitmap: u256, n: usize) -> u256 {
+        if(n == 0) { return bitmap; }
+        if(n > 15) { return 0; }
+        U256Bitwise::shl(bitmap, n)
+    }
+    #[inline(always)]
+    fn shift_right(bitmap: u256, n: usize) -> u256 {
+        if(n == 0) { return bitmap; }
+        if(n > 15) { return 0; }
+        U256Bitwise::shr(bitmap, n)
+    }
+    #[inline(always)]
+    fn shift_up(bitmap: u256, n: usize) -> u256 {
+        if(n == 0) { return bitmap; }
+        if(n > 15) { return 0; }
+        U256Bitwise::shl(bitmap, n * 16)
+    }
+    #[inline(always)]
+    fn shift_down(bitmap: u256, n: usize) -> u256 {
+        if(n == 0) { return bitmap; }
+        if(n > 15) { return 0; }
+        U256Bitwise::shr(bitmap, n * 16)
+    }
+
+    #[inline(always)]
+    fn get_range_x(bitmap: u256) -> (usize, usize) {
+        (Bitmap::get_min_x(bitmap), Bitmap::get_max_x(bitmap))
+    }
+
+    #[inline(always)]
+    fn get_range_y(bitmap: u256) -> (usize, usize) {
+        (Bitmap::get_min_y(bitmap), Bitmap::get_max_y(bitmap))
+    }
+
+    fn get_min_x(bitmap: u256) -> usize {
+        let mut n: usize = 0;
+        loop {
+            if (n == 15) { break; }
+            if (Bitmap::column(bitmap, n) != 0 ) { break; }
+            n += 1;
+        };
+        n
+    }
+    fn get_max_x(bitmap: u256) -> usize {
+        let mut n: usize = 15;
+        loop {
+            if (n == 0) { break; }
+            if (Bitmap::column(bitmap, n) != 0 ) { break; }
+            n -= 1;
+        };
+        n
+    }
+    fn get_min_y(bitmap: u256) -> usize {
+        let mut n: usize = 0;
+        loop {
+            if (n == 15) { break; }
+            if (Bitmap::row(bitmap, n) != 0 ) { break; }
+            n += 1;
+        };
+        n
+    }
+    fn get_max_y(bitmap: u256) -> usize {
+        let mut n: usize = 15;
+        loop {
+            if (n == 0) { break; }
+            if (Bitmap::row(bitmap, n) != 0 ) { break; }
+            n -= 1;
+        };
+        n
+    }
+
+    fn rotate_north_to(bitmap: u256, dir: Dir) -> u256 {
         // rotate North to...
         match dir {
             Dir::North => bitmap,
-            Dir::East => Bitmap::Rotate90CW(bitmap),
-            Dir::West => Bitmap::Rotate90CCW(bitmap),
-            Dir::South => Bitmap::Rotate180(bitmap),
+            Dir::East => Bitmap::Rotate_90_cw(bitmap),
+            Dir::West => Bitmap::Rotate_90_ccw(bitmap),
+            Dir::South => Bitmap::Rotate_180(bitmap),
             Dir::Over => bitmap,
             Dir::Under => bitmap,
         }
     }
 
-    fn Rotate90CW(bitmap: u256) -> u256 {
+    fn Rotate_90_cw(bitmap: u256) -> u256 {
         let mut result: u256 = 0;
         let mut n: usize = 0;
         loop {
@@ -103,7 +215,7 @@ impl Bitmap of BitmapTrait {
         result
     }
 
-    fn Rotate90CCW(bitmap: u256) -> u256 {
+    fn Rotate_90_ccw(bitmap: u256) -> u256 {
         let mut result: u256 = 0;
         let mut n: usize = 0;
         loop {
@@ -120,7 +232,7 @@ impl Bitmap of BitmapTrait {
         result
     }
 
-    fn Rotate180(bitmap: u256) -> u256 {
+    fn Rotate_180(bitmap: u256) -> u256 {
         let mut result: u256 = 0;
         let mut n: usize = 0;
         loop {
@@ -135,43 +247,6 @@ impl Bitmap of BitmapTrait {
             n += 1;
         };
         result
-    }
-
-    fn get_min_x(bitmap: u256) -> usize {
-        let mut n: usize = 0;
-        loop {
-            if (n == 15) { break; }
-            if (bitmap & U256Bitwise::shr(FIRST_COLUMN, n) != 0 ) { break; } 
-            n += 1;
-        };
-        n
-    }
-    fn get_min_y(bitmap: u256) -> usize {
-        let mut n: usize = 0;
-        loop {
-            if (n == 15) { break; }
-            if (bitmap & U256Bitwise::shr(FIRST_ROW, n * 16) != 0 ) { break; } 
-            n += 1;
-        };
-        n
-    }
-    fn get_max_x(bitmap: u256) -> usize {
-        let mut n: usize = 15;
-        loop {
-            if (n == 0) { break; }
-            if (bitmap & U256Bitwise::shr(FIRST_COLUMN, n) != 0 ) { break; } 
-            n -= 1;
-        };
-        n
-    }
-    fn get_max_y(bitmap: u256) -> usize {
-        let mut n: usize = 15;
-        loop {
-            if (n == 0) { break; }
-            if (bitmap & U256Bitwise::shr(FIRST_ROW, n * 16) != 0 ) { break; } 
-            n -= 1;
-        };
-        n
     }
 }
 
@@ -234,4 +309,33 @@ fn test_get_min_max_x_y() {
     let bmpy2 = Bitmap::set_xy(0, 0, 4) | Bitmap::set_xy(0, 15, 12);
     assert(Bitmap::get_min_y(bmpy2) == 4, 'test_get_min_y_4');
     assert(Bitmap::get_max_y(bmpy2) == 12, 'test_get_max_y_12');
+}
+
+
+#[test]
+#[available_gas(1_000_000_000)]
+fn test_shift_left_right() {
+    let mut bmp = MASK::LEFT_COL;
+    assert(Bitmap::shift_right(bmp, 0) == bmp, 'shift_right_zero');
+    assert(Bitmap::shift_right(bmp, 16) == 0, 'shift_right_16');
+    bmp = Bitmap::shift_right(bmp, 15);
+    assert(bmp == MASK::RIGHT_COL, 'shift_left_15');
+    assert(Bitmap::shift_left(bmp, 0) == bmp, 'shift_left_zero');
+    assert(Bitmap::shift_left(bmp, 16) == 0, 'shift_left_16');
+    bmp = Bitmap::shift_left(bmp, 15);
+    assert(bmp == MASK::LEFT_COL, 'shift_right_15');
+}
+
+#[test]
+#[available_gas(1_000_000_000)]
+fn test_shift_up_fown() {
+    let mut bmp = MASK::TOP_ROW;
+    assert(Bitmap::shift_down(bmp, 0) == bmp, 'shift_down_zero');
+    assert(Bitmap::shift_down(bmp, 16) == 0, 'shift_down_16');
+    bmp = Bitmap::shift_down(bmp, 15);
+    assert(bmp == MASK::BOTTOM_ROW, 'shift_down_15');
+    assert(Bitmap::shift_up(bmp, 0) == bmp, 'shift_up_zero');
+    assert(Bitmap::shift_up(bmp, 16) == 0, 'shift_up_16');
+    bmp = Bitmap::shift_up(bmp, 15);
+    assert(bmp == MASK::TOP_ROW, 'shift_up_15');
 }

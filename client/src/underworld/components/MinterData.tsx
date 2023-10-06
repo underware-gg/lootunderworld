@@ -134,9 +134,11 @@ function MinterData() {
       <div>
         <select value={algo} onChange={e => setAlgo(parseInt(e.target.value))}>
           {[
+            // debug
             { value: 0, name: 'seed' },
             { value: 1, name: 'underseed' },
             { value: 2, name: 'overseed' },
+            { value: 3, name: 'protected' },
             // collapse
             { value: 10, name: 'collapse(false)' },
             { value: 11, name: 'collapse(true)' },
@@ -144,6 +146,10 @@ function MinterData() {
             { value: 20, name: 'maze_binary_tree()' },
             { value: 21, name: 'maze_binary_pro()' },
             { value: 22, name: 'maze_binary_fuzz()' },
+            // connectors
+            { value: 50, name: 'connector(thin)' },
+            { value: 51, name: 'connector(thick)' },
+            { value: 52, name: 'connector(carved)' },
             // collapse
             { value: 93, name: 'collapse()+carve(%)' },
             { value: 94, name: 'collapse()+carve(%) OK' },
