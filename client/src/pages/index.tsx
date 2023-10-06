@@ -30,7 +30,10 @@ function IndexPage() {
       <pre ref={Text2Ref}></pre>
       
       <div className='Spacer20' />
-      <h2><button onClick={() => { location.href = '/underworld/'}}>ENTER</button></h2>
+      <h2><button onClick={() => { location.href = '/underworld/' }}>ENTER</button></h2>
+
+      <div className='Spacer20' />
+      <h2><button onClick={() => { location.href = '/editor/' }}>BITMAP EDITOR</button></h2>
 
       <br/>
       <div className='Spacer20' />
