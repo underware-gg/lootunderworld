@@ -1,6 +1,18 @@
 use loot_underworld::utils::bitwise::{U256Bitwise};
 use loot_underworld::types::dir::{Dir, DirTrait};
 
+//
+// use editor to create bitmaps: http://localhost:5173/editor/
+//
+// 11111111
+// 00000000
+// ...
+const FIRST_ROW: u256 = 0xffff000000000000000000000000000000000000000000000000000000000000;
+// 10000000
+// 10000000
+// ...
+const FIRST_COLUMN: u256 = 0x8000800080008000800080008000800080008000800080008000800080008000;
+
 trait BitmapTrait {
     fn bit_tile(i: usize) -> usize;
     fn bit_xy(x: usize, y: usize) -> usize;
@@ -14,6 +26,11 @@ trait BitmapTrait {
     fn Rotate90CW(bitmap: u256) -> u256;
     fn Rotate90CCW(bitmap: u256) -> u256;
     fn Rotate180(bitmap: u256) -> u256;
+
+    fn get_min_x(bitmap: u256) -> usize;
+    fn get_min_y(bitmap: u256) -> usize;
+    fn get_max_x(bitmap: u256) -> usize;
+    fn get_max_y(bitmap: u256) -> usize;
 }
 
 impl Bitmap of BitmapTrait {
@@ -119,7 +136,51 @@ impl Bitmap of BitmapTrait {
         };
         result
     }
+
+    fn get_min_x(bitmap: u256) -> usize {
+        let mut n: usize = 0;
+        loop {
+            if (n == 15) { break; }
+            if (bitmap & U256Bitwise::shr(FIRST_COLUMN, n) != 0 ) { break; } 
+            n += 1;
+        };
+        n
+    }
+    fn get_min_y(bitmap: u256) -> usize {
+        let mut n: usize = 0;
+        loop {
+            if (n == 15) { break; }
+            if (bitmap & U256Bitwise::shr(FIRST_ROW, n * 16) != 0 ) { break; } 
+            n += 1;
+        };
+        n
+    }
+    fn get_max_x(bitmap: u256) -> usize {
+        let mut n: usize = 15;
+        loop {
+            if (n == 0) { break; }
+            if (bitmap & U256Bitwise::shr(FIRST_COLUMN, n) != 0 ) { break; } 
+            n -= 1;
+        };
+        n
+    }
+    fn get_max_y(bitmap: u256) -> usize {
+        let mut n: usize = 15;
+        loop {
+            if (n == 0) { break; }
+            if (bitmap & U256Bitwise::shr(FIRST_ROW, n * 16) != 0 ) { break; } 
+            n -= 1;
+        };
+        n
+    }
 }
+
+
+
+//----------------------------------------------
+// Unit tests
+//
+use debug::PrintTrait;
 
 #[test]
 #[available_gas(100_000_000)]
@@ -132,4 +193,45 @@ fn test_bitmap_inline() {
     let bmp2: u256 = Bitmap::set_xy(0, 4 + 4, 4 + 4);
     assert(bmp1 != 0, 'test_bitmap_inline_set_zero');
     assert(bmp1 == bmp2, 'test_bitmap_inline_set_equals');
+}
+
+#[test]
+#[available_gas(1_000_000_000)]
+fn test_get_min_max_x_y() {
+    assert(Bitmap::get_min_x(0) == 15, 'test_get_min_x_zero_0');
+    assert(Bitmap::get_max_x(0) == 0, 'test_get_max_x_zero_15');
+    assert(Bitmap::get_min_y(0) == 15, 'test_get_min_y_zero_0');
+    assert(Bitmap::get_max_y(0) == 0, 'test_get_max_y_zero_15');
+
+    assert(Bitmap::get_min_x(Bitmap::set_xy(0, 0, 0)) == 0, 'test_get_min_x_0_0');
+    assert(Bitmap::get_max_x(Bitmap::set_xy(0, 0, 0)) == 0, 'test_get_max_x_0_0');
+    assert(Bitmap::get_min_y(Bitmap::set_xy(0, 0, 0)) == 0, 'test_get_min_y_0_0');
+    assert(Bitmap::get_max_y(Bitmap::set_xy(0, 0, 0)) == 0, 'test_get_max_y_0_0');
+
+    assert(Bitmap::get_min_x(Bitmap::set_xy(0, 2, 2)) == 2, 'test_get_min_x_2_2');
+    assert(Bitmap::get_max_x(Bitmap::set_xy(0, 2, 2)) == 2, 'test_get_max_x_2_2');
+    assert(Bitmap::get_min_y(Bitmap::set_xy(0, 2, 2)) == 2, 'test_get_min_y_2_2');
+    assert(Bitmap::get_max_y(Bitmap::set_xy(0, 2, 2)) == 2, 'test_get_max_y_2_2');
+
+    assert(Bitmap::get_min_x(Bitmap::set_xy(0, 15, 15)) == 15, 'test_get_min_x_15_15');
+    assert(Bitmap::get_max_x(Bitmap::set_xy(0, 15, 15)) == 15, 'test_get_max_x_15_15');
+    assert(Bitmap::get_min_y(Bitmap::set_xy(0, 15, 15)) == 15, 'test_get_min_y_15_15');
+    assert(Bitmap::get_max_y(Bitmap::set_xy(0, 15, 15)) == 15, 'test_get_max_y_15_15');
+
+    assert(Bitmap::get_min_x(Bitmap::set_xy(0, 8, 0)) == 8, 'test_get_min_x_8_0');
+    assert(Bitmap::get_max_x(Bitmap::set_xy(0, 8, 0)) == 8, 'test_get_max_x_8_0');
+    assert(Bitmap::get_min_x(Bitmap::set_xy(0, 8, 15)) == 8, 'test_get_min_x_8_15');
+    assert(Bitmap::get_max_x(Bitmap::set_xy(0, 8, 15)) == 8, 'test_get_max_x_8_15');
+    let bmpx1 = Bitmap::set_xy(0, 0, 1) | Bitmap::set_xy(0, 15, 14);
+    assert(Bitmap::get_min_x(bmpx1) == 0, 'test_get_min_x_0');
+    assert(Bitmap::get_max_x(bmpx1) == 15, 'test_get_max_x_15');
+    let bmpx2 = Bitmap::set_xy(0, 4, 0) | Bitmap::set_xy(0, 12, 15);
+    assert(Bitmap::get_min_x(bmpx2) == 4, 'test_get_min_x_4');
+    assert(Bitmap::get_max_x(bmpx2) == 12, 'test_get_max_x_12');
+    let bmpy1 = Bitmap::set_xy(0, 1, 0) | Bitmap::set_xy(0, 14, 15);
+    assert(Bitmap::get_min_y(bmpy1) == 0, 'test_get_min_y_0');
+    assert(Bitmap::get_max_y(bmpy1) == 15, 'test_get_max_y_15');
+    let bmpy2 = Bitmap::set_xy(0, 0, 4) | Bitmap::set_xy(0, 15, 12);
+    assert(Bitmap::get_min_y(bmpy2) == 4, 'test_get_min_y_4');
+    assert(Bitmap::get_max_y(bmpy2) == 12, 'test_get_max_y_12');
 }
