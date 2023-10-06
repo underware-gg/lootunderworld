@@ -22,6 +22,21 @@ fn _make_seed(realm_id: u128, location: u128, block_hash: u128) -> u256 {
     hash_u128_to_u256(h2)
 }
 
+fn make_underseed(seed: u256) -> u256 {
+    let h = hash_u128(seed.low, seed.high);
+    seed & hash_u128_to_u256(h)
+}
+
+fn make_overseed(seed: u256) -> u256 {
+    let h = hash_u128(seed.low, seed.high);
+    seed | hash_u128_to_u256(h)
+}
+
+
+//------------------------------------
+// Unit test_make_seed
+//
+use loot_underworld::utils::bitwise::{U256Bitwise};
 
 #[test]
 #[available_gas(100_000)]
@@ -33,7 +48,7 @@ fn test_get_block_hash() {
 
 
 #[test]
-// #[available_gas(1_000_000)]
+#[available_gas(100_000_000)]
 fn test_make_seed() {
     let s1 = _make_seed(1, 1, 1);
     let s2 = _make_seed(1, 1, 2);
@@ -59,4 +74,19 @@ fn test_make_seed() {
     assert(s6!=s1 && s6!=s2 && s6!=s3 && s6!=s4 && s6!=s5 && s6!=s7 && s6!=s8, 's6');
     assert(s7!=s1 && s7!=s2 && s7!=s3 && s7!=s4 && s7!=s5 && s7!=s6 && s7!=s8, 's7');
     assert(s8!=s1 && s8!=s2 && s8!=s3 && s8!=s4 && s8!=s5 && s8!=s6 && s8!=s7, 's8');
+}
+
+#[test]
+#[available_gas(1_000_000_000)]
+fn test_under_over_seed() {
+    let mut n: usize = 0;
+    loop {
+        if n == 8 { break; }
+        let seed = _make_seed(1, 2, 3);
+        let under = make_underseed(seed);
+        let over = make_overseed(seed);
+        assert(U256Bitwise::count_bits(under) < U256Bitwise::count_bits(seed), 'under < seed');
+        assert(U256Bitwise::count_bits(seed) < U256Bitwise::count_bits(over), 'seed < over');
+        n += 1;
+    };
 }

@@ -1,4 +1,5 @@
 use loot_underworld::utils::bitwise::{U256Bitwise};
+use loot_underworld::types::dir::{Dir, DirTrait};
 
 trait BitmapTrait {
     fn bit_tile(i: usize) -> usize;
@@ -8,6 +9,8 @@ trait BitmapTrait {
     fn set_tile(bitmap: u256, i: usize) -> u256;
     fn set_xy(bitmap: u256, x: usize, y: usize) -> u256;
     fn unset(bitmap: u256, x: usize, y: usize) -> u256;
+
+    fn RotateNorthTo(bitmap: u256, dir: Dir) -> u256;
     fn Rotate90CW(bitmap: u256) -> u256;
     fn Rotate90CCW(bitmap: u256) -> u256;
     fn Rotate180(bitmap: u256) -> u256;
@@ -16,14 +19,14 @@ trait BitmapTrait {
 impl Bitmap of BitmapTrait {
 
     // returns the bit number of a tile position (e.g. doors)
-    // starting from the map top left
+    // starting from the map's top left
     #[inline(always)]
     fn bit_tile(i: usize) -> usize {
        (255 - i)
     }
 
     // returns the bit number of a [x, y] position
-    // starting from the map top left
+    // starting from the map's top left
     #[inline(always)]
     fn bit_xy(x: usize, y: usize) -> usize {
        (255 - (y * 16 + x))
@@ -52,6 +55,18 @@ impl Bitmap of BitmapTrait {
     #[inline(always)]
     fn unset(bitmap: u256, x: usize, y: usize) -> u256 {
         U256Bitwise::unset(bitmap, Bitmap::bit_xy(x, y))
+    }
+
+    fn RotateNorthTo(bitmap: u256, dir: Dir) -> u256 {
+        // rotate North to...
+        match dir {
+            Dir::North => bitmap,
+            Dir::East => Bitmap::Rotate90CW(bitmap),
+            Dir::West => Bitmap::Rotate90CCW(bitmap),
+            Dir::South => Bitmap::Rotate180(bitmap),
+            Dir::Over => bitmap,
+            Dir::Under => bitmap,
+        }
     }
 
     fn Rotate90CW(bitmap: u256) -> u256 {

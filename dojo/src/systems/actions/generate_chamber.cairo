@@ -76,10 +76,13 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
 
 
     //---------------------
-    // Bitmap
+    // Generate Bitmap
     //
     let mut bitmap: u256 = generate(seed, protected, algo, entry_dir);
 
+    //---------------------
+    // Map Component
+    //
     set!(world, (
         Map {
             entity_id: location_id,
