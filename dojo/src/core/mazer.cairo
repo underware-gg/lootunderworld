@@ -1,7 +1,7 @@
-use loot_underworld::utils::bitwise::{U256Bitwise};
 use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::types::dir::{Dir, DirTrait};
 use integer::BoundedU256;
+use debug::PrintTrait;
 
 //-------------------------------
 // Binary Tree maze
@@ -12,7 +12,35 @@ use integer::BoundedU256;
 //
 // learned from:
 // https://medium.com/analytics-vidhya/maze-generations-algorithms-and-visualizations-9f5e88a3ae37
+// https://www.youtube.com/watch?v=BDXm568ql34&t=53s
 //
+// classic binary tree is not good!
+// * it contains 2 full corridors (top row, left column)
+// * it contains 2 paths that cross ONLY at the start (top left corner)
+// * last row and colunm are not set
+fn maze_binary_tree_pure(seed: u256, entry_dir: Dir) -> u256 {
+    let mut result: u256 = 0;
+    let mut i: usize = 0;
+    loop {
+        if (i >= 64) { break; }
+        let xx = ((i % 8) * 2);
+        let yy = ((i / 8) * 2);
+        let rnd = Bitmap::is_set_xy(seed, xx, yy);
+        result = Bitmap::set_xy(result, xx, yy); // set self
+        if (xx > 0 && (yy == 0 || rnd)) {
+            result = Bitmap::set_xy(result, xx - 1, yy); // set west
+        }
+        if (yy > 0 && (xx == 0 || !rnd)) {
+            result = Bitmap::set_xy(result, xx, yy - 1); // set north
+        }
+        i += 1;
+    };
+    result
+}
+//
+// our version fixes those problems by...
+// * eliminating one empty side (lets keep the entry row for fun)
+// * adding some random path tiles
 fn maze_binary_tree(seed: u256, entry_dir: Dir) -> u256 {
     let mut result: u256 = 0;
     let mut i: usize = 0;
@@ -22,24 +50,23 @@ fn maze_binary_tree(seed: u256, entry_dir: Dir) -> u256 {
         let y = i / 8;
         let xx = (x * 2) + 1;
         let yy = (y * 2);
-        let ii = (yy * 16) + xx;
-        let rnd = U256Bitwise::is_set(seed, 255 - ii);
-        // set self
-        result = U256Bitwise::set(result, ii);
+        let rnd = Bitmap::is_set_xy(seed, xx, yy);
+        result = Bitmap::set_xy(result, xx, yy); // set self
         if (yy == 0 || rnd) {
-            // set west
-            result = U256Bitwise::set(result, (yy * 16) + xx - 1);
-            // set last row
-            if (yy == 0 && rnd) {
-                result = U256Bitwise::set(result, (15 * 16) + xx);
+            result = Bitmap::set_xy(result, xx - 1, yy); // set west
+            if (yy == 0 && rnd) { // set last row
+                result = Bitmap::set_xy(result, xx, 15);
             }
         } else {
-            // set north
-            result = U256Bitwise::set(result, ((yy - 1) * 16) + xx);
+            result = Bitmap::set_xy(result, xx, yy - 1); // set north
+        }
+        // open some random paths
+        if (((x + y) % 2) == 0 && Bitmap::is_set_xy(seed, x * 2, y * 2)) {
+            result = Bitmap::set_xy(result, x * 2, y * 2);
         }
         i += 1;
     };
-    // return rotated to entry door
+    // rotate to keep the long row always on the entry
     match entry_dir {
         Dir::North => result,
         Dir::East => Bitmap::Rotate90CW(result),
@@ -51,23 +78,21 @@ fn maze_binary_tree(seed: u256, entry_dir: Dir) -> u256 {
 }
 
 fn maze_binary_fuzz(seed: u256, protected: u256) -> u256 {
-    // let mut result: u256 = BoundedU256::max();
     let mut result: u256 = seed;
     let mut i: usize = 0;
     loop {
         if (i >= 64) { break; }
-        let x: usize = i % 8;
-        let y: usize = i / 8;
+        let x = i % 8;
+        let y = i / 8;
         let xx = (x * 2) + 1;
         let yy = (y * 2) + 1;
-        let ii = (yy * 16) + xx;
-        result = U256Bitwise::set(result, ii);
-        if (U256Bitwise::is_set(seed, 255 - ii)) {
-            result = U256Bitwise::set(result, (yy * 16) + xx - 1);
-            result = U256Bitwise::unset(result, ((yy - 1) * 16) + xx);
+        result = Bitmap::set_xy(result, xx, yy);
+        if (Bitmap::is_set_xy(seed, xx, yy)) {
+            result = Bitmap::set_xy(result, xx - 1, yy);
+            result = Bitmap::unset(result, xx, yy - 1);
         } else {
-            result = U256Bitwise::set(result, ((yy - 1) * 16) + xx);
-            result = U256Bitwise::unset(result, (yy * 16) + xx - 1);
+            result = Bitmap::set_xy(result, xx, yy - 1);
+            result = Bitmap::unset(result, xx - 1, yy);
         }
         i += 1;
     };
