@@ -29,7 +29,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 255;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'binary_tree_classic', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'whateverrrr', 0]);
 
         // check Chamber component
         let chamber = get_world_Chamber(world, to_location_id);
@@ -45,6 +45,39 @@ mod tests {
         assert(map.bitmap != 0, 'Map: map != 0');
         assert(map.bitmap.low != map.bitmap.high, 'Map: map.low != map.high');
         assert(map.bitmap != chamber.seed, 'Map: map.high != seed.high');
+        assert(map.generatorName == 'entry', 'Map: generator name');
+        assert(map.generatorValue == 0, 'Map: generator value');
+    }
+
+    #[test]
+    #[available_gas(1_000_000_000)]
+    fn test_mint_realms_generator() {
+        let world = setup_world();
+        let token_id: u16 = 255;
+        let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        // first chamber will always use the 'entry' generator
+        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'whateverrrr', 0);
+        let map1 = get_world_Map(world, chamber1.location_id);
+        assert(map1.generatorName == 'entry', 'map1.name');
+        assert(map1.generatorValue == 0, 'map1.value');
+        // first chamber will always use the 'entry' generator
+        let chamber2 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'collapse', 55);
+        let map2 = get_world_Map(world, chamber2.location_id);
+        assert(map2.generatorName == 'collapse', 'map2.name');
+        assert(map2.generatorValue == 55, 'map2.value');
+    }
+
+    #[test]
+    #[should_panic]
+    #[available_gas(1_000_000_000)]
+    fn test_mint_realms_invalid_generator() {
+        let world = setup_world();
+        let token_id: u16 = 255;
+        let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        // first chamber will always use the 'entry' generator
+        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'the_invalid_generator', 0);
+        // now a bad generator to panic...
+        let chamber2 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'the_invalid_generator', 0);
     }
 
     #[test]
@@ -156,19 +189,6 @@ mod tests {
         assert(tiles.south == south, join(prefix, 'south'));
         assert(tiles.over == over, join(prefix, 'over'));
         assert(tiles.under == under, join(prefix, 'under'));
-    }
-
-    #[test]
-    #[should_panic]
-    #[available_gas(1_000_000_000)]
-    fn test_mint_realms_invalid_generator() {
-        let world = setup_world();
-        let token_id: u16 = 255;
-        let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        // first chamber will always use the 'entry' generator
-        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'invalid_generator', 0);
-        // now a bad generator...
-        let chamber2 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'invalid_generator', 0);
     }
 
     #[test]

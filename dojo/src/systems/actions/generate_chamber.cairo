@@ -99,6 +99,8 @@ fn generate_chamber(world: IWorldDispatcher,
         Map {
             entity_id: location_id,
             bitmap,
+            generatorName,
+            generatorValue,
         },
         Doors {
             location_id,
