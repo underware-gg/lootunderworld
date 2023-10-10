@@ -6,7 +6,7 @@ import {
 } from "@latticexyz/recs";
 import { Account } from "starknet";
 import { SetupNetworkResult } from "./setupNetwork";
-import { getEntityIdFromKeys } from "../utils/utils";
+import { getEntityIdFromKeys, strTofelt252Felt } from "../utils/utils";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -23,9 +23,10 @@ export function createSystemCalls(
 ) {
 
 
-  const mint_realms_chamber = async (signer: Account, realmId: number, from_coord: bigint, from_dir: number, algo: number) => {
+  const mint_realms_chamber = async (signer: Account, realmId: number, from_coord: bigint, from_dir: number, generatorName: string, generatorValue:number) => {
     try {
-      const tx = await execute(signer, "mint_realms_chamber", [realmId, from_coord, from_dir, algo]);
+      const args = [realmId, from_coord, from_dir, strTofelt252Felt(generatorName), generatorValue]
+      const tx = await execute(signer, "mint_realms_chamber", args)
       console.log(`mint_realms_chamber tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
       console.log(`mint_realms_chamber receipt:`, receipt)

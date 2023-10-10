@@ -14,7 +14,13 @@ use loot_underworld::utils::bitmap::{Bitmap};
 
 
 #[inline(always)]
-fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_location: Location, from_dir: Dir, algo: u128) -> u128 {
+fn generate_chamber(world: IWorldDispatcher,
+    caller: ContractAddress,
+    from_location: Location,
+    from_dir: Dir,
+    generatorName: felt252,
+    generatorValue: u32,
+) -> u128 {
 
     let from_chamber = get!(world, from_location.to_id(), (Chamber));
 
@@ -78,7 +84,7 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     //---------------------
     // Generate Bitmap
     //
-    let bitmap: u256= generate(seed, protected, algo, entry_dir);
+    let bitmap: u256= generate(seed, protected, entry_dir, generatorName, generatorValue);
     assert(bitmap != 0, 'Chamber is empty');
 
     //---------------------

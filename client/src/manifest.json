@@ -799,12 +799,16 @@
           "type": "core::integer::u8"
         },
         {
-          "name": "algo",
-          "type": "core::integer::u128"
+          "name": "generatorName",
+          "type": "core::felt252"
+        },
+        {
+          "name": "generatorValue",
+          "type": "core::integer::u32"
         }
       ],
       "outputs": [],
-      "class_hash": "0x57d5ca3228d5f5fc78af6f632e74e9f0959bcc655b6d794042293c73e67b725",
+      "class_hash": "0x7fbcbfb14767346f50deca42fc9b81698e08f33d9b3bb0937b881eedb0bba61",
       "dependencies": [],
       "abi": [
         {
@@ -867,8 +871,12 @@
               "type": "core::integer::u8"
             },
             {
-              "name": "algo",
-              "type": "core::integer::u128"
+              "name": "generatorName",
+              "type": "core::felt252"
+            },
+            {
+              "name": "generatorValue",
+              "type": "core::integer::u32"
             },
             {
               "name": "ctx",
@@ -1256,14 +1264,9 @@
           "name": "bitmap",
           "type": "u256",
           "key": false
-        },
-        {
-          "name": "protected",
-          "type": "u256",
-          "key": false
         }
       ],
-      "class_hash": "0x28dec727d55d315b78d5164cb9ba35cdfecc3c36bc25936f4ca0845a571bbc7",
+      "class_hash": "0x109678c8c71a2fe9703e7e936e90a798702ce73ead07d079a3898a3ce261bc0",
       "abi": [
         {
           "type": "function",

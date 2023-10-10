@@ -7,7 +7,7 @@ use loot_underworld::types::dir::{Dir, DirTrait, DIR};
 use debug::PrintTrait;
 
 
-fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u128) -> (u256, u256) {
+fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u32) -> (u256, u256) {
     let mut res_bitmap: u256 = 0;
     let mut res_protected: u256 = protected;
 

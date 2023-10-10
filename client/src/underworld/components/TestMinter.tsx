@@ -83,7 +83,7 @@ function TestMinter() {
 
   return (
     <div className="card">
-      <button onClick={() => mint_realms_chamber(account, 1, BigInt(Date.now() % 999) | (BigInt(Date.now() % 999) << 32n), Dir.Under, 0)}>Mint Chamber</button>
+      <button onClick={() => mint_realms_chamber(account, 1, BigInt(Date.now() % 999) | (BigInt(Date.now() % 999) << 32n), Dir.Under, 'seed', 0)}>Mint Chamber</button>
       <div>
         <select onChange={e => setSelectedChamberId(e.target.value as Entity)}>
           {chamberIds.map((entityId) => {

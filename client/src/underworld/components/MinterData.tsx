@@ -5,16 +5,67 @@ import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { bigintToHex } from '../utils/utils'
 import { Dir, DirNames, coordToCompass, coordToSlug, offsetCompass } from '../utils/underworld'
 
+interface Generator {
+  name: string
+  value: number
+  description: string
+}
+
+const _generators: Generator[] = [
+  // debug
+  { name: 'seed', value: 0, description: '' },
+  { name: 'underseed', value: 0, description: '' },
+  { name: 'overseed', value: 0, description: '' },
+  { name: 'protected', value: 0, description: '' },
+  // connections
+  { name: 'connection', value: 0, description: '' },
+  { name: 'connection', value: 1, description: '' },
+  { name: 'connection', value: 2, description: '' },
+  // binary tree mazes
+  { name: 'binary_tree_classic', value: 0, description: '' },
+  { name: 'binary_tree_pro', value: 0, description: '' },
+  { name: 'binary_tree_fuzz', value: 0, description: '' },
+  // collapse
+  { name: 'collapse', value: 0, description: 'collapse tight' },
+  { name: 'collapse', value: 1, description: 'collapse wide' },
+  // carver / automata
+  { name: 'carve', value: 2, description: '' },
+  { name: 'carve', value: 3, description: '' },
+  { name: 'carve', value: 36, description: '' },
+  { name: 'carve', value: 37, description: 'OK' },
+  { name: 'carve', value: 4, description: '' },
+  { name: 'carve', value: 5, description: '' },
+  { name: 'carve', value: 44, description: '' },
+  { name: 'carve', value: 45, description: '' },
+  { name: 'carve', value: 46, description: '' },
+  { name: 'carve', value: 47, description: '' },
+  { name: 'carve', value: 54, description: '' },
+  { name: 'carve', value: 55, description: 'OK' },
+  { name: 'carve', value: 6, description: '' },
+  { name: 'carve', value: 63, description: '' },
+  { name: 'carve', value: 64, description: '' },
+  { name: 'carve', value: 65, description: '' },
+  { name: 'carve', value: 7, description: '' },
+  { name: 'carve', value: 8, description: '' },
+  { name: 'carve', value: 9, description: '' },
+  // collapse
+  { name: 'collapse_carve', value: 3, description: '' },
+  { name: 'collapse_carve', value: 4, description: 'OK' },
+  { name: 'collapse_carve', value: 5, description: 'OK' },
+  { name: 'collapse_carve', value: 6, description: '' },
+]
+
+
 interface DirectionButtonProps {
   chamberId: bigint,
   dir: Dir,
-  algo: number,
+  generator: Generator,
 }
 
 function DirectionButton({
   chamberId,
   dir,
-  algo,
+  generator,
 }: DirectionButtonProps) {
   const { realmId, dispatch, UnderworldActions } = useUnderworldContext()
   const { mint_realms_chamber } = useDojoSystemCalls()
@@ -24,7 +75,7 @@ function DirectionButton({
   const exists = useMemo(() => (seed > 0n), [seed, locationId])
 
   const _mint = () => {
-    mint_realms_chamber(account, realmId, chamberId, dir, algo)
+    mint_realms_chamber(account, realmId, chamberId, dir, generator.name, generator.value)
   }
   const _open = () => {
     dispatch({
@@ -34,23 +85,24 @@ function DirectionButton({
   }
 
   if (!exists) {
-    return <button className='DirectionButton Locked' onClick={() => _mint()}>Unlock<br/>{DirNames[dir]}</button>
+    return <button className='DirectionButton Locked' onClick={() => _mint()}>Unlock<br />{DirNames[dir]}</button>
   }
   return <button className='DirectionButton Unocked' onClick={() => _open()}>Go<br />{DirNames[dir]}</button>
 }
+
 
 
 function MinterData() {
   const { mint_realms_chamber } = useDojoSystemCalls()
   const { account } = useDojoAccount()
 
-  const [algo, setAlgo] = useState(0)
+  const [generatorIndex, setGeneratorIndex] = useState(0)
 
   // Current Realm / Chamber
   const { realmId, city, chamberId, dispatch, UnderworldActions } = useUnderworldContext()
   const { seed, yonder } = useChamber(chamberId)
   const doors = useChamberDoors(chamberId)
-  
+
   const chamberExists = useMemo(() => (seed > 0), [seed])
   const canMintFirst = useMemo(() => (realmId > 0 && city != null && !chamberExists), [realmId, city, chamberExists])
 
@@ -70,7 +122,8 @@ function MinterData() {
 
   const _mintFirst = () => {
     if (canMintFirst && city) {
-      mint_realms_chamber(account, realmId, city.coord, Dir.Under, algo)
+      const generator = _generators[generatorIndex]
+      mint_realms_chamber(account, realmId, city.coord, Dir.Under, generator.name, generator.value)
     }
   }
 
@@ -122,61 +175,20 @@ function MinterData() {
           Doors: [{doors.north},{doors.east},{doors.west},{doors.south}]
         </p>
         <div className='Padded'>
-          <DirectionButton chamberId={chamberId} dir={Dir.North} algo={algo} />
+          <DirectionButton chamberId={chamberId} dir={Dir.North} generator={_generators[generatorIndex]} />
           <div>
-            <DirectionButton chamberId={chamberId} dir={Dir.West} algo={algo} />
-            <DirectionButton chamberId={chamberId} dir={Dir.East} algo={algo} />
+            <DirectionButton chamberId={chamberId} dir={Dir.West} generator={_generators[generatorIndex]} />
+            <DirectionButton chamberId={chamberId} dir={Dir.East} generator={_generators[generatorIndex]} />
           </div>
-          <DirectionButton chamberId={chamberId} dir={Dir.South} algo={algo} />
+          <DirectionButton chamberId={chamberId} dir={Dir.South} generator={_generators[generatorIndex]} />
         </div>
       </>}
 
       <div>
-        <select value={algo} onChange={e => setAlgo(parseInt(e.target.value))}>
-          {[
-            // debug
-            { value: 0, name: 'seed' },
-            { value: 1, name: 'underseed' },
-            { value: 2, name: 'overseed' },
-            { value: 3, name: 'protected' },
-            // collapse
-            { value: 10, name: 'collapse(false)' },
-            { value: 11, name: 'collapse(true)' },
-            // mazes
-            { value: 20, name: 'maze_binary_tree()' },
-            { value: 21, name: 'maze_binary_pro()' },
-            { value: 22, name: 'maze_binary_fuzz()' },
-            // connectors
-            { value: 50, name: 'connector(thin)' },
-            { value: 51, name: 'connector(thick)' },
-            { value: 52, name: 'connector(carved)' },
-            // collapse
-            { value: 93, name: 'collapse()+carve(%)' },
-            { value: 94, name: 'collapse()+carve(%) OK' },
-            { value: 95, name: 'collapse()+carve(%) OK' },
-            { value: 96, name: 'collapse()+carve(%)' },
-            // carver / automata
-            { value: 120, name: 'carve(%)' },
-            { value: 130, name: 'carve(%)' },
-            { value: 136, name: 'carve(%)' },
-            { value: 137, name: 'carve(%)-OK' },
-            { value: 140, name: 'carve(%)' },
-            { value: 150, name: 'carve(%)' },
-            { value: 144, name: 'carve(%)' },
-            { value: 145, name: 'carve(%)' },
-            { value: 146, name: 'carve(%)' },
-            { value: 147, name: 'carve(%)' },
-            { value: 154, name: 'carve(%)' },
-            { value: 155, name: 'carve(%)-OK' },
-            { value: 160, name: 'carve(%)' },
-            { value: 163, name: 'carve(%)' },
-            { value: 164, name: 'carve(%)' },
-            { value: 165, name: 'carve(%)' },
-            { value: 170, name: 'carve(%)' },
-            { value: 180, name: 'carve(%)' },
-            { value: 190, name: 'carve(%)' },
-          ].map((a:any) => {
-            return <option value={a.value} key={`k${a.value}`}>{`${a.value}: ${a.name}`}</option>
+        <select value={generatorIndex} onChange={e => setGeneratorIndex(parseInt(e.target.value))}>
+          {_generators.map((g: Generator, index: number) => {
+            const _desc = `${g.name}(${g.value}) : ${g.description}`
+            return <option value={index} key={`gen_${index}`}>{_desc}</option>
           })}
         </select>
       </div>

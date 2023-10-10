@@ -264,7 +264,6 @@ export type Map = {
   bitmap?: Maybe<Scalars['u256']['output']>;
   entity?: Maybe<Entity>;
   entity_id?: Maybe<Scalars['u128']['output']>;
-  protected?: Maybe<Scalars['u256']['output']>;
 };
 
 export type MapConnection = {
@@ -286,8 +285,7 @@ export type MapOrder = {
 
 export enum MapOrderOrderField {
   Bitmap = 'BITMAP',
-  EntityId = 'ENTITY_ID',
-  Protected = 'PROTECTED'
+  EntityId = 'ENTITY_ID'
 }
 
 export type MapWhereInput = {
@@ -303,12 +301,6 @@ export type MapWhereInput = {
   entity_idLT?: InputMaybe<Scalars['String']['input']>;
   entity_idLTE?: InputMaybe<Scalars['String']['input']>;
   entity_idNEQ?: InputMaybe<Scalars['String']['input']>;
-  protected?: InputMaybe<Scalars['String']['input']>;
-  protectedGT?: InputMaybe<Scalars['String']['input']>;
-  protectedGTE?: InputMaybe<Scalars['String']['input']>;
-  protectedLT?: InputMaybe<Scalars['String']['input']>;
-  protectedLTE?: InputMaybe<Scalars['String']['input']>;
-  protectedNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Moves = {

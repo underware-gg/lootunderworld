@@ -17,7 +17,7 @@ use loot_underworld::types::dir::{Dir, DirTrait};
 // * it contains 2 full corridors (top row, left column)
 // * it contains 2 paths that cross ONLY at the start (top left corner)
 // * last row and colunm are not set
-fn maze_binary_tree_classic(seed: u256, entry_dir: Dir) -> u256 {
+fn binary_tree_classic(seed: u256, entry_dir: Dir) -> u256 {
     let mut result: u256 = 0;
     let mut i: usize = 0;
     loop {
@@ -41,7 +41,7 @@ fn maze_binary_tree_classic(seed: u256, entry_dir: Dir) -> u256 {
 // our version tries to fix those problems by...
 // * eliminating one empty side (let's keep the entry row for fun)
 // * adding some random path tiles
-fn maze_binary_pro(seed: u256, entry_dir: Dir) -> u256 {
+fn binary_tree_pro(seed: u256, entry_dir: Dir) -> u256 {
     let mut underseed: u256 = make_underseed(seed);
     let mut result: u256 = 0;
     let mut i: usize = 0;
@@ -75,7 +75,7 @@ fn maze_binary_pro(seed: u256, entry_dir: Dir) -> u256 {
 // fuzzy version...
 // * starts with random paths
 // * |'s the core of a binary tree
-fn maze_binary_fuzz(seed: u256, protected: u256) -> u256 {
+fn binary_tree_fuzz(seed: u256, protected: u256) -> u256 {
     let mut result: u256 = make_overseed(seed);
     let mut i: usize = 0;
     loop {

@@ -97,5 +97,15 @@ export const numberToHex = (num: number) => {
   return "0x" + num.toString(16);
 };
 
+export function strTofelt252Felt(str: string): string {
+  const encoder = new TextEncoder();
+  const strB = encoder.encode(str);
+  return BigInt(
+    strB.reduce((memo, byte) => {
+      memo += byte.toString(16);
+      return memo;
+    }, "0x"),
+  ).toString();
+}
 
 
