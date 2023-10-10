@@ -18,17 +18,22 @@ fn generate_chamber(world: IWorldDispatcher,
     caller: ContractAddress,
     from_location: Location,
     from_dir: Dir,
-    generatorName: felt252,
-    generatorValue: u32,
+    mut generatorName: felt252,
+    mut generatorValue: u32,
 ) -> u128 {
 
     let from_chamber = get!(world, from_location.to_id(), (Chamber));
 
-    // From location must exist
-    // (under == 0 && under == 0) is ok! minting new from the surface
-    if( !(from_location.under == 0 && from_location.under == 0) ) {
+    if(from_location.under == 0 && from_location.under == 0) {
+        // this is a new Entry from the surface
+        assert(from_location.validate_entry() == true, 'Invalid Entry from_location');
+        assert(from_chamber.yonder == 0, 'Entry from_chamber exist!?');
+        generatorName = 'entry';
+        generatorValue = 0;
+    } else {
+        // else, from_chamber must exist
         assert(from_location.validate() == true, 'Invalid from_location');
-        assert(from_chamber.yonder > 0, 'From location does not exist');
+        assert(from_chamber.yonder > 0, 'from_chamber does not exist');
     }
 
     // Shift to location

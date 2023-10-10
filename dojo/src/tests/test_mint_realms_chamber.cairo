@@ -29,7 +29,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 255;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'binary_tree_classic', 0]);
 
         // check Chamber component
         let chamber = get_world_Chamber(world, to_location_id);
@@ -53,14 +53,14 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 123;
         let loc_y1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        let chamber_y1: Chamber = mint_get_realms_get_chamber(world, token_id, loc_y1, Dir::Under);
-        let chamber_y2_1: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y1.location_id), Dir::North);
-        let chamber_y3_1: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y2_1.location_id), Dir::West);
-        let chamber_y4_1: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.location_id), Dir::North);
-        let chamber_y4_2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.location_id), Dir::West);
-        let chamber_y4_3: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.location_id), Dir::South);
-        let chamber_y2_2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y1.location_id), Dir::South);
-        let chamber_y3_2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y2_2.location_id), Dir::South);
+        let chamber_y1: Chamber = mint_get_realms_get_chamber(world, token_id, loc_y1, Dir::Under, 'entry', 0);
+        let chamber_y2_1: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y1.location_id), Dir::North, 'entry', 0);
+        let chamber_y3_1: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y2_1.location_id), Dir::West, 'entry', 0);
+        let chamber_y4_1: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.location_id), Dir::North, 'entry', 0);
+        let chamber_y4_2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.location_id), Dir::West, 'entry', 0);
+        let chamber_y4_3: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y3_1.location_id), Dir::South, 'entry', 0);
+        let chamber_y2_2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y1.location_id), Dir::South, 'entry', 0);
+        let chamber_y3_2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber_y2_2.location_id), Dir::South, 'entry', 0);
         assert(chamber_y1.yonder == 1, 'chamber_y1');
         assert(chamber_y2_1.yonder == 2, 'chamber_y2_1');
         assert(chamber_y2_2.yonder == 2, 'chamber_y2_2');
@@ -78,8 +78,8 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 1;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'seed', 0]);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'binary_tree_classic', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'binary_tree_classic', 0]);
     }
 
     #[test]
@@ -89,7 +89,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 0;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), dir.into(), 'binary_tree_classic', 0]);
     }
 
     #[test]
@@ -99,7 +99,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 123;
         let (location_id, dir, to_location_id) = make_from_location(token_id);
-        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), DIR::OVER.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location_id.into(), DIR::OVER.into(), 'binary_tree_classic', 0]);
     }
 
     #[test]
@@ -108,7 +108,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 212;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into(), 'binary_tree_classic', 0]);
     }
 
     #[test]
@@ -118,7 +118,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 212;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::WEST.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::WEST.into(), 'binary_tree_classic', 0]);
     }
 
     #[test]
@@ -128,7 +128,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 232;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:1, north:1, east:1, west:0, south:1 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::UNDER.into(), 'binary_tree_classic', 0]);
     }
 
     #[test]
@@ -138,7 +138,7 @@ mod tests {
         let world = setup_world();
         let token_id: u16 = 434;
         let location: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:1, north:1, east:1, west:0, south:0 };
-        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::EAST.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), location.to_id().into(), DIR::EAST.into(), 'binary_tree_classic', 0]);
     }
 
     fn assert_doors(prefix: felt252, world: IWorldDispatcher, location_id: u128, north: u8, east: u8, west: u8, south: u8, over: u8, under: u8) {
@@ -159,6 +159,19 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
+    #[available_gas(1_000_000_000)]
+    fn test_mint_realms_invalid_generator() {
+        let world = setup_world();
+        let token_id: u16 = 255;
+        let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        // first chamber will always use the 'entry' generator
+        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'invalid_generator', 0);
+        // now a bad generator...
+        let chamber2 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'invalid_generator', 0);
+    }
+
+    #[test]
     #[available_gas(100_000_000_000)]
     fn test_doors() {
         let world = setup_world();
@@ -166,56 +179,57 @@ mod tests {
 
         // 1st chamber: entry from above, all other locked
         let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under);
+        assert(loc1.validate_entry() == true, 'entry');
+        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'seed', 0);
         assert_doors('start', world, chamber1.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
 
         // move WEST
-        let chamber2 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West);
+        let chamber2 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'seed', 0);
         assert_doors('move-west-from', world, chamber1.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
         assert_doors('move-west', world, chamber2.location_id, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
 
         // move NORTH
-        let chamber3 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber2.location_id), Dir::North);
+        let chamber3 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber2.location_id), Dir::North, 'seed', 0);
         assert_doors('move-north-from', world, chamber2.location_id, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-north', world, chamber3.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0, TILE::LOCKED_EXIT);
 
         // move EAST
-        let chamber4 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber3.location_id), Dir::East);
+        let chamber4 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber3.location_id), Dir::East, 'seed', 0);
         assert_doors('move-east-from', world, chamber3.location_id, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0, TILE::LOCKED_EXIT);
         assert_doors('move-east', world, chamber4.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-east-start', world, chamber1.location_id, TILE::EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
 
         // move EAST+SOUTH
-        let chamber5 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber4.location_id), Dir::East);
+        let chamber5 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber4.location_id), Dir::East, 'seed', 0);
         assert_doors('move-ES_east-from', world, chamber4.location_id, TILE::LOCKED_EXIT, TILE::EXIT, TILE::ENTRY, TILE::EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-ES_east', world, chamber5.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
-        let chamber6 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber5.location_id), Dir::South);
+        let chamber6 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber5.location_id), Dir::South, 'seed', 0);
         assert_doors('move-ES-from', world, chamber5.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-ES', world, chamber6.location_id, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-ES-start', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
 
         // move SOUTH+WEST
-        let chamber7 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber6.location_id), Dir::South);
+        let chamber7 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber6.location_id), Dir::South, 'seed', 0);
         assert_doors('move-SW_south-from', world, chamber6.location_id, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::EXIT, TILE::EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-SW_south', world, chamber7.location_id, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
-        let chamber8 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber7.location_id), Dir::West);
+        let chamber8 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber7.location_id), Dir::West, 'seed', 0);
         assert_doors('move-SW-from', world, chamber7.location_id, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-SW', world, chamber8.location_id, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-SW-start', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
 
         // move UNDER
-        let chamber9 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber8.location_id), Dir::Under);
+        let chamber9 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber8.location_id), Dir::Under, 'seed', 0);
         assert_doors('move--under-from', world, chamber8.location_id, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::EXIT);
         assert_doors('move--under', world, chamber9.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
 
         // move NORTH
-        let chamber10 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber9.location_id), Dir::North);
+        let chamber10 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber9.location_id), Dir::North, 'seed', 0);
         assert_doors('move--under_from', world, chamber9.location_id, TILE::EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
         assert_doors('move--under', world, chamber10.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::EXIT, TILE::LOCKED_EXIT);
         assert_doors('move--under-start', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::ENTRY, TILE::EXIT);
 
         // move WEST
-        let chamber11 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber10.location_id), Dir::West);
+        let chamber11 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber10.location_id), Dir::West, 'seed', 0);
         assert_doors('move--west_from', world, chamber10.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::ENTRY, TILE::EXIT, TILE::LOCKED_EXIT);
         assert_doors('move--west', world, chamber11.location_id, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT);
         assert_doors('move--west-2', world, chamber2.location_id, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::EXIT);

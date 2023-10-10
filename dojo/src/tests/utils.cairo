@@ -8,9 +8,9 @@ mod utils {
     use dojo::test_utils::spawn_test_world;
 
     use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
-    use loot_underworld::components::chamber::{chamber, Chamber, doors, Doors};
-    use loot_underworld::components::chamber::{map, Map};
-    use loot_underworld::components::tile::{tile, Tile};
+    use loot_underworld::components::chamber::{Chamber, chamber, Doors, doors};
+    use loot_underworld::components::chamber::{Map, map};
+    use loot_underworld::components::tile::{Tile, tile};
     use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir};
     use loot_underworld::types::constants::{DOMAINS};
@@ -30,9 +30,9 @@ mod utils {
         (location_id, dir, to_location_id)
     }
 
-    fn mint_get_realms_get_chamber(world: IWorldDispatcher, token_id: u16, from_coord: Location, from_dir: Dir) -> Chamber {
+    fn mint_get_realms_get_chamber(world: IWorldDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generatorName: felt252, generatorValue: u32) -> Chamber {
         let dir_u8: u8 = from_dir.into();
-        world.execute('mint_realms_chamber', array![token_id.into(), from_coord.to_id().into(), dir_u8.into(), 'seed', 0]);
+        world.execute('mint_realms_chamber', array![token_id.into(), from_coord.to_id().into(), dir_u8.into(), generatorName.into(), generatorValue.into()]);
         let to_location: Location = from_coord.offset(from_dir);
         get_world_Chamber(world, to_location.to_id())
     }

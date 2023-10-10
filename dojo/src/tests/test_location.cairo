@@ -57,6 +57,7 @@ mod tests {
             let ok = *oks[i];
             let mut loc = ok;
             assert(loc.validate() == true, 'ok');
+            assert(loc.validate_entry() == false, '!entry');
             loc = ok; loc.domain_id = 0;
             assert(loc.validate() == false, '!domain_id');
             loc = ok; loc.token_id = 0;
@@ -64,26 +65,32 @@ mod tests {
             if(ok.over > 0) {
                 loc = ok; loc.over = 0;
                 assert(loc.validate() == false, '!over');
+                assert(loc.validate_entry() == true, '!entry_over');
             }
             if(ok.under > 0) {
                 loc = ok; loc.under = 0;
                 assert(loc.validate() == false, '!under');
+                assert(loc.validate_entry() == true, '!entry_under');
             }
             if(ok.north > 0) {
                 loc = ok; loc.north = 0;
                 assert(loc.validate() == false, '!north');
+                assert(loc.validate_entry() == false, '!entry_north');
             }
             if(ok.east > 0) {
                 loc = ok; loc.east = 0;
                 assert(loc.validate() == false, '!east');
+                assert(loc.validate_entry() == false, '!entry_east');
             }
             if(ok.west > 0) {
                 loc = ok; loc.west = 0;
                 assert(loc.validate() == false, '!west');
+                assert(loc.validate_entry() == false, '!entry_west');
             }
             if(ok.south > 0) {
                 loc = ok; loc.south = 0;
                 assert(loc.validate() == false, '!south');
+                assert(loc.validate_entry() == false, '!entry_south');
             }
             i += 1;
         };

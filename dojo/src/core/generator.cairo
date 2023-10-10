@@ -16,6 +16,7 @@ fn generate(
     generatorValue: u32,
 ) -> u256 {
 
+    // the seed is the initial state, we sculpt from that
     let mut bitmap: u256 = seed;
 
     if(generatorName == 'seed') {
@@ -30,11 +31,15 @@ fn generate(
     } else if(generatorName == 'protected') {
         bitmap = protected;
         protected = 0;
+    } else if(generatorName == 'entry') {
+        // the entry is always a wide chamber
+        bitmap = carve(bitmap, protected, 3);
+        bitmap = carve(bitmap, protected, 7);
+        protected = 0;
     } else if(generatorName == 'connection') {
         let (_bitmap, _protected) = connect_doors(bitmap, protected, entry_dir, generatorValue);
         bitmap = _bitmap;
         protected = _protected;
-        protected = 0;
     } else if(generatorName == 'binary_tree_classic') {
         bitmap = binary_tree_classic(bitmap, entry_dir);
     } else if(generatorName == 'binary_tree_pro') {
@@ -65,6 +70,7 @@ fn generate(
         'Invalid generator...'.print();
         generatorName.print();
         bitmap = 0;
+        protected = 0;
     }
 
     // only needed if not using carve()

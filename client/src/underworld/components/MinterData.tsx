@@ -17,10 +17,12 @@ const _generators: Generator[] = [
   { name: 'underseed', value: 0, description: '' },
   { name: 'overseed', value: 0, description: '' },
   { name: 'protected', value: 0, description: '' },
+  // default entry
+  { name: 'entry', value: 0, description: '' },
   // connections
-  { name: 'connection', value: 0, description: '' },
-  { name: 'connection', value: 1, description: '' },
-  { name: 'connection', value: 2, description: '' },
+  { name: 'connection', value: 0, description: 'straight connection' },
+  { name: 'connection', value: 1, description: 'wide connection' },
+  { name: 'connection', value: 2, description: 'carved connection' },
   // binary tree mazes
   { name: 'binary_tree_classic', value: 0, description: '' },
   { name: 'binary_tree_pro', value: 0, description: '' },
@@ -32,8 +34,12 @@ const _generators: Generator[] = [
   { name: 'carve', value: 2, description: '' },
   { name: 'carve', value: 3, description: '' },
   { name: 'carve', value: 36, description: '' },
-  { name: 'carve', value: 37, description: 'OK' },
+  { name: 'carve', value: 37, description: 'entry' },
   { name: 'carve', value: 4, description: '' },
+  { name: 'carve', value: 44, description: '' },
+  { name: 'carve', value: 45, description: '' },
+  { name: 'carve', value: 46, description: '' },
+  { name: 'carve', value: 47, description: '' },
   { name: 'carve', value: 5, description: '' },
   { name: 'carve', value: 44, description: '' },
   { name: 'carve', value: 45, description: '' },
@@ -41,6 +47,8 @@ const _generators: Generator[] = [
   { name: 'carve', value: 47, description: '' },
   { name: 'carve', value: 54, description: '' },
   { name: 'carve', value: 55, description: 'OK' },
+  { name: 'carve', value: 56, description: '' },
+  { name: 'carve', value: 57, description: '' },
   { name: 'carve', value: 6, description: '' },
   { name: 'carve', value: 63, description: '' },
   { name: 'carve', value: 64, description: '' },
@@ -122,8 +130,7 @@ function MinterData() {
 
   const _mintFirst = () => {
     if (canMintFirst && city) {
-      const generator = _generators[generatorIndex]
-      mint_realms_chamber(account, realmId, city.coord, Dir.Under, generator.name, generator.value)
+      mint_realms_chamber(account, realmId, city.coord, Dir.Under, 'entry', 0)
     }
   }
 
