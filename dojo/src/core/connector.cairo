@@ -73,7 +73,8 @@ fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u128) -> (u
 
     if(style == 0) {
         // thin corridors
-        res_bitmap = res_protected;
+        res_bitmap = protect(0, protected);
+        res_bitmap = res_bitmap | res_protected;
     } else if(style == 1) {
         // large corridors
         res_bitmap = protect(0, res_protected);

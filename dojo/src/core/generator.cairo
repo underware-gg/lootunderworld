@@ -8,7 +8,7 @@ use loot_underworld::core::mazer::{maze_binary_tree_classic, maze_binary_pro, ma
 use loot_underworld::core::seeder::{make_underseed, make_overseed};
 use loot_underworld::types::dir::{Dir};
 
-fn generate(seed: u256, mut protected: u256, algo: u128, entry_dir: Dir) -> (u256, u256) {
+fn generate(seed: u256, mut protected: u256, algo: u128, entry_dir: Dir) -> u256 {
 
     let mut bitmap: u256 = seed;
     let mut postProtect: bool = true;
@@ -57,9 +57,9 @@ fn generate(seed: u256, mut protected: u256, algo: u128, entry_dir: Dir) -> (u25
     }
 
     // only needed if not using carve()
-    if(postProtect && protected != 0) {
+    if (postProtect) {
         bitmap = protect(bitmap, protected);
     }
 
-    (bitmap, protected)
+    bitmap
 }

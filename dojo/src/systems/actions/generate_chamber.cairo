@@ -66,22 +66,20 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
     let under: u8 = create_door(world, chamber_location, location_id, seed, entry_dir, Dir::Under.into());
 
     // protect doors area
-    let mut doors: u256 = 0;
-    doors = Bitmap::set_tile(doors, north.into());
-    doors = Bitmap::set_tile(doors, east.into());
-    doors = Bitmap::set_tile(doors, west.into());
-    doors = Bitmap::set_tile(doors, south.into());
-    if(over > 0) { doors = Bitmap::set_tile(doors, over.into()); }
-    if(under > 0) { doors = Bitmap::set_tile(doors, under.into()); }
+    let mut protected: u256 = 0;
+    protected = Bitmap::set_tile(protected, north.into());
+    protected = Bitmap::set_tile(protected, east.into());
+    protected = Bitmap::set_tile(protected, west.into());
+    protected = Bitmap::set_tile(protected, south.into());
+    if(over > 0) { protected = Bitmap::set_tile(protected, over.into()); }
+    if(under > 0) { protected = Bitmap::set_tile(protected, under.into()); }
 
 
     //---------------------
     // Generate Bitmap
     //
-    let (bitmap, protected): (u256, u256) = generate(seed, doors, algo, entry_dir);
-
+    let bitmap: u256= generate(seed, protected, algo, entry_dir);
     assert(bitmap != 0, 'Chamber is empty');
-    assert((doors & protected) == doors, 'Doors removed by generator');
 
     //---------------------
     // Map Component
@@ -90,7 +88,6 @@ fn generate_chamber(world: IWorldDispatcher, caller: ContractAddress, from_locat
         Map {
             entity_id: location_id,
             bitmap,
-            protected,
         },
         Doors {
             location_id,

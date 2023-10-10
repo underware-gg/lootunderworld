@@ -16,7 +16,6 @@ struct Map {
     #[key]
     entity_id: u128,
     bitmap: u256,       // the actual map: 0=void/walls, 1=path
-    protected: u256,    // occupied tiles: 0=free, 1=occupied
 }
 
 // Used by generator to match doors from chamber to chamber

@@ -5,6 +5,9 @@ use loot_underworld::utils::bitwise::{U256Bitwise};
 /// @param protected Bitmap of protected tiles
 /// @return result The resultimg bitmap
 fn protect(bitmap: u256, protected: u256) -> u256 {
+    if(protected == 0) {
+        return bitmap;
+    }
     let mut result: u256 = bitmap;
     let mut i: usize = 0;
     loop {
