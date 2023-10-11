@@ -40,9 +40,9 @@ fn randomize_door_pos(seed: u256, dir: Dir) -> u8 {
     result.try_into().unwrap()
 }
 
-fn randomize_under_passage(seed: u256) -> bool {
+fn randomize_door_permissions(seed: u256) -> u8 {
     // TODO: create some rule here
-    return true;
+    return 0xff;
 }
 
 // randomize a tile position
