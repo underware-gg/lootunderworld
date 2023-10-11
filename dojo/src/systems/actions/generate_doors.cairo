@@ -1,6 +1,6 @@
 use traits::Into;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use loot_underworld::core::randomizer::{randomize_door_slot, randomize_door_pos};
+use loot_underworld::core::randomizer::{randomize_door_pos};
 use loot_underworld::systems::actions::create_tile::{create_tile};
 use loot_underworld::components::chamber::{Doors};
 use loot_underworld::types::tile_type::{TileType};
@@ -12,17 +12,17 @@ use loot_underworld::utils::bitmap::{Bitmap};
 fn generate_doors(world: IWorldDispatcher,
     location: Location,
     location_id: u128,
-    seed: u256,
+    ref rnd: u256,
     entry_dir: Dir,
     permissions: u8,
 ) -> (Doors, u256) {
 
-    let north: u8 = create_door(world, location, location_id, seed, entry_dir, permissions, Dir::North.into());
-    let east: u8  = create_door(world, location, location_id, seed, entry_dir, permissions, Dir::East.into());
-    let west: u8  = create_door(world, location, location_id, seed, entry_dir, permissions, Dir::West.into());
-    let south: u8 = create_door(world, location, location_id, seed, entry_dir, permissions, Dir::South.into());
-    let over: u8  = create_door(world, location, location_id, seed, entry_dir, permissions, Dir::Over.into());
-    let under: u8 = create_door(world, location, location_id, seed, entry_dir, permissions, Dir::Under.into());
+    let north: u8 = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::North.into());
+    let east: u8  = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::East.into());
+    let west: u8  = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::West.into());
+    let south: u8 = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::South.into());
+    let over: u8  = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::Over.into());
+    let under: u8 = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::Under.into());
 
     // make doors protection bitmap
     let mut protected: u256 = 0;
@@ -42,7 +42,7 @@ fn generate_doors(world: IWorldDispatcher,
 fn create_door(world: IWorldDispatcher,
     location: Location,
     location_id: u128,
-    seed: u256,
+    ref rnd: u256,
     entry_dir: Dir,
     permissions: u8,
     dir: Dir,
@@ -65,7 +65,7 @@ fn create_door(world: IWorldDispatcher,
                 pos = to_doors.south - (15 * 16); // flip pos
                 create_tile(world, to_location_id, to_doors.south, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::NORTH.into())) {
-                pos = randomize_door_pos(seed, dir);
+                pos = randomize_door_pos(ref rnd, dir);
             }
         },
         Dir::East => {
@@ -74,7 +74,7 @@ fn create_door(world: IWorldDispatcher,
                 pos = to_doors.west + 15; // flip pos
                 create_tile(world, to_location_id, to_doors.west, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::EAST.into())) {
-                pos = randomize_door_pos(seed, dir);
+                pos = randomize_door_pos(ref rnd, dir);
             }
         },
         Dir::West => {
@@ -83,7 +83,7 @@ fn create_door(world: IWorldDispatcher,
                 pos = to_doors.east - 15; // flip pos
                 create_tile(world, to_location_id, to_doors.east, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::WEST.into())) {
-                pos = randomize_door_pos(seed, dir);
+                pos = randomize_door_pos(ref rnd, dir);
             }
         },
         Dir::South => {
@@ -92,7 +92,7 @@ fn create_door(world: IWorldDispatcher,
                 pos = to_doors.north + (15 * 16); // flip pos
                 create_tile(world, to_location_id, to_doors.north, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::SOUTH.into())) {
-                pos = randomize_door_pos(seed, dir);
+                pos = randomize_door_pos(ref rnd, dir);
             }
         },
         Dir::Over => {
@@ -102,7 +102,7 @@ fn create_door(world: IWorldDispatcher,
                 create_tile(world, to_location_id, to_doors.under, TileType::Exit); // open other chamber's door
             } else if (is_entry) {
                 // create the Over door only if it is the entry
-                pos = randomize_door_pos(seed, dir);
+                pos = randomize_door_pos(ref rnd, dir);
             }
         },
         Dir::Under => {
@@ -112,7 +112,7 @@ fn create_door(world: IWorldDispatcher,
                 create_tile(world, to_location_id, to_doors.over, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::UNDER.into())) {
                 // create new Under door occasionally
-                pos = randomize_door_pos(seed, dir);
+                pos = randomize_door_pos(ref rnd, dir);
             }
         },
     }

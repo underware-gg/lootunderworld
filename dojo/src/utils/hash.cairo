@@ -38,12 +38,11 @@ fn hash_u128_to_u256(value: u128) -> u256 {
     }
 }
 
-// returns the hashed number mod'ded to min .. max (inclusive)
-fn hash_128_range(seed: u128, offset: u128, min: u128, max: u128) -> u128 {
-    let rnd = hash_u128(seed, offset);
-    let range = max - min + 1;
-    min + rnd % range
-}
+
+
+//------------------------------------------------------------------
+// Unit tests
+//
 
 #[test]
 // #[available_gas(20000)]
@@ -84,25 +83,4 @@ fn test_hash_u128() {
     assert(rnd1 != rnd12, '');
     assert(rnd1 != rnd2, '');
     assert(rnd2 != rnd22, '');
-}
-
-#[test]
-#[available_gas(1000000)]
-fn test_hash_range_u128() {
-    assert(0x2 == hash_128_range(4, 1, 1, 9), '');
-    assert(0x6 == hash_128_range(5, 1, 1, 9), '');
-    assert(0x4 == hash_128_range(6, 1, 1, 9), '');
-    assert(0x3 == hash_128_range(7, 1, 1, 9), '');
-
-    let mut i: u128 = 0;
-    let mut h: u128 = 0;
-    loop {
-        if i > 15 { break; }
-        h = hash_128_range(25, i, 2, 2); 
-        assert(h == 2, 'not == 2');
-        h = hash_128_range(25, i, 2, 5); 
-        assert(h >= 2, 'not >= 2');
-        assert(h <= 5, 'not <= 5');
-        i += 1;
-    }
 }

@@ -49,7 +49,10 @@ fn generate_chamber(world: IWorldDispatcher,
     //---------------------
     // Chamber
     //
+    // create seed, the initial bitmap state that is used to sculpt it
     let seed: u256 = make_seed(chamber_location.token_id.into(), location_id);
+    // clone seed for value randomization
+    let mut rnd: u256 = seed;
 
     // increment yonder
     let yonder: u16 = from_chamber.yonder + 1;
@@ -59,8 +62,8 @@ fn generate_chamber(world: IWorldDispatcher,
     // Doors
     //
     let entry_dir: Dir = from_dir.flip();
-    let permissions: u8 = randomize_door_permissions(seed);
-    let (doors, protected): (Doors, u256) = generate_doors(world, chamber_location, location_id, seed, entry_dir, permissions);
+    let permissions: u8 = randomize_door_permissions(ref rnd);
+    let (doors, protected): (Doors, u256) = generate_doors(world, chamber_location, location_id, ref rnd, entry_dir, permissions);
 
 
     //---------------------
