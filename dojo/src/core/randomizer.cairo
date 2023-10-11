@@ -1,6 +1,7 @@
 use traits::Into;
 use debug::PrintTrait;
 use loot_underworld::utils::hash::{hash_128_range};
+use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::core::seeder::{make_seed};
 use loot_underworld::types::dir::{Dir, DIR};
 
@@ -22,20 +23,21 @@ mod RANGE {
 }
 
 // Randomize a door slot attached to a NEWS direction (bitmap border)
-fn randomize_door_slot(seed: u256, dir: Dir) -> u8 {
+fn randomize_door_slot(seed: u256, dir: Dir) -> usize {
     hash_128_range(seed.low, DOOR_OFFSET + dir.into(), RANGE::DOOR::MIN, RANGE::DOOR::MAX).try_into().unwrap()
 }
 
 // randomize a door position as a tile (Over, Under)
 fn randomize_door_pos(seed: u256, dir: Dir) -> u8 {
-    match dir {
-        Dir::North => randomize_door_slot(seed, dir),
-        Dir::East => (randomize_door_slot(seed, dir) * 16 + 15),
-        Dir::West => (randomize_door_slot(seed, dir) * 16),
-        Dir::South => (randomize_door_slot(seed, dir) + (15 * 16)),
+    let result: usize = match dir {
+        Dir::North => Bitmap::xy_to_tile(randomize_door_slot(seed, dir), 0),
+        Dir::East => Bitmap::xy_to_tile(15, randomize_door_slot(seed, dir)),
+        Dir::West => Bitmap::xy_to_tile(0, randomize_door_slot(seed, dir)),
+        Dir::South => Bitmap::xy_to_tile(randomize_door_slot(seed, dir), 15),
         Dir::Over => randomize_tile_pos(seed, 0x0, 0x0, DOOR_OFFSET + dir.into()),
         Dir::Under => randomize_tile_pos(seed, 0x0, 0x0, DOOR_OFFSET + dir.into()),
-    }
+    };
+    result.try_into().unwrap()
 }
 
 fn randomize_under_passage(seed: u256) -> bool {
@@ -44,14 +46,14 @@ fn randomize_under_passage(seed: u256) -> bool {
 }
 
 // randomize a tile position
-fn randomize_tile_pos(seed: u256, bitmap: u256, protected: u256, offset: u128) -> u8 {
+fn randomize_tile_pos(seed: u256, bitmap: u256, protected: u256, offset: u128) -> usize {
 
     // TODO: verify bitmap / protected
     // TODO: + verify tests
 
-    let x: u8 = hash_128_range(seed.low, offset, RANGE::TILE::MIN, RANGE::TILE::MAX).try_into().unwrap();
-    let y: u8 = hash_128_range(seed.high, offset, RANGE::TILE::MIN, RANGE::TILE::MAX).try_into().unwrap();
-    (y * 16 + x)
+    let x: usize = hash_128_range(seed.low, offset, RANGE::TILE::MIN, RANGE::TILE::MAX).try_into().unwrap();
+    let y: usize = hash_128_range(seed.high, offset, RANGE::TILE::MIN, RANGE::TILE::MAX).try_into().unwrap();
+    Bitmap::xy_to_tile(x, y)
 }
 
 
@@ -142,7 +144,7 @@ fn test_randomize_tile_pos() {
         if (i == 10) { break; }
         // ---
         let seed = make_seed(1234, i.into());
-        let pos: u8 = randomize_tile_pos(seed, 0, 0, i.into());
+        let pos: usize = randomize_tile_pos(seed, 0, 0, i.into());
         let x: u128 = (pos % 16).into();
         let y: u128 = (pos / 16).into();
         assert(x >= RANGE::TILE::MIN, 'x >= min');

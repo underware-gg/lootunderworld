@@ -15,7 +15,7 @@ struct Chamber {
 struct Map {
     #[key]
     entity_id: u128,
-    bitmap: u256,       // the actual map: 0=void/walls, 1=path
+    bitmap: u256, // the actual map: 0=void/walls, 1=path
     generatorName: felt252,
     generatorValue: u32,
 }

@@ -67,10 +67,7 @@ fn generate(
         bitmap = carve(bitmap, protected, pass1.try_into().unwrap());
         protected = 0;
     } else {
-        'Invalid generator...'.print();
-        generatorName.print();
-        bitmap = 0;
-        protected = 0;
+        assert(false, 'Invalid generator');
     }
 
     // only needed if not using carve()

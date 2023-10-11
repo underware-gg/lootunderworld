@@ -14,24 +14,37 @@ mod MASK {
     // 10001
     // 10001
     // 10001
-    const OUTER_COLS: u256 = 0x8001800180018001800180018001800180018001800180018001800180018001;
-    const INNER_COLS: u256 = 0x7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe;
     const LEFT_COL: u256 = 0x8000800080008000800080008000800080008000800080008000800080008000;
     const RIGHT_COL: u256 = 0x1000100010001000100010001000100010001000100010001000100010001;
+    const OUTER_COLS: u256 = 0x8001800180018001800180018001800180018001800180018001800180018001;
+    const INNER_COLS: u256 = 0x7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe;
 
     // 11111
     // 00000
     // 11111
-    const OUTER_ROWS: u256 = 0xffff00000000000000000000000000000000000000000000000000000000ffff;
-    const INNER_ROWS: u256 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000;
     const TOP_ROW: u256 = 0xffff000000000000000000000000000000000000000000000000000000000000;
     const BOTTOM_ROW: u256 = 0xffff;
+    const OUTER_ROWS: u256 = 0xffff00000000000000000000000000000000000000000000000000000000ffff;
+    const INNER_ROWS: u256 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000;
 }
 
 trait BitmapTrait {
+
+    // convert map position form tile (0-255) to xy (0-15,0-15)
+    // always starting from the map's top left
+    fn tile_to_xy(i: usize) -> (usize, usize);
+
+    // convert map position form xy (0-15,0-15) to tile (0-255)
+    // always starting from the map's top left
+    fn xy_to_tile(x: usize, y: usize) -> usize;
+
+    // returns the bit number of a tile position (e.g. doors)
     fn bit_tile(i: usize) -> usize;
+
+    // returns the bit number of a [x, y] position
     fn bit_xy(x: usize, y: usize) -> usize;
     
+    // check if a map position is set (is path, not wall)
     fn is_set_tile(bitmap: u256, i: usize) -> bool;
     fn is_set_xy(bitmap: u256, x: usize, y: usize) -> bool;
     
@@ -64,15 +77,19 @@ trait BitmapTrait {
 
 impl Bitmap of BitmapTrait {
 
-    // returns the bit number of a tile position (e.g. doors)
-    // starting from the map's top left
+    #[inline(always)]
+    fn tile_to_xy(i: usize) -> (usize, usize) {
+        (i % 16, i / 16)
+    }
+    #[inline(always)]
+    fn xy_to_tile(x: usize, y: usize) -> usize {
+       (y * 16 + x)
+    }
+
     #[inline(always)]
     fn bit_tile(i: usize) -> usize {
        (255 - i)
     }
-
-    // returns the bit number of a [x, y] position
-    // starting from the map's top left
     #[inline(always)]
     fn bit_xy(x: usize, y: usize) -> usize {
        (255 - (y * 16 + x))
@@ -268,6 +285,26 @@ fn test_bitmap_inline() {
     let bmp2: u256 = Bitmap::set_xy(0, 4 + 4, 4 + 4);
     assert(bmp1 != 0, 'test_bitmap_inline_set_zero');
     assert(bmp1 == bmp2, 'test_bitmap_inline_set_equals');
+}
+
+fn assert_tile_to_xy(i: usize, x: usize, y: usize) {
+    i.print();
+    x.print();
+    y.print();
+    assert(Bitmap::tile_to_xy(i) == (x, y), 'tile_to_xy');
+    assert(Bitmap::xy_to_tile(x, y) == i, 'xy_to_tile');
+}
+
+#[test]
+#[available_gas(100_000_000)]
+fn test_bitmap_tile_xy() {
+    assert_tile_to_xy(0, 0, 0);
+    assert_tile_to_xy(1, 1, 0);
+    assert_tile_to_xy(15, 15, 0);
+    assert_tile_to_xy(16, 0, 1);
+    assert_tile_to_xy(17, 1, 1);
+    assert_tile_to_xy(32, 0, 2);
+    assert_tile_to_xy(255, 15, 15);
 }
 
 #[test]
