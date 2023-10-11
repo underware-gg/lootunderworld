@@ -264,6 +264,8 @@ export type Map = {
   bitmap?: Maybe<Scalars['u256']['output']>;
   entity?: Maybe<Entity>;
   entity_id?: Maybe<Scalars['u128']['output']>;
+  generatorName?: Maybe<Scalars['felt252']['output']>;
+  generatorValue?: Maybe<Scalars['u32']['output']>;
 };
 
 export type MapConnection = {
@@ -285,7 +287,9 @@ export type MapOrder = {
 
 export enum MapOrderOrderField {
   Bitmap = 'BITMAP',
-  EntityId = 'ENTITY_ID'
+  EntityId = 'ENTITY_ID',
+  Generatorname = 'GENERATORNAME',
+  Generatorvalue = 'GENERATORVALUE'
 }
 
 export type MapWhereInput = {
@@ -301,6 +305,18 @@ export type MapWhereInput = {
   entity_idLT?: InputMaybe<Scalars['String']['input']>;
   entity_idLTE?: InputMaybe<Scalars['String']['input']>;
   entity_idNEQ?: InputMaybe<Scalars['String']['input']>;
+  generatorName?: InputMaybe<Scalars['String']['input']>;
+  generatorNameGT?: InputMaybe<Scalars['String']['input']>;
+  generatorNameGTE?: InputMaybe<Scalars['String']['input']>;
+  generatorNameLT?: InputMaybe<Scalars['String']['input']>;
+  generatorNameLTE?: InputMaybe<Scalars['String']['input']>;
+  generatorNameNEQ?: InputMaybe<Scalars['String']['input']>;
+  generatorValue?: InputMaybe<Scalars['Int']['input']>;
+  generatorValueGT?: InputMaybe<Scalars['Int']['input']>;
+  generatorValueGTE?: InputMaybe<Scalars['Int']['input']>;
+  generatorValueLT?: InputMaybe<Scalars['Int']['input']>;
+  generatorValueLTE?: InputMaybe<Scalars['Int']['input']>;
+  generatorValueNEQ?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type Moves = {

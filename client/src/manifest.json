@@ -808,7 +808,7 @@
         }
       ],
       "outputs": [],
-      "class_hash": "0x3ab62f8ce3e41af87d998a62cba79c00e9d893293e6cd6df2e13f26c45cb805",
+      "class_hash": "0x202b8fe6e3d933ced26212b2c44aadf0e4dda0d92326134510b1ca088420a8d",
       "dependencies": [],
       "abi": [
         {
@@ -1264,9 +1264,19 @@
           "name": "bitmap",
           "type": "u256",
           "key": false
+        },
+        {
+          "name": "generatorName",
+          "type": "felt252",
+          "key": false
+        },
+        {
+          "name": "generatorValue",
+          "type": "u32",
+          "key": false
         }
       ],
-      "class_hash": "0x109678c8c71a2fe9703e7e936e90a798702ce73ead07d079a3898a3ce261bc0",
+      "class_hash": "0x472dcfa35a5abdcd45fd7b1c664bc553a553f0edbb011eafa1f0fdeac153d98",
       "abi": [
         {
           "type": "function",

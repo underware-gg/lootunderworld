@@ -60,11 +60,13 @@ export function defineContractComponents(world: World) {
         world,
         {
           bitmap: RecsType.BigInt,
+          generatorName: RecsType.BigInt,
+          generatorValue: RecsType.Number,
         },
         {
           metadata: {
             name: name,
-            types: ["u256"],
+            types: ["u256","felt252","u32"],
           },
         }
       );
