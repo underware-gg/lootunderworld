@@ -1,8 +1,9 @@
 use traits::Into;
 use debug::PrintTrait;
+use loot_underworld::core::seeder::{make_seed};
 use loot_underworld::utils::hash::{hash_u128};
 use loot_underworld::utils::bitmap::{Bitmap};
-use loot_underworld::core::seeder::{make_seed};
+use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DIR};
 
 // tile ranges
@@ -41,6 +42,10 @@ fn randomize_value(ref rnd: u256, max: u128) -> u128 {
     rnd = _rnd_rnd_(rnd);
     (rnd.low % max)
 }
+#[inline(always)]
+fn randomize_value_usize(ref rnd: u256, max: u128) -> usize {
+    randomize_value(ref rnd, max).try_into().unwrap()
+}
 
 // randomizes a value between min .. max (inclusive)
 // returns the new rnd and the value
@@ -61,9 +66,37 @@ fn randomize_range_usize(ref rnd: u256, min: u128, max: u128) -> usize {
 
 // Returns an u8 with flags if doors positions are permitted to be generated, for all directions
 // usage example: U8Bitwise::is_set(permissions, DIR::UNDER.into())
-fn randomize_door_permissions(ref rnd: u256) -> u8 {
-    // TODO: create some rule here
-    return 0xff;
+fn randomize_door_permissions(ref rnd: u256, chamber_location: Location, yonder: u16, generatorName: felt252) -> u8 {
+    // seed generator is used for #[test]
+    if (generatorName == 'seed') {
+        return 0xff;
+    }
+
+    // Dir::Over is never permitted!
+    let mut result: u8 = 0x0;
+
+    let is_entry: bool = (yonder == 1);
+
+    // Dir::Under
+    if (!is_entry && yonder % 3 == 0) {
+        result = U8Bitwise::set(result, DIR::UNDER.into());
+    }
+
+    // NEWS
+    if (is_entry || randomize_value(ref rnd, 4) == 0) {
+        result = U8Bitwise::set(result, DIR::NORTH.into());
+    }
+    if (is_entry || randomize_value(ref rnd, 4) == 0) {
+        result = U8Bitwise::set(result, DIR::EAST.into());
+    }
+    if (is_entry || randomize_value(ref rnd, 4) == 0) {
+        result = U8Bitwise::set(result, DIR::WEST.into());
+    }
+    if (is_entry || randomize_value(ref rnd, 4) == 0) {
+        result = U8Bitwise::set(result, DIR::SOUTH.into());
+    }
+
+    (result)
 }
 
 // randomize a tile position

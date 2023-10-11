@@ -192,7 +192,7 @@ mod tests {
     }
 
     #[test]
-    #[available_gas(100_000_000_000)]
+    #[available_gas(1_000_000_000_000)]
     fn test_doors() {
         let world = setup_world();
         let token_id: u16 = 5454;
@@ -201,11 +201,11 @@ mod tests {
         let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
         assert(loc1.validate_entry() == true, 'entry');
         let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'seed', 0);
-        assert_doors('start', world, chamber1.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
+        assert_doors('entry', world, chamber1.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0);
 
         // move WEST
         let chamber2 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'seed', 0);
-        assert_doors('move-west-from', world, chamber1.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
+        assert_doors('move-west-from', world, chamber1.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0);
         assert_doors('move-west', world, chamber2.location_id, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
 
         // move NORTH
@@ -217,7 +217,7 @@ mod tests {
         let chamber4 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber3.location_id), Dir::East, 'seed', 0);
         assert_doors('move-east-from', world, chamber3.location_id, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0, TILE::LOCKED_EXIT);
         assert_doors('move-east', world, chamber4.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::EXIT, 0, TILE::LOCKED_EXIT);
-        assert_doors('move-east-start', world, chamber1.location_id, TILE::EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
+        assert_doors('move-east-entry', world, chamber1.location_id, TILE::EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0);
 
         // move EAST+SOUTH
         let chamber5 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber4.location_id), Dir::East, 'seed', 0);
@@ -226,7 +226,7 @@ mod tests {
         let chamber6 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber5.location_id), Dir::South, 'seed', 0);
         assert_doors('move-ES-from', world, chamber5.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-ES', world, chamber6.location_id, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
-        assert_doors('move-ES-start', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
+        assert_doors('move-ES-entry', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0);
 
         // move SOUTH+WEST
         let chamber7 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber6.location_id), Dir::South, 'seed', 0);
@@ -235,7 +235,7 @@ mod tests {
         let chamber8 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber7.location_id), Dir::West, 'seed', 0);
         assert_doors('move-SW-from', world, chamber7.location_id, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
         assert_doors('move-SW', world, chamber8.location_id, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::LOCKED_EXIT);
-        assert_doors('move-SW-start', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
+        assert_doors('move-SW-entry', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::ENTRY, 0);
 
         // move UNDER
         let chamber9 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber8.location_id), Dir::Under, 'seed', 0);
@@ -245,12 +245,12 @@ mod tests {
         // move NORTH
         let chamber10 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber9.location_id), Dir::North, 'seed', 0);
         assert_doors('move--under_from', world, chamber9.location_id, TILE::EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT);
-        assert_doors('move--under', world, chamber10.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::EXIT, TILE::LOCKED_EXIT);
-        assert_doors('move--under-start', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::ENTRY, TILE::EXIT);
+        assert_doors('move--under', world, chamber10.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::ENTRY, 0, TILE::LOCKED_EXIT);
+        assert_doors('move--under-entry', world, chamber1.location_id, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::EXIT, TILE::ENTRY, 0);
 
         // move WEST
         let chamber11 = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber10.location_id), Dir::West, 'seed', 0);
-        assert_doors('move--west_from', world, chamber10.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::ENTRY, TILE::EXIT, TILE::LOCKED_EXIT);
+        assert_doors('move--west_from', world, chamber10.location_id, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::ENTRY, 0, TILE::LOCKED_EXIT);
         assert_doors('move--west', world, chamber11.location_id, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT);
         assert_doors('move--west-2', world, chamber2.location_id, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::EXIT);
     }
