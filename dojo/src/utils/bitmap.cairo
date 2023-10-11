@@ -38,10 +38,10 @@ trait BitmapTrait {
     // always starting from the map's top left
     fn xy_to_tile(x: usize, y: usize) -> usize;
 
-    // returns the bit number of a tile position (e.g. doors)
+    // returns the u256 bit number (0-255) of a tile position (e.g. doors)
     fn bit_tile(i: usize) -> usize;
 
-    // returns the bit number of a [x, y] position
+    // returns the u256 bit number (0-255) of a [x, y] position
     fn bit_xy(x: usize, y: usize) -> usize;
     
     // check if a map position is set (is path, not wall)
@@ -288,9 +288,6 @@ fn test_bitmap_inline() {
 }
 
 fn assert_tile_to_xy(i: usize, x: usize, y: usize) {
-    i.print();
-    x.print();
-    y.print();
     assert(Bitmap::tile_to_xy(i) == (x, y), 'tile_to_xy');
     assert(Bitmap::xy_to_tile(x, y) == i, 'xy_to_tile');
 }
