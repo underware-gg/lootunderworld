@@ -4,7 +4,7 @@ use traits::{Into, TryInto};
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-use loot_underworld::systems::actions::create_door::{create_doors};
+use loot_underworld::systems::actions::generate_doors::{generate_doors};
 use loot_underworld::components::chamber::{Chamber, Map, Doors};
 use loot_underworld::core::randomizer::{randomize_door_permissions};
 use loot_underworld::types::location::{Location, LocationTrait};
@@ -60,7 +60,7 @@ fn generate_chamber(world: IWorldDispatcher,
     //
     let entry_dir: Dir = from_dir.flip();
     let permissions: u8 = randomize_door_permissions(seed);
-    let (doors, protected): (Doors, u256) = create_doors(world, chamber_location, location_id, seed, entry_dir, permissions);
+    let (doors, protected): (Doors, u256) = generate_doors(world, chamber_location, location_id, seed, entry_dir, permissions);
 
 
     //---------------------

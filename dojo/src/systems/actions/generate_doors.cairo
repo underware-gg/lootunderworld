@@ -9,7 +9,7 @@ use loot_underworld::types::dir::{Dir, DIR};
 use loot_underworld::utils::bitwise::{U8Bitwise};
 use loot_underworld::utils::bitmap::{Bitmap};
 
-fn create_doors(world: IWorldDispatcher,
+fn generate_doors(world: IWorldDispatcher,
     location: Location,
     location_id: u128,
     seed: u256,
