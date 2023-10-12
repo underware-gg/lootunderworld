@@ -2,6 +2,7 @@ use traits::Into;
 use debug::PrintTrait;
 use loot_underworld::core::seeder::{make_seed};
 use loot_underworld::utils::hash::{hash_u128};
+use loot_underworld::utils::bitwise::{U8Bitwise};
 use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DIR};
@@ -64,41 +65,6 @@ fn randomize_range_usize(ref rnd: u256, min: u128, max: u128) -> usize {
 // Attributes randomizer
 //
 
-// Returns an u8 with flags if doors positions are permitted to be generated, for all directions
-// usage example: U8Bitwise::is_set(permissions, DIR::UNDER.into())
-fn randomize_door_permissions(ref rnd: u256, chamber_location: Location, yonder: u16, generatorName: felt252) -> u8 {
-    // seed generator is used for #[test]
-    if (generatorName == 'seed') {
-        return 0xff;
-    }
-
-    // Dir::Over is never permitted!
-    let mut result: u8 = 0x0;
-
-    let is_entry: bool = (yonder == 1);
-
-    // Dir::Under
-    if (!is_entry && yonder % 3 == 0) {
-        result = U8Bitwise::set(result, DIR::UNDER.into());
-    }
-
-    // NEWS
-    if (is_entry || randomize_value(ref rnd, 4) == 0) {
-        result = U8Bitwise::set(result, DIR::NORTH.into());
-    }
-    if (is_entry || randomize_value(ref rnd, 4) == 0) {
-        result = U8Bitwise::set(result, DIR::EAST.into());
-    }
-    if (is_entry || randomize_value(ref rnd, 4) == 0) {
-        result = U8Bitwise::set(result, DIR::WEST.into());
-    }
-    if (is_entry || randomize_value(ref rnd, 4) == 0) {
-        result = U8Bitwise::set(result, DIR::SOUTH.into());
-    }
-
-    (result)
-}
-
 // randomize a tile position
 fn randomize_tile_pos(ref rnd: u256, bitmap: u256, protected: u256) -> usize {
 
@@ -128,13 +94,72 @@ fn randomize_door_pos(ref rnd: u256, dir: Dir) -> u8 {
 }
 
 
+// North    0b000001
+// East     0b000010
+// West     0b000100
+// South    0b001000
+// Over     0b010000
+// Under    0b100000
+// Returns an u8 with flags if doors positions are permitted to be generated, for all directions
+// usage example: U8Bitwise::is_set(permissions, DIR::UNDER.into())
+fn randomize_door_permissions(ref rnd: u256, chamber_location: Location, entry_dir: Dir, yonder: u16, generatorName: felt252) -> u8 {
+    // seed generator is used for #[test]
+    if (generatorName == 'seed') {
+        return 0xff;
+    }
+
+    // Dir::Over is never permitted!
+    let mut result: u8 = 0x0;
+
+    let is_entry: bool = (yonder == 1);
+
+    // Dir::Under
+    if (!is_entry && yonder % 3 == 0) {
+        result = U8Bitwise::set(result, DIR::UNDER.into());
+    }
+
+    // dead end
+    let is_dead_end: bool = (
+        generatorName != 'connection'
+        && false // TODO: this!
+    );
+
+    // exit_map 
+    // a 3-bit map with all possible exits, not including the entry
+    // from 0b000 to 0b111, seven possibilities...
+    // (3 one-exit, 3 two-exits, 1 three-exits)
+    // plus another bit (0b1000) if the entry is Over
+    let exit_map: u8 = if is_dead_end { 0 } else { 0b1000 | randomize_range(ref rnd, 1, 7).try_into().unwrap() };
+
+    // NEWS
+    if (exit_map > 0) {
+        let mut i: usize = 0;
+        if (is_entry || U8Bitwise::is_set(exit_map, i)) {
+            result = U8Bitwise::set(result, DIR::NORTH.into());
+        }
+        if (entry_dir != Dir::North) { i += 1; }
+        if (is_entry || U8Bitwise::is_set(exit_map, i)) {
+            result = U8Bitwise::set(result, DIR::EAST.into());
+        }
+        if (entry_dir != Dir::East) { i += 1; }
+        if (is_entry || U8Bitwise::is_set(exit_map, i)) {
+            result = U8Bitwise::set(result, DIR::WEST.into());
+        }
+        if (entry_dir != Dir::West) { i += 1; }
+        if (is_entry || U8Bitwise::is_set(exit_map, i)) {
+            result = U8Bitwise::set(result, DIR::SOUTH.into());
+        }
+    }
+
+    (result)
+}
+
 
 
 //------------------------------------------------------------------
 // Unit tests
 //
 use array::ArrayTrait;
-use loot_underworld::utils::bitwise::{U8Bitwise};
 
 #[test]
 #[available_gas(1000000)]
@@ -160,6 +185,21 @@ fn test_hash_randomize_value() {
     assert(rnd0.high == rnd.high, 'rnd.high_4');
     assert(rnd4.low != rnd3.low, 'rnd.low_4');
     assert(val4 != val3, 'rnd.value_4');
+    // below max
+    let mut values: u8 = 0x0;
+    let mut i: u128 = 0;
+    loop {
+        if i > 20 { break; }
+        let h = randomize_value(ref rnd, 4);
+        assert(h < 4, 'not < 4');
+        values = U8Bitwise::set(values, h.try_into().unwrap());
+        i += 1;
+    };
+    // all values under max should be set!
+    assert(U8Bitwise::is_set(values, 0) == true, '!0');
+    assert(U8Bitwise::is_set(values, 1) == true, '!1');
+    assert(U8Bitwise::is_set(values, 2) == true, '!2');
+    assert(U8Bitwise::is_set(values, 3) == true, '!3');
 }
 
 #[test]
@@ -168,15 +208,14 @@ fn test_hash_randomize_range() {
     let mut rnd = make_seed(128, 128);
     let mut values: u8 = 0x0;
     let mut i: u128 = 0;
-    let mut h: u128 = 0;
     loop {
         if i > 20 { break; }
-        h = randomize_range(ref rnd, 2, 2);
+        let mut h = randomize_range(ref rnd, 2, 2);
         assert(h == 2, 'not == 2');
         h = randomize_range(ref rnd, 2, 5);
-        values = U8Bitwise::set(values, h.try_into().unwrap());
         assert(h >= 2, 'not >= 2');
         assert(h <= 5, 'not <= 5');
+        values = U8Bitwise::set(values, h.try_into().unwrap());
         i += 1;
     };
     // all values in range should be set!
