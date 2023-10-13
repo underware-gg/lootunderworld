@@ -49,24 +49,24 @@ mod utils {
         //     yonder: (*component[5]).try_into().unwrap(),
         // }
         let result: Chamber = get!(world, location_id, Chamber);
-        result
+        (result)
     }
 
     fn get_world_Map(world: IWorldDispatcher, entity_id: u128) -> Map {
         let result: Map = get!(world, entity_id, Map);
-        result
+        (result)
     }
 
     fn get_world_Doors(world: IWorldDispatcher, location_id: u128) -> Doors {
         let result: Doors = get!(world, location_id, Doors);
-        result
+        (result)
     }
 
     fn get_world_Tile_type(world: IWorldDispatcher, location_id: u128, pos: u8) -> u8 {
         // let query = array![location_id.into(), pos.into()].span();
         // let component = world.entity('Tile', query, 0, dojo::SerdeLen::<Tile>::len());
         let tile: Tile = get!(world, (location_id, pos), Tile);
-        tile.tile_type
+        (tile.tile_type)
     }
 
     fn get_world_Doors_as_Tiles(world: IWorldDispatcher, location_id: u128) -> Doors {

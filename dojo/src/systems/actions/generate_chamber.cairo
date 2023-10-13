@@ -22,7 +22,8 @@ fn generate_chamber(world: IWorldDispatcher,
     mut generatorValue: u32,
 ) -> u128 {
 
-    let from_chamber = get!(world, from_location.to_id(), (Chamber));
+    let from_location_id: u128 = from_location.to_id();
+    let from_chamber: Chamber = get!(world, from_location_id, (Chamber));
 
     if(from_location.under == 0 && from_location.under == 0) {
         // this is a new Entry from the surface
@@ -34,6 +35,11 @@ fn generate_chamber(world: IWorldDispatcher,
         // else, from_chamber must exist
         assert(from_location.validate() == true, 'Invalid from_location');
         assert(from_chamber.yonder > 0, 'from_chamber does not exist');
+
+        // from door should exist
+        let from_doors: Doors = get!(world, from_location_id, (Doors));
+        let from_door_tile: u8 = from_dir.tile_from_doors(from_doors);
+        assert(from_door_tile > 0, 'from_door does not exist');
     }
 
     // Shift to location
@@ -42,7 +48,7 @@ fn generate_chamber(world: IWorldDispatcher,
 
     // assert chamber is new
     let location_id: u128 = chamber_location.to_id();
-    let chamber = get!(world, location_id, (Chamber));
+    let chamber: Chamber = get!(world, location_id, (Chamber));
     assert(chamber.yonder == 0, 'Chamber already exists');
 
 

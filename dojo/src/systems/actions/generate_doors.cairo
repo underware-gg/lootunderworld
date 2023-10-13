@@ -51,7 +51,7 @@ fn create_door(world: IWorldDispatcher,
     // which chamber is this door leading to?
     let to_location: Location = location.offset(dir);
     let to_location_id: u128 = to_location.to_id();
-    let to_doors = get!(world, to_location_id, (Doors));
+    let to_doors: Doors = get!(world, to_location_id, (Doors));
 
     let is_entry: bool = (entry_dir == dir);
 

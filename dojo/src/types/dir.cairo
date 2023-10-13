@@ -1,4 +1,5 @@
 use debug::PrintTrait;
+use loot_underworld::components::chamber::{Doors};
 
 #[derive(Copy, Drop, Serde, PartialEq)]
 enum Dir {
@@ -23,6 +24,7 @@ mod DIR {
 
 trait DirTrait {
     fn flip(self: Dir) -> Dir;
+    fn tile_from_doors(self: Dir, doors: Doors) -> u8;
 }
 
 impl DirTraitImpl of DirTrait {
@@ -34,6 +36,16 @@ impl DirTraitImpl of DirTrait {
             Dir::South => Dir::North,
             Dir::Over => Dir::Under,
             Dir::Under => Dir::Over,
+        }
+    }
+    fn tile_from_doors(self: Dir, doors: Doors) -> u8 {
+        match self {
+            Dir::North => doors.north,
+            Dir::East => doors.east,
+            Dir::West => doors.west,
+            Dir::South => doors.south,
+            Dir::Over => doors.over,
+            Dir::Under => doors.under,
         }
     }
 }
