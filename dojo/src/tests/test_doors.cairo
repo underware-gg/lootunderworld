@@ -42,7 +42,7 @@ mod tests {
 
     #[test]
     #[available_gas(1_000_000_000_000)]
-    fn test_doors() {
+    fn test_doors_connections() {
         let world = setup_world();
         let token_id: u16 = 5454;
 
@@ -103,4 +103,44 @@ mod tests {
         assert_doors('move--west', world, chamber11.location_id, TILE::LOCKED_EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, TILE::EXIT, TILE::LOCKED_EXIT);
         assert_doors('move--west-2', world, chamber2.location_id, TILE::EXIT, TILE::ENTRY, TILE::LOCKED_EXIT, TILE::LOCKED_EXIT, 0, TILE::EXIT);
     }
+
+    #[test]
+    #[available_gas(1_000_000_000)]
+    fn test_entry_connect_do_under_sides() {
+        let world = setup_world();
+        let token_id: u16 = 255;
+        let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        let loc2: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:2, east:2, west:0, south:0 };
+        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'seed', 0);
+        let chamber_N: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::North, 'seed', 0);
+        let chamber_E: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::East, 'seed', 0);
+        let doors_N: Doors = get_world_Doors(world, chamber_N.location_id);
+        let doors_E: Doors = get_world_Doors(world, chamber_E.location_id);
+        let chamber2: Chamber = mint_get_realms_get_chamber(world, token_id, loc2, Dir::Under, 'seed', 0);
+        let doors2: Doors = get_world_Doors(world, chamber2.location_id);
+        assert(Dir::East.flip_door_tile(doors_N.east) == doors2.west, 'door_N_E');
+        assert(Dir::West.flip_door_tile(doors2.west) == doors_N.east, 'door_N_W');
+        assert(Dir::North.flip_door_tile(doors_E.north) == doors2.south, 'door_E_N');
+        assert(Dir::South.flip_door_tile(doors2.south) == doors_E.north, 'door_E_S');
+    }
+
+    #[test]
+    #[should_panic(expected:('from_door does not exist','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[available_gas(1_000_000_000)]
+    fn test_from_door_does_not_exist() {
+        let world = setup_world();
+        let token_id: u16 = 255;
+        let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'connection', 0);
+        let chamber2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'connection', 0);
+        let doors: Doors = get_world_Doors(world, chamber2.location_id);
+        // doors.north.print();
+        // doors.east.print();
+        // doors.west.print();
+        // doors.south.print();
+        assert(doors.west == 0, 'need a closed door to test');
+        // now, please panic...
+        let chamber3: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber2.location_id), Dir::West, 'connection', 0);
+    }
+
 }

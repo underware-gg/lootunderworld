@@ -7,7 +7,7 @@ mod tests {
     use dojo::world::{IWorldDispatcherTrait, IWorldDispatcher};
 
     use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
-    use loot_underworld::components::chamber::{Chamber, Doors};
+    use loot_underworld::components::chamber::{Chamber};
     use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir, DirTrait, DIR};
     use loot_underworld::types::tile_type::{TileType, TILE};
@@ -19,7 +19,6 @@ mod tests {
         mint_get_realms_get_chamber,
         get_world_Chamber,
         get_world_Map,
-        get_world_Doors,
     };
 
     #[test]
@@ -146,22 +145,17 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('from_door does not exist','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Chamber already exists','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
-    fn test_mint_realms_chamber_inexistent_from_door() {
+    fn test_entry_to_existing_chamber() {
         let world = setup_world();
         let token_id: u16 = 255;
         let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'connection', 0);
-        let chamber2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'connection', 0);
-        let doors: Doors = get_world_Doors(world, chamber2.location_id);
-        // doors.north.print();
-        // doors.east.print();
-        // doors.west.print();
-        // doors.south.print();
-        assert(doors.west == 0, 'need a closed door to test');
-        // now, please panic...
-        let chamber3: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber2.location_id), Dir::West, 'connection', 0);
+        let loc2: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:2, east:1, west:0, south:0 };
+        let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'seed', 0);
+        let chamber_N: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::North, 'seed', 0);
+        // panic here...
+        let chamber2: Chamber = mint_get_realms_get_chamber(world, token_id, loc2, Dir::Under, 'seed', 0);
     }
 
     #[test]

@@ -66,7 +66,7 @@ fn randomize_range_usize(ref rnd: u256, min: u128, max: u128) -> usize {
 //
 
 // randomize a tile position
-fn randomize_tile_pos(ref rnd: u256, bitmap: u256, protected: u256) -> usize {
+fn randomize_game_tile(ref rnd: u256, bitmap: u256, protected: u256) -> usize {
 
     // TODO: verify bitmap / protected
     // TODO: + verify tests
@@ -82,14 +82,14 @@ fn _randomize_door_slot(ref rnd: u256, dir: Dir) -> usize {
 }
 
 // randomize a door position as a tile (Over, Under)
-fn randomize_door_pos(ref rnd: u256, dir: Dir) -> u8 {
+fn randomize_door_tile(ref rnd: u256, dir: Dir) -> u8 {
     match dir {
         Dir::North => Bitmap::xy_to_tile(_randomize_door_slot(ref rnd, dir), 0),
         Dir::East => Bitmap::xy_to_tile(15, _randomize_door_slot(ref rnd, dir)),
         Dir::West => Bitmap::xy_to_tile(0, _randomize_door_slot(ref rnd, dir)),
         Dir::South => Bitmap::xy_to_tile(_randomize_door_slot(ref rnd, dir), 15),
-        Dir::Over => randomize_tile_pos(ref rnd, 0x0, 0x0),
-        Dir::Under => randomize_tile_pos(ref rnd, 0x0, 0x0),
+        Dir::Over => randomize_game_tile(ref rnd, 0x0, 0x0),
+        Dir::Under => randomize_game_tile(ref rnd, 0x0, 0x0),
     }.try_into().unwrap()
 }
 
@@ -252,7 +252,7 @@ fn test_randomize_door_slot() {
 
 #[test]
 #[available_gas(100_000_000)]
-fn test_randomize_door_pos() {
+fn test_randomize_door_tile() {
     let mut dir_u8: u8 = 0;
     loop {
         if (dir_u8 == DIR::COUNT) { break; }
@@ -264,7 +264,7 @@ fn test_randomize_door_pos() {
             if (i == 20) { break; }
             // ---
             let mut rnd = make_seed(1234, i.into());
-            let pos: u8 = randomize_door_pos(ref rnd, dir);
+            let pos: u8 = randomize_door_tile(ref rnd, dir);
             let x: u128 = (pos % 16).into();
             let y: u128 = (pos / 16).into();
             if(dir_u8 == DIR::NORTH) {
@@ -299,13 +299,13 @@ fn test_randomize_door_pos() {
 
 #[test]
 #[available_gas(10_000_000)]
-fn test_randomize_tile_pos() {
+fn test_randomize_game_tile() {
     let mut i: usize = 0;
     loop {
         if (i == 10) { break; }
         // ---
         let mut rnd = make_seed(1234, i.into());
-        let pos: usize = randomize_tile_pos(ref rnd, 0, i.into());
+        let pos: usize = randomize_game_tile(ref rnd, 0, i.into());
         let x: u128 = (pos % 16).into();
         let y: u128 = (pos / 16).into();
         assert(x >= RANGE::TILE::MIN, 'x >= min');
