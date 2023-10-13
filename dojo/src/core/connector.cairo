@@ -7,9 +7,9 @@ use loot_underworld::types::dir::{Dir, DirTrait, DIR};
 use debug::PrintTrait;
 
 
-fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u32) -> (u256, u256) {
-    let mut res_bitmap: u256 = 0;
-    let mut res_protected: u256 = protected;
+fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u32) -> u256 {
+    let mut bitmap: u256 = 0;
+    let mut corridors: u256 = protected;
 
     // doors ranges
     let (min_x, max_x): (usize, usize) = Bitmap::get_range_x(protected & MASK::OUTER_ROWS);
@@ -28,7 +28,7 @@ fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u32) -> (u2
         if(dir != DIR::NORTH && dir != DIR::SOUTH) {
             src = src | Bitmap::row(protected & MASK::INNER, n); // add current row
         }
-        res_protected = res_protected | src;
+        corridors = corridors | src;
         n += 1;
     };
 
@@ -41,7 +41,7 @@ fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u32) -> (u2
         if(dir != DIR::NORTH && dir != DIR::SOUTH) {
             src = src | Bitmap::row(protected & MASK::INNER, n); // add current row
         }
-        res_protected = res_protected | src;
+        corridors = corridors | src;
         n -= 1;
     };
 
@@ -54,7 +54,7 @@ fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u32) -> (u2
         if(dir != DIR::WEST && dir != DIR::EAST) {
             src = src | Bitmap::column(protected & MASK::INNER, n); // add current col
         }
-        res_protected = res_protected | src;
+        corridors = corridors | src;
         n += 1;
     };
 
@@ -67,22 +67,21 @@ fn connect_doors(seed: u256, protected: u256, entry_dir: Dir, style: u32) -> (u2
         if(dir != DIR::WEST && dir != DIR::EAST) {
             src = src | Bitmap::column(protected & MASK::INNER, n); // add current col
         }
-        res_protected = res_protected | src;
+        corridors = corridors | src;
         n -= 1;
     };
 
     if(style == 0) {
         // thin corridors
-        res_bitmap = protect(0, protected);
-        res_bitmap = res_bitmap | res_protected;
+        bitmap = corridors | protect(0, protected);
     } else if(style == 1) {
         // large corridors
-        res_bitmap = protect(0, res_protected);
+        bitmap = protect(0, corridors);
     } else if(style == 2) {
         // carved
-        res_bitmap = protect(0, res_protected);
-        res_bitmap = carve(res_bitmap, res_protected, 5);
+        bitmap = protect(0, corridors);
+        bitmap = carve(bitmap, corridors, 5);
     }
 
-    (res_bitmap, res_protected)
+    (bitmap)
 }

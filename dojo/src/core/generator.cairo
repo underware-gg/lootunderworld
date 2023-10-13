@@ -37,9 +37,8 @@ fn generate(
         bitmap = carve(bitmap, protected, 7);
         protected = 0;
     } else if(generatorName == 'connection') {
-        let (_bitmap, _protected) = connect_doors(bitmap, protected, entry_dir, generatorValue);
-        bitmap = _bitmap;
-        protected = _protected;
+        bitmap = connect_doors(bitmap, protected, entry_dir, generatorValue);
+        protected = 0;
     } else if(generatorName == 'binary_tree_classic') {
         bitmap = binary_tree_classic(bitmap, entry_dir);
     } else if(generatorName == 'binary_tree_pro') {

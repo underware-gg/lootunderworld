@@ -20,7 +20,7 @@ const _generators: Generator[] = [
   // default entry
   { name: 'entry', value: 0, description: '' },
   // connections
-  { name: 'connection', value: 0, description: 'straight connection' },
+  { name: 'connection', value: 0, description: 'narrow connection' },
   { name: 'connection', value: 1, description: 'wide connection' },
   { name: 'connection', value: 2, description: 'carved connection' },
   // binary tree mazes
@@ -65,14 +65,16 @@ const _generators: Generator[] = [
 
 
 interface DirectionButtonProps {
-  chamberId: bigint,
-  dir: Dir,
-  generator: Generator,
+  chamberId: bigint
+  dir: Dir
+  doorTile: number
+  generator: Generator
 }
 
 function DirectionButton({
   chamberId,
   dir,
+  doorTile,
   generator,
 }: DirectionButtonProps) {
   const { realmId, dispatch, UnderworldActions } = useUnderworldContext()
@@ -93,7 +95,7 @@ function DirectionButton({
   }
 
   if (!exists) {
-    return <button className='DirectionButton Locked' onClick={() => _mint()}>Unlock<br />{DirNames[dir]}</button>
+    return <button className='DirectionButton Locked' disabled={doorTile == 0} onClick={() => _mint()}>Unlock<br />{DirNames[dir]}</button>
   }
   return <button className='DirectionButton Unocked' onClick={() => _open()}>Go<br />{DirNames[dir]}</button>
 }
@@ -104,7 +106,7 @@ function MinterData() {
   const { mint_realms_chamber } = useDojoSystemCalls()
   const { account } = useDojoAccount()
 
-  const [generatorIndex, setGeneratorIndex] = useState(0)
+  const [generatorIndex, setGeneratorIndex] = useState(5)
 
   // Current Realm / Chamber
   const { realmId, city, chamberId, dispatch, UnderworldActions } = useUnderworldContext()
@@ -182,23 +184,23 @@ function MinterData() {
           Doors: [{doors.north},{doors.east},{doors.west},{doors.south}]
         </p>
         <div className='Padded'>
-          <DirectionButton chamberId={chamberId} dir={Dir.North} generator={_generators[generatorIndex]} />
+          <DirectionButton chamberId={chamberId} dir={Dir.North} doorTile={doors?.north ?? 0} generator={_generators[generatorIndex]} />
           <div>
-            <DirectionButton chamberId={chamberId} dir={Dir.West} generator={_generators[generatorIndex]} />
-            <DirectionButton chamberId={chamberId} dir={Dir.East} generator={_generators[generatorIndex]} />
+            <DirectionButton chamberId={chamberId} dir={Dir.West} doorTile={doors?.west ?? 0} generator={_generators[generatorIndex]} />
+            <DirectionButton chamberId={chamberId} dir={Dir.East} doorTile={doors?.east ?? 0} generator={_generators[generatorIndex]} />
           </div>
-          <DirectionButton chamberId={chamberId} dir={Dir.South} generator={_generators[generatorIndex]} />
+          <DirectionButton chamberId={chamberId} dir={Dir.South} doorTile={doors?.south ?? 0} generator={_generators[generatorIndex]} />
+        </div>
+
+        <div>
+          <select value={generatorIndex} onChange={e => setGeneratorIndex(parseInt(e.target.value))}>
+            {_generators.map((g: Generator, index: number) => {
+              const _desc = `${g.name}(${g.value}) : ${g.description}`
+              return <option value={index} key={`gen_${index}`}>{_desc}</option>
+            })}
+          </select>
         </div>
       </>}
-
-      <div>
-        <select value={generatorIndex} onChange={e => setGeneratorIndex(parseInt(e.target.value))}>
-          {_generators.map((g: Generator, index: number) => {
-            const _desc = `${g.name}(${g.value}) : ${g.description}`
-            return <option value={index} key={`gen_${index}`}>{_desc}</option>
-          })}
-        </select>
-      </div>
 
     </div>
   )
