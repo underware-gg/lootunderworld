@@ -23,6 +23,7 @@ const _generators: Generator[] = [
   { name: 'connection', value: 0, description: 'narrow connection' },
   { name: 'connection', value: 1, description: 'wide connection' },
   { name: 'connection', value: 2, description: 'carved connection' },
+  { name: 'connection', value: 2, description: 'wider carved connection' },
   // binary tree mazes
   { name: 'binary_tree_classic', value: 0, description: '' },
   { name: 'binary_tree_pro', value: 0, description: '' },

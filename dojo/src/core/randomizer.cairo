@@ -13,11 +13,13 @@ mod RANGE {
         // ....xxxxxxxx....
         const MIN: u128 = 4;
         const MAX: u128 = 11;
+        const SIZE: u128 = 8;
     }
     mod TILE {
         // ..xxxxxxxxxxxx..
         const MIN: u128 = 2;
         const MAX: u128 = 13;
+        const SIZE: u128 = 12;
     }
 }
 
@@ -151,6 +153,8 @@ fn randomize_door_permissions(ref rnd: u256, chamber_location: Location, entry_d
         }
     }
 
+    // (result & 0b110000) | 0b000110 // test east-west connection
+    // (result & 0b110000) | 0b001001 // test north-south connection
     (result)
 }
 

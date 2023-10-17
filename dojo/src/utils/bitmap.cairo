@@ -5,27 +5,29 @@ use loot_underworld::types::dir::{Dir, DirTrait};
 //
 // use editor to create bitmaps: http://localhost:5173/editor/
 mod MASK {
+    const NONE: u256 = 0x0;
+    const ALL: u256  = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
     // 11111
     // 10001
     // 11111
     const OUTER: u256 = 0xffff80018001800180018001800180018001800180018001800180018001ffff;
-    const INNER: u256 = 0x7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe0000;
+    const INNER: u256 = 0x00007ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe0000;
 
     // 10001
     // 10001
     // 10001
-    const LEFT_COL: u256 = 0x8000800080008000800080008000800080008000800080008000800080008000;
-    const RIGHT_COL: u256 = 0x1000100010001000100010001000100010001000100010001000100010001;
+    const LEFT_COL: u256   = 0x8000800080008000800080008000800080008000800080008000800080008000;
+    const RIGHT_COL: u256  = 0x0001000100010001000100010001000100010001000100010001000100010001;
     const OUTER_COLS: u256 = 0x8001800180018001800180018001800180018001800180018001800180018001;
     const INNER_COLS: u256 = 0x7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe;
 
     // 11111
     // 00000
     // 11111
-    const TOP_ROW: u256 = 0xffff000000000000000000000000000000000000000000000000000000000000;
-    const BOTTOM_ROW: u256 = 0xffff;
+    const TOP_ROW: u256    = 0xffff000000000000000000000000000000000000000000000000000000000000;
+    const BOTTOM_ROW: u256 = 0x000000000000000000000000000000000000000000000000000000000000ffff;
     const OUTER_ROWS: u256 = 0xffff00000000000000000000000000000000000000000000000000000000ffff;
-    const INNER_ROWS: u256 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000;
+    const INNER_ROWS: u256 = 0x0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000;
 }
 
 trait BitmapTrait {

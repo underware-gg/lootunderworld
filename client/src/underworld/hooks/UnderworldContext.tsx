@@ -75,11 +75,14 @@ const UnderworldProvider = ({
       case UnderworldActions.SET_REALM_ID: {
         newState.realmId = action.payload as number
         newState.cityIndex = null
+        newState.city = null
         newState.chamberId = 0n
         break
       }
       case UnderworldActions.SET_CITY_INDEX: {
         newState.cityIndex = action.payload as number
+        newState.city = null
+        newState.chamberId = 0n
         break
       }
       case UnderworldActions.SET_CITY: {
