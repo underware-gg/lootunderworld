@@ -60,7 +60,12 @@ function RealmData({
         {metadata.name}
       </h1>
       <h3>
-        Realm #{realmId} <span className='Anchor' onClick={() => _setSelectedRealm(Math.floor(Math.random()*8000)+1)}>🔄</span>
+        Realm #{realmId}
+        {' '}
+        <span className='Anchor' onClick={() => _setSelectedRealm(realmId - 1)}>⏪️</span>
+        <span className='Anchor' onClick={() => _setSelectedRealm(realmId + 1)}>⏩️</span>
+        {' '}
+        <span className='Anchor' onClick={() => _setSelectedRealm(Math.floor(Math.random() * 8000) + 1)}>🔄</span>
       </h3>
 
       City: <RealmCitySelector />
