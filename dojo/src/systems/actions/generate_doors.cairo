@@ -53,6 +53,7 @@ fn create_door(world: IWorldDispatcher,
     let to_location: Location = location.offset(dir);
     let to_location_id: u128 = to_location.to_id();
     let to_map: Map = get!(world, to_location_id, (Map));
+    let to_map_exist: bool = (to_map.bitmap != 0);
 
     let is_entry: bool = (entry_dir == dir);
 
@@ -65,7 +66,7 @@ fn create_door(world: IWorldDispatcher,
                 tile_type = TileType::Exit;
                 pos = Dir::South.flip_door_tile(to_map.south);
                 create_tile(world, to_location_id, to_map.south, TileType::Exit); // open other chamber's door
-            } else if(U8Bitwise::is_set(permissions, DIR::NORTH.into())) {
+            } else if(!to_map_exist && U8Bitwise::is_set(permissions, DIR::NORTH.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
@@ -74,7 +75,7 @@ fn create_door(world: IWorldDispatcher,
                 tile_type = TileType::Exit;
                 pos = Dir::West.flip_door_tile(to_map.west);
                 create_tile(world, to_location_id, to_map.west, TileType::Exit); // open other chamber's door
-            } else if(U8Bitwise::is_set(permissions, DIR::EAST.into())) {
+            } else if(!to_map_exist && U8Bitwise::is_set(permissions, DIR::EAST.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
@@ -83,7 +84,7 @@ fn create_door(world: IWorldDispatcher,
                 tile_type = TileType::Exit;
                 pos = Dir::East.flip_door_tile(to_map.east);
                 create_tile(world, to_location_id, to_map.east, TileType::Exit); // open other chamber's door
-            } else if(U8Bitwise::is_set(permissions, DIR::WEST.into())) {
+            } else if(!to_map_exist && U8Bitwise::is_set(permissions, DIR::WEST.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
@@ -92,7 +93,7 @@ fn create_door(world: IWorldDispatcher,
                 tile_type = TileType::Exit;
                 pos = Dir::North.flip_door_tile(to_map.north);
                 create_tile(world, to_location_id, to_map.north, TileType::Exit); // open other chamber's door
-            } else if(U8Bitwise::is_set(permissions, DIR::SOUTH.into())) {
+            } else if(!to_map_exist && U8Bitwise::is_set(permissions, DIR::SOUTH.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
@@ -111,7 +112,7 @@ fn create_door(world: IWorldDispatcher,
                 tile_type = TileType::Exit;
                 pos = Dir::Over.flip_door_tile(to_map.over);
                 create_tile(world, to_location_id, to_map.over, TileType::Exit); // open other chamber's door
-            } else if(U8Bitwise::is_set(permissions, DIR::UNDER.into())) {
+            } else if(!to_map_exist && U8Bitwise::is_set(permissions, DIR::UNDER.into())) {
                 // create new Under door occasionally
                 pos = randomize_door_tile(ref rnd, dir);
             }
