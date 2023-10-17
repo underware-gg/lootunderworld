@@ -47,6 +47,10 @@ text {
   fill: ${_escapeColor(RealmsColors.TEXT)}!important;
   stroke: none!important;
 }
+circle {
+  fill: ${_escapeColor(RealmsColors.TEXT)}!important;
+  stroke: ${_escapeColor(RealmsColors.TEXT)}!important;
+}
 .SelectedCity {
   fill: ${_escapeColor(RealmsColors.SELECTED)}!important;
   font-size: 50px!important;
@@ -54,12 +58,9 @@ text {
 text.SelectedCity {
   font-weight: bold;
 }
-circle {
-  fill: ${_escapeColor(RealmsColors.SELECTED)}!important;
-  stroke: ${_escapeColor(RealmsColors.SELECTED)}!important;
-}
 circle.SelectedCity {
   stroke-width: 10!important;
+  stroke: ${_escapeColor(RealmsColors.SELECTED)}!important;
 }
 `
       // console.log(style)

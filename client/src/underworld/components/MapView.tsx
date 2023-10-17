@@ -130,7 +130,9 @@ export function Map({
   return (
     <svg width='1' height='1' viewBox={`0 0 ${gridSize} ${gridSize}`}>
       {tiles}
-      <rect x='0' y='0' width='100%' height='100%' fill='none' stroke={isTarget ? MapColors.EXIT : 'none'} strokeWidth={strokeWidth*2} />
+      {isTarget &&
+        <rect x='0' y='0' width='100%' height='100%' fill='none' stroke={MapColors.CURRENT} strokeWidth={strokeWidth * 2} />
+      }
     </svg>
   )
 }
