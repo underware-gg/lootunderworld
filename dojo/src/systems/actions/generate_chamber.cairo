@@ -5,10 +5,11 @@ use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 use loot_underworld::systems::actions::generate_doors::{generate_doors};
-use loot_underworld::components::chamber::{Chamber, Map, Doors};
+use loot_underworld::components::chamber::{Chamber, Map, State};
 use loot_underworld::core::randomizer::{randomize_door_permissions};
 use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DirTrait};
+use loot_underworld::types::doors::{Doors};
 use loot_underworld::core::seeder::{make_seed};
 use loot_underworld::core::generator::{generate};
 
@@ -37,8 +38,8 @@ fn generate_chamber(world: IWorldDispatcher,
         assert(from_chamber.yonder > 0, 'from_chamber does not exist');
 
         // from door should exist
-        let from_doors: Doors = get!(world, from_location_id, (Doors));
-        let from_door_tile: u8 = from_dir.tile_from_doors(from_doors);
+        let from_map: Map = get!(world, from_location_id, (Map));
+        let from_door_tile: u8 = from_dir.door_tile_from_map(from_map);
         assert(from_door_tile > 0, 'from_door does not exist');
     }
 
@@ -95,8 +96,19 @@ fn generate_chamber(world: IWorldDispatcher,
             bitmap,
             generatorName,
             generatorValue,
+            north: doors.north,
+            east: doors.east,
+            west: doors.west,
+            south: doors.south,
+            over: doors.over,
+            under: doors.under,
         },
-        doors,
+        State {
+            location_id,
+            light: 0,
+            threat: 0,
+            wealth: 0,
+        },
     ) );
 
     location_id

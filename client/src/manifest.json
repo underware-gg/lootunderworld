@@ -808,7 +808,7 @@
         }
       ],
       "outputs": [],
-      "class_hash": "0x3e0e95c897a9fb4468b957d6f4b0cb1f55a85cba7411e0ed3c9d25b38ee8d4",
+      "class_hash": "0x2e081de85400dfa77530182398f9d68433d7ea9caab557804c239c6ed771edb",
       "dependencies": [],
       "abi": [
         {
@@ -1274,9 +1274,39 @@
           "name": "generatorValue",
           "type": "u32",
           "key": false
+        },
+        {
+          "name": "north",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "east",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "west",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "south",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "over",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "under",
+          "type": "u8",
+          "key": false
         }
       ],
-      "class_hash": "0x472dcfa35a5abdcd45fd7b1c664bc553a553f0edbb011eafa1f0fdeac153d98",
+      "class_hash": "0x3c4effb9782d5ee13500b3de58520139e3a130e9241023456d39be72c3a9b75",
       "abi": [
         {
           "type": "function",
@@ -1334,7 +1364,7 @@
       ]
     },
     {
-      "name": "Doors",
+      "name": "State",
       "members": [
         {
           "name": "location_id",
@@ -1342,37 +1372,22 @@
           "key": true
         },
         {
-          "name": "north",
+          "name": "light",
           "type": "u8",
           "key": false
         },
         {
-          "name": "east",
+          "name": "threat",
           "type": "u8",
           "key": false
         },
         {
-          "name": "west",
-          "type": "u8",
-          "key": false
-        },
-        {
-          "name": "south",
-          "type": "u8",
-          "key": false
-        },
-        {
-          "name": "over",
-          "type": "u8",
-          "key": false
-        },
-        {
-          "name": "under",
+          "name": "wealth",
           "type": "u8",
           "key": false
         }
       ],
-      "class_hash": "0x3df59fa59efe904eceea2fb6b6edd708b180870581e3a9c6c20c8bb136aa90e",
+      "class_hash": "0x13ec80c36645e62289e997bb985a531d14eecfb91ee7937b6b3693acad55c4a",
       "abi": [
         {
           "type": "function",
@@ -1423,7 +1438,7 @@
         },
         {
           "type": "event",
-          "name": "loot_underworld::components::chamber::doors::Event",
+          "name": "loot_underworld::components::chamber::state::Event",
           "kind": "enum",
           "variants": []
         }

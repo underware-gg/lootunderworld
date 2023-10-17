@@ -7,9 +7,10 @@ mod tests {
     use dojo::world::{IWorldDispatcherTrait, IWorldDispatcher};
 
     use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
-    use loot_underworld::components::chamber::{Chamber, Doors};
+    use loot_underworld::components::chamber::{Chamber, Map};
     use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir, DirTrait, DIR};
+    use loot_underworld::types::doors::{Doors};
     use loot_underworld::types::tile_type::{TileType, TILE};
     use loot_underworld::types::constants::{DOMAINS};
     use loot_underworld::utils::string::{concat, join};
@@ -19,7 +20,6 @@ mod tests {
         mint_get_realms_get_chamber,
         get_world_Chamber,
         get_world_Map,
-        get_world_Doors,
         get_world_Doors_as_Tiles,
     };
 
@@ -114,14 +114,14 @@ mod tests {
         let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'seed', 0);
         let chamber_N: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::North, 'seed', 0);
         let chamber_E: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::East, 'seed', 0);
-        let doors_N: Doors = get_world_Doors(world, chamber_N.location_id);
-        let doors_E: Doors = get_world_Doors(world, chamber_E.location_id);
+        let map_N: Map = get_world_Map(world, chamber_N.location_id);
+        let map_E: Map = get_world_Map(world, chamber_E.location_id);
         let chamber2: Chamber = mint_get_realms_get_chamber(world, token_id, loc2, Dir::Under, 'seed', 0);
-        let doors2: Doors = get_world_Doors(world, chamber2.location_id);
-        assert(Dir::East.flip_door_tile(doors_N.east) == doors2.west, 'door_N_E');
-        assert(Dir::West.flip_door_tile(doors2.west) == doors_N.east, 'door_N_W');
-        assert(Dir::North.flip_door_tile(doors_E.north) == doors2.south, 'door_E_N');
-        assert(Dir::South.flip_door_tile(doors2.south) == doors_E.north, 'door_E_S');
+        let map2: Map = get_world_Map(world, chamber2.location_id);
+        assert(Dir::East.flip_door_tile(map_N.east) == map2.west, 'door_N_E');
+        assert(Dir::West.flip_door_tile(map2.west) == map_N.east, 'door_N_W');
+        assert(Dir::North.flip_door_tile(map_E.north) == map2.south, 'door_E_N');
+        assert(Dir::South.flip_door_tile(map2.south) == map_E.north, 'door_E_S');
     }
 
     #[test]
@@ -133,12 +133,12 @@ mod tests {
         let loc1: Location = Location { domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
         let chamber1: Chamber = mint_get_realms_get_chamber(world, token_id, loc1, Dir::Under, 'connection', 0);
         let chamber2: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'connection', 0);
-        let doors: Doors = get_world_Doors(world, chamber2.location_id);
-        // doors.north.print();
-        // doors.east.print();
-        // doors.west.print();
-        // doors.south.print();
-        assert(doors.west == 0, 'need a closed door to test');
+        let map: Map = get_world_Map(world, chamber2.location_id);
+        // map.north.print();
+        // map.east.print();
+        // map.west.print();
+        // map.south.print();
+        assert(map.west == 0, 'need a closed door to test');
         // now, please panic...
         let chamber3: Chamber = mint_get_realms_get_chamber(world, token_id, LocationTrait::from_id(chamber2.location_id), Dir::West, 'connection', 0);
     }

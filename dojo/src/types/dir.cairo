@@ -1,5 +1,5 @@
 use debug::PrintTrait;
-use loot_underworld::components::chamber::{Doors};
+use loot_underworld::components::chamber::{Map};
 
 #[derive(Copy, Drop, Serde, PartialEq)]
 enum Dir {
@@ -25,7 +25,7 @@ mod DIR {
 trait DirTrait {
     fn flip(self: Dir) -> Dir;
     fn flip_door_tile(self: Dir, i: u8) -> u8;
-    fn tile_from_doors(self: Dir, doors: Doors) -> u8;
+    fn door_tile_from_map(self: Dir, map: Map) -> u8;
 }
 
 impl DirTraitImpl of DirTrait {
@@ -49,14 +49,14 @@ impl DirTraitImpl of DirTrait {
             Dir::Under => (i),              // same position
         }
     }
-    fn tile_from_doors(self: Dir, doors: Doors) -> u8 {
+    fn door_tile_from_map(self: Dir, map: Map) -> u8 {
         match self {
-            Dir::North => doors.north,
-            Dir::East  => doors.east,
-            Dir::West  => doors.west,
-            Dir::South => doors.south,
-            Dir::Over  => doors.over,
-            Dir::Under => doors.under,
+            Dir::North => map.north,
+            Dir::East  => map.east,
+            Dir::West  => map.west,
+            Dir::South => map.south,
+            Dir::Over  => map.over,
+            Dir::Under => map.under,
         }
     }
 }

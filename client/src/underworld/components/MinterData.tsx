@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDojoSystemCalls, useDojoAccount } from '../../DojoContext'
-import { useChamber, useChamberDoors, useChamberOffset, useRealmChamberIds } from '../hooks/useChamber'
+import { useChamber, useChamberState, useChamberMap, useChamberOffset, useRealmChamberIds } from '../hooks/useChamber'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
 import { bigintToHex } from '../utils/utils'
 import { Dir, DirNames, coordToCompass, coordToSlug, offsetCompass } from '../utils/underworld'
@@ -111,7 +111,8 @@ function MinterData() {
   // Current Realm / Chamber
   const { realmId, city, chamberId, dispatch, UnderworldActions } = useUnderworldContext()
   const { seed, yonder } = useChamber(chamberId)
-  const doors = useChamberDoors(chamberId)
+  const { doors } = useChamberMap(chamberId)
+  const state = useChamberState(chamberId)
 
   const chamberExists = useMemo(() => (seed > 0), [seed])
   const canMintFirst = useMemo(() => (realmId > 0 && city != null && !chamberExists), [realmId, city, chamberExists])
@@ -182,6 +183,9 @@ function MinterData() {
         </p>
         <p>
           Doors: [{doors.north},{doors.east},{doors.west},{doors.south}]
+        </p>
+        <p>
+          State: [{state.light},{state.threat},{state.wealth}]
         </p>
         <div className='Padded'>
           <DirectionButton chamberId={chamberId} dir={Dir.North} doorTile={doors?.north ?? 0} generator={_generators[generatorIndex]} />

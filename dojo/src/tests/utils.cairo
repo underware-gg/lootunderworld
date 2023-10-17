@@ -8,15 +8,15 @@ mod utils {
     use dojo::test_utils::spawn_test_world;
 
     use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
-    use loot_underworld::components::chamber::{Chamber, chamber, Doors, doors};
-    use loot_underworld::components::chamber::{Map, map};
+    use loot_underworld::components::chamber::{Chamber, chamber, Map, map, State, state};
     use loot_underworld::components::tile::{Tile, tile};
     use loot_underworld::types::location::{Location, LocationTrait};
     use loot_underworld::types::dir::{Dir};
+    use loot_underworld::types::doors::{Doors};
     use loot_underworld::types::constants::{DOMAINS};
 
     fn setup_world() -> IWorldDispatcher {
-        let mut components = array![chamber::TEST_CLASS_HASH, doors::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH];
+        let mut components = array![chamber::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH, state::TEST_CLASS_HASH];
         let mut systems = array![mint_realms_chamber::TEST_CLASS_HASH];
         spawn_test_world(components, systems)
     }
@@ -57,8 +57,8 @@ mod utils {
         (result)
     }
 
-    fn get_world_Doors(world: IWorldDispatcher, location_id: u128) -> Doors {
-        let result: Doors = get!(world, location_id, Doors);
+    fn get_world_State(world: IWorldDispatcher, location_id: u128) -> State {
+        let result: State = get!(world, location_id, State);
         (result)
     }
 
@@ -70,15 +70,14 @@ mod utils {
     }
 
     fn get_world_Doors_as_Tiles(world: IWorldDispatcher, location_id: u128) -> Doors {
-        let doors: Doors = get_world_Doors(world, location_id);
+        let map: Map = get_world_Map(world, location_id);
         Doors {
-            location_id,
-            north: get_world_Tile_type(world, location_id, doors.north),
-            east: get_world_Tile_type(world, location_id, doors.east),
-            west: get_world_Tile_type(world, location_id, doors.west),
-            south: get_world_Tile_type(world, location_id, doors.south),
-            over: get_world_Tile_type(world, location_id, doors.over),
-            under: get_world_Tile_type(world, location_id, doors.under),
+            north: get_world_Tile_type(world, location_id, map.north),
+            east: get_world_Tile_type(world, location_id, map.east),
+            west: get_world_Tile_type(world, location_id, map.west),
+            south: get_world_Tile_type(world, location_id, map.south),
+            over: get_world_Tile_type(world, location_id, map.over),
+            under: get_world_Tile_type(world, location_id, map.under),
         }
     }
 

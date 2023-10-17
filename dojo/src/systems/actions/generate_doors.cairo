@@ -2,10 +2,11 @@ use traits::Into;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use loot_underworld::core::randomizer::{randomize_door_tile};
 use loot_underworld::systems::actions::create_tile::{create_tile};
-use loot_underworld::components::chamber::{Doors};
+use loot_underworld::components::chamber::{Map};
 use loot_underworld::types::tile_type::{TileType};
 use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DirTrait, DIR};
+use loot_underworld::types::doors::{Doors};
 use loot_underworld::utils::bitwise::{U8Bitwise};
 use loot_underworld::utils::bitmap::{Bitmap};
 
@@ -34,7 +35,7 @@ fn generate_doors(world: IWorldDispatcher,
     if(under > 0) { protected = Bitmap::set_tile(protected, under.into()); }
 
     (
-        Doors { location_id, north, east, west, south, over, under },
+        Doors { north, east, west, south, over, under },
         protected,
     )
 }
@@ -51,7 +52,7 @@ fn create_door(world: IWorldDispatcher,
     // which chamber is this door leading to?
     let to_location: Location = location.offset(dir);
     let to_location_id: u128 = to_location.to_id();
-    let to_doors: Doors = get!(world, to_location_id, (Doors));
+    let to_map: Map = get!(world, to_location_id, (Map));
 
     let is_entry: bool = (entry_dir == dir);
 
@@ -60,56 +61,56 @@ fn create_door(world: IWorldDispatcher,
 
     match dir {
         Dir::North => {
-            if(to_doors.south > 0) {
+            if(to_map.south > 0) {
                 tile_type = TileType::Exit;
-                pos = Dir::South.flip_door_tile(to_doors.south);
-                create_tile(world, to_location_id, to_doors.south, TileType::Exit); // open other chamber's door
+                pos = Dir::South.flip_door_tile(to_map.south);
+                create_tile(world, to_location_id, to_map.south, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::NORTH.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
         Dir::East => {
-            if(to_doors.west > 0) {
+            if(to_map.west > 0) {
                 tile_type = TileType::Exit;
-                pos = Dir::West.flip_door_tile(to_doors.west);
-                create_tile(world, to_location_id, to_doors.west, TileType::Exit); // open other chamber's door
+                pos = Dir::West.flip_door_tile(to_map.west);
+                create_tile(world, to_location_id, to_map.west, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::EAST.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
         Dir::West => {
-            if(to_doors.east > 0) {
+            if(to_map.east > 0) {
                 tile_type = TileType::Exit;
-                pos = Dir::East.flip_door_tile(to_doors.east);
-                create_tile(world, to_location_id, to_doors.east, TileType::Exit); // open other chamber's door
+                pos = Dir::East.flip_door_tile(to_map.east);
+                create_tile(world, to_location_id, to_map.east, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::WEST.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
         Dir::South => {
-            if(to_doors.north > 0) {
+            if(to_map.north > 0) {
                 tile_type = TileType::Exit;
-                pos = Dir::North.flip_door_tile(to_doors.north);
-                create_tile(world, to_location_id, to_doors.north, TileType::Exit); // open other chamber's door
+                pos = Dir::North.flip_door_tile(to_map.north);
+                create_tile(world, to_location_id, to_map.north, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::SOUTH.into())) {
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
         Dir::Over => {
-            if(to_doors.under > 0) {
+            if(to_map.under > 0) {
                 tile_type = TileType::Exit;
-                pos = Dir::Under.flip_door_tile(to_doors.under);
-                create_tile(world, to_location_id, to_doors.under, TileType::Exit); // open other chamber's door
+                pos = Dir::Under.flip_door_tile(to_map.under);
+                create_tile(world, to_location_id, to_map.under, TileType::Exit); // open other chamber's door
             } else if (is_entry) {
                 // create the Over door only if it is the entry
                 pos = randomize_door_tile(ref rnd, dir);
             }
         },
         Dir::Under => {
-            if(to_doors.over > 0) {
+            if(to_map.over > 0) {
                 tile_type = TileType::Exit;
-                pos = Dir::Over.flip_door_tile(to_doors.over);
-                create_tile(world, to_location_id, to_doors.over, TileType::Exit); // open other chamber's door
+                pos = Dir::Over.flip_door_tile(to_map.over);
+                create_tile(world, to_location_id, to_map.over, TileType::Exit); // open other chamber's door
             } else if(U8Bitwise::is_set(permissions, DIR::UNDER.into())) {
                 // create new Under door occasionally
                 pos = randomize_door_tile(ref rnd, dir);

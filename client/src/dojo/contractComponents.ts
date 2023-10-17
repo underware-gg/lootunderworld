@@ -62,20 +62,6 @@ export function defineContractComponents(world: World) {
           bitmap: RecsType.BigInt,
           generatorName: RecsType.BigInt,
           generatorValue: RecsType.Number,
-        },
-        {
-          metadata: {
-            name: name,
-            types: ["u256","felt252","u32"],
-          },
-        }
-      );
-    })(),
-    Doors: (() => {
-      const name = "Doors";
-      return defineComponent(
-        world,
-        {
           north: RecsType.Number,
           east: RecsType.Number,
           west: RecsType.Number,
@@ -86,7 +72,24 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
-            types: ["u8","u8","u8","u8","u8","u8"],
+            types: ["u256","felt252","u32","u8","u8","u8","u8","u8","u8"],
+          },
+        }
+      );
+    })(),
+    State: (() => {
+      const name = "State";
+      return defineComponent(
+        world,
+        {
+          light: RecsType.Number,
+          threat: RecsType.Number,
+          wealth: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+            types: ["u8","u8","u8"],
           },
         }
       );

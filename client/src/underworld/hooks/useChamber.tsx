@@ -91,18 +91,19 @@ export const useChamberMap = (locationId: bigint) => {
     bitmap,
     tilemap,
     expandedTilemap,
+    doors: {
+      north: map?.north ?? 0,
+      east: map?.east ?? 0,
+      west: map?.west ?? 0,
+      south: map?.south ?? 0,
+      over: map?.over ?? 0,
+      under: map?.under ?? 0,
+    }
   }
 }
 
-export const useChamberDoors = (chamberId: bigint) => {
-  const { Doors } = useDojoComponents()
-  const doors: any = useComponentValue(Doors, bigintToEntity(chamberId))
-  return {
-    north: doors?.north ?? 0,
-    east: doors?.east ?? 0,
-    west: doors?.west ?? 0,
-    south: doors?.south ?? 0,
-    over: doors?.over ?? 0,
-    under: doors?.under ?? 0,
-  }
+export const useChamberState = (chamberId: bigint) => {
+  const { State } = useDojoComponents()
+  const state: any = useComponentValue(State, bigintToEntity(chamberId))
+  return state ?? {}
 }
