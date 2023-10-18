@@ -4,50 +4,36 @@ mod utils {
     use array::ArrayTrait;
     use debug::PrintTrait;
 
-    use dojo::world::{IWorldDispatcherTrait, IWorldDispatcher};
-    use dojo::test_utils::spawn_test_world;
+    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+    use dojo::test_utils::{spawn_test_world, deploy_contract};
 
-    use loot_underworld::systems::mint_realms_chamber::{mint_realms_chamber};
-    use loot_underworld::components::chamber::{Chamber, chamber, Map, map, State, state};
-    use loot_underworld::components::tile::{Tile, tile};
+    use loot_underworld::systems::mint_chamber::{mint_chamber, IMintChamberDispatcher, IMintChamberDispatcherTrait};
+    use loot_underworld::models::chamber::{Chamber, chamber, Map, map, State, state};
+    use loot_underworld::models::tile::{Tile, tile};
     use loot_underworld::types::location::{Location, LocationTrait};
-    use loot_underworld::types::dir::{Dir};
+    use loot_underworld::types::dir::{Dir, DirTrait};
     use loot_underworld::types::doors::{Doors};
     use loot_underworld::types::constants::{DOMAINS};
 
-    fn setup_world() -> IWorldDispatcher {
-        let mut components = array![chamber::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH, state::TEST_CLASS_HASH];
-        let mut systems = array![mint_realms_chamber::TEST_CLASS_HASH];
-        spawn_test_world(components, systems)
+    fn setup_world() -> (IWorldDispatcher, IMintChamberDispatcher) {
+        let mut models = array![chamber::TEST_CLASS_HASH, map::TEST_CLASS_HASH, tile::TEST_CLASS_HASH, state::TEST_CLASS_HASH];
+        let world: IWorldDispatcher = spawn_test_world(models);
+        let contract_address = world.deploy_contract('salt', mint_chamber::TEST_CLASS_HASH.try_into().unwrap());
+        let system = IMintChamberDispatcher { contract_address };
+        (world, system)
     }
 
-    fn make_from_location(token_id: u16) -> (u128, u8, u128) {
-        let location: Location = Location{ domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
-        let location_id: u128 = location.to_id();
-        let dir: u8 = Dir::Under.into();
-        let to_location: Location = location.offset(Dir::Under);
-        let to_location_id : u128 = to_location.to_id();
-        (location_id, dir, to_location_id)
+    fn execute_mint_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generatorName: felt252, generatorValue: u32) {
+        system.mint_realms_chamber(world, token_id.into(), from_coord.to_id(), from_dir, generatorName, generatorValue);
     }
 
-    fn mint_get_realms_get_chamber(world: IWorldDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generatorName: felt252, generatorValue: u32) -> Chamber {
-        let dir_u8: u8 = from_dir.into();
-        world.execute('mint_realms_chamber', array![token_id.into(), from_coord.to_id().into(), dir_u8.into(), generatorName.into(), generatorValue.into()]);
+    fn mint_get_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generatorName: felt252, generatorValue: u32) -> Chamber {
+        execute_mint_realms_chamber(world, system, token_id, from_coord, from_dir, generatorName, generatorValue);
         let to_location: Location = from_coord.offset(from_dir);
         get_world_Chamber(world, to_location.to_id())
     }
 
     fn get_world_Chamber(world: IWorldDispatcher, location_id: u128) -> Chamber {
-        // let query = array![location_id.into()].span();
-        // let component = world.entity('Chamber', query, 0, dojo::SerdeLen::<Chamber>::len());
-        // Chamber {
-        //     location_id,
-        //     seed: u256 { low:(*component[0]).try_into().unwrap(), high:(*component[1]).try_into().unwrap() },
-        //     minter: (*component[2]).try_into().unwrap(),
-        //     domain_id: (*component[3]).try_into().unwrap(),
-        //     token_id: (*component[4]).try_into().unwrap(),
-        //     yonder: (*component[5]).try_into().unwrap(),
-        // }
         let result: Chamber = get!(world, location_id, Chamber);
         (result)
     }
@@ -79,6 +65,15 @@ mod utils {
             over: get_world_Tile_type(world, location_id, map.over),
             under: get_world_Tile_type(world, location_id, map.under),
         }
+    }
+
+    fn make_from_location(token_id: u16) -> (Location, Dir, u128) {
+        let location: Location = Location{ domain_id:DOMAINS::REALMS, token_id, over:0, under:0, north:1, east:1, west:0, south:0 };
+        let location_id: u128 = location.to_id();
+        let dir: Dir = Dir::Under;
+        let to_location: Location = location.offset(dir);
+        let to_location_id : u128 = to_location.to_id();
+        (location, dir, to_location_id)
     }
 
     #[test]

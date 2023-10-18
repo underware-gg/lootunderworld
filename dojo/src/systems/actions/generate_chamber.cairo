@@ -1,11 +1,11 @@
 use debug::PrintTrait;
 use traits::{Into, TryInto};
 
-use starknet::ContractAddress;
+use starknet::{ContractAddress, get_caller_address};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 use loot_underworld::systems::actions::generate_doors::{generate_doors};
-use loot_underworld::components::chamber::{Chamber, Map, State};
+use loot_underworld::models::chamber::{Chamber, Map, State};
 use loot_underworld::core::randomizer::{randomize_door_permissions};
 use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DirTrait};

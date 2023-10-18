@@ -2,7 +2,7 @@ use traits::Into;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use loot_underworld::core::randomizer::{randomize_door_tile};
 use loot_underworld::systems::actions::create_tile::{create_tile};
-use loot_underworld::components::chamber::{Map};
+use loot_underworld::models::chamber::{Map};
 use loot_underworld::types::tile_type::{TileType};
 use loot_underworld::types::location::{Location, LocationTrait};
 use loot_underworld::types::dir::{Dir, DirTrait, DIR};

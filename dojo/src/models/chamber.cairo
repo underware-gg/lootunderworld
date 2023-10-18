@@ -1,8 +1,11 @@
 use starknet::ContractAddress;
+use dojo::database::schema::{
+    Enum, Member, Ty, Struct, SchemaIntrospection, serialize_member, serialize_member_type
+};
 
 // A geographic placed Chamber
 // (Immutable)
-#[derive(Component, Copy, Drop, Serde, SerdeLen)]
+#[derive(Model, Copy, Drop, Serde)]
 struct Chamber {
     #[key]
     location_id: u128,
@@ -15,7 +18,7 @@ struct Chamber {
 
 // A Chamber's map information
 // (Immutable)
-#[derive(Component, Copy, Drop, Serde, SerdeLen)]
+#[derive(Model, Copy, Drop, Serde)]
 struct Map {
     #[key]
     entity_id: u128,
@@ -33,7 +36,7 @@ struct Map {
 
 // The current conditions of a Chamebr
 // (Mutable)
-#[derive(Component, Copy, Drop, Serde, SerdeLen)]
+#[derive(Model, Copy, Drop, Serde)]
 struct State {
     #[key]
     location_id: u128,

@@ -1,5 +1,5 @@
 mod dojo_examples;
-mod components;
+mod models;
 mod core;
 mod systems;
 mod tests;

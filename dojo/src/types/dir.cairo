@@ -1,5 +1,5 @@
 use debug::PrintTrait;
-use loot_underworld::components::chamber::{Map};
+use loot_underworld::models::chamber::{Map};
 
 #[derive(Copy, Drop, Serde, PartialEq)]
 enum Dir {
