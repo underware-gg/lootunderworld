@@ -2,17 +2,15 @@
 set -euo pipefail
 pushd $(dirname "$0")/..
 
-export WORLD_ADDRESS="0x9fcfa7f23017ca5bb2dceac67a405bf83639fea1d09c6027ee1cdfe573d33e";
+echo "Authorizing models..."
 
-# enable system -> component authorizations
-COMPONENTS=("Position" "Moves" "Chamber" "Map" "State" "Tile" )
+export WORLD_ADDRESS="0x56c991ec4188b7c036066d28a19ed2b245ee1174ed3935f2d7e15c60a496f82";
 
-for component in ${COMPONENTS[@]}; do
-    sozo auth writer $component spawn --world $WORLD_ADDRESS
+# enable system -> model authorizations
+MODELS=("Chamber" "Map" "State" "Tile" )
+for model in ${MODELS[@]}; do
+    sozo auth writer --world $WORLD_ADDRESS $model 0x1b0e6d71161f6379a25df22d87dac58f81ac2852c3497d9fad19d6fecacfc3
 done
 
-for component in ${COMPONENTS[@]}; do
-    sozo auth writer $component move --world $WORLD_ADDRESS
-done
 
 echo "Default authorizations have been successfully set."

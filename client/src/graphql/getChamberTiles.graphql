@@ -1,0 +1,16 @@
+query getChamberTiles($locationId: String!) {
+  entities(keys: [$locationId], first: 100) {
+    edges {
+      node {
+        keys
+        id
+        models {
+          __typename
+          ... on Tile {
+            location_id, pos, tile_type
+          }
+        }
+      }
+    }
+  }
+}
