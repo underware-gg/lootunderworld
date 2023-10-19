@@ -1,4 +1,3 @@
-mod dojo_examples;
 mod models;
 mod core;
 mod systems;
