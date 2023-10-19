@@ -18,26 +18,25 @@ fn generate_doors(world: IWorldDispatcher,
     permissions: u8,
 ) -> (Doors, u256) {
 
-    let north: u8 = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::North.into());
-    let east: u8  = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::East.into());
-    let west: u8  = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::West.into());
-    let south: u8 = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::South.into());
-    let over: u8  = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::Over.into());
-    let under: u8 = create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::Under.into());
+    let doors = Doors {
+        north: create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::North.into()),
+        east:  create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::East.into()),
+        west:  create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::West.into()),
+        south: create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::South.into()),
+        over:  create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::Over.into()),
+        under: create_door(world, location, location_id, ref rnd, entry_dir, permissions, Dir::Under.into()),
+    };
 
     // make doors protection bitmap
     let mut protected: u256 = 0;
-    if(north > 0) { protected = Bitmap::set_tile(protected, north.into()); }
-    if(east > 0)  { protected = Bitmap::set_tile(protected, east.into()); }
-    if(west > 0)  { protected = Bitmap::set_tile(protected, west.into()); }
-    if(south > 0) { protected = Bitmap::set_tile(protected, south.into()); }
-    if(over > 0)  { protected = Bitmap::set_tile(protected, over.into()); }
-    if(under > 0) { protected = Bitmap::set_tile(protected, under.into()); }
+    if(doors.north > 0) { protected = Bitmap::set_tile(protected, doors.north.into()); }
+    if(doors.east > 0)  { protected = Bitmap::set_tile(protected, doors.east.into()); }
+    if(doors.west > 0)  { protected = Bitmap::set_tile(protected, doors.west.into()); }
+    if(doors.south > 0) { protected = Bitmap::set_tile(protected, doors.south.into()); }
+    if(doors.over > 0)  { protected = Bitmap::set_tile(protected, doors.over.into()); }
+    if(doors.under > 0) { protected = Bitmap::set_tile(protected, doors.under.into()); }
 
-    (
-        Doors { north, east, west, south, over, under },
-        protected,
-    )
+    (doors, protected)
 }
 
 fn create_door(world: IWorldDispatcher,

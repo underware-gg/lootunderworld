@@ -75,7 +75,7 @@ fn binary_tree_pro(seed: u256, entry_dir: Dir) -> u256 {
 // fuzzy version...
 // * starts with random paths
 // * |'s the core of a binary tree
-fn binary_tree_fuzz(seed: u256, protected: u256) -> u256 {
+fn binary_tree_fuzz(seed: u256) -> u256 {
     let mut result: u256 = make_overseed(seed);
     let mut i: usize = 0;
     loop {
