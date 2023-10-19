@@ -10,36 +10,7 @@ fn connect_doors(protected: u256, entry_dir: Dir, style: u32) -> u256 {
     let mut corridors: u256 = protected;
 
     // doors ranges
-    let (mut min_x, mut max_x): (usize, usize) = Bitmap::get_range_x(protected & MASK::INNER_COLS);
-    let (mut min_y, mut max_y): (usize, usize) = Bitmap::get_range_y(protected & MASK::INNER_ROWS);
-
-    // nothing in the X range, randomize a center
-    if (max_x == 0) {
-        min_x = (RANGE::DOOR::MIN + ((protected.low | protected.high) % RANGE::DOOR::SIZE)).try_into().unwrap();
-        max_x = min_x;
-
-        // connect east-west corridors
-        let mut y = min_y + 1;
-        loop {
-            if (y >= max_y) { break; }
-            corridors = Bitmap::set_xy(corridors, min_x, y);
-            y += 1;
-        };
-    }
-
-    // nothing in the Y range, randomize a center
-    if (max_y == 0) {
-        min_y = (RANGE::DOOR::MIN + ((protected.low | protected.high) % RANGE::DOOR::SIZE)).try_into().unwrap();
-        max_y = min_y;
-
-        // connect north-south corridors
-        let mut x = min_x + 1;
-        loop {
-            if (x >= max_x) { break; }
-            corridors = Bitmap::set_xy(corridors, x, min_y);
-            x += 1;
-        };
-    }
+    let (min_x, max_x, min_y, max_y): (usize, usize, usize, usize) = get_doors_range(ref corridors, protected);
 
     // stretch north door > south
     let inner = protected & MASK::INNER;
@@ -110,3 +81,41 @@ fn connect_doors(protected: u256, entry_dir: Dir, style: u32) -> u256 {
 
     (bitmap)
 }
+
+// Breaking down ONLY to avoid the 'Attempted to merge branches with different bases to align' bug
+fn get_doors_range(ref corridors: u256, protected: u256) -> (usize, usize, usize, usize) {
+    // doors ranges
+    let (mut min_x, mut max_x): (usize, usize) = Bitmap::get_range_x(protected & MASK::INNER_COLS);
+    let (mut min_y, mut max_y): (usize, usize) = Bitmap::get_range_y(protected & MASK::INNER_ROWS);
+
+    // nothing in the X range, randomize a center
+    if (max_x == 0) {
+        min_x = (RANGE::DOOR::MIN + ((protected.low | protected.high) % RANGE::DOOR::SIZE)).try_into().unwrap();
+        max_x = min_x;
+
+        // connect east-west corridors
+        let mut y = min_y + 1;
+        loop {
+            if (y >= max_y) { break; }
+            corridors = Bitmap::set_xy(corridors, min_x, y);
+            y += 1;
+        };
+    }
+
+    // nothing in the Y range, randomize a center
+    if (max_y == 0) {
+        min_y = (RANGE::DOOR::MIN + ((protected.low | protected.high) % RANGE::DOOR::SIZE)).try_into().unwrap();
+        max_y = min_y;
+
+        // connect north-south corridors
+        let mut x = min_x + 1;
+        loop {
+            if (x >= max_x) { break; }
+            corridors = Bitmap::set_xy(corridors, x, min_y);
+            x += 1;
+        };
+    }
+
+    (min_x, max_x, min_y, max_y)
+}
+
