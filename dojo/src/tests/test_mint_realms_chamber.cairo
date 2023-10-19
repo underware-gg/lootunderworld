@@ -66,7 +66,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Invalid generator','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Invalid generator','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_invalid_generator() {
         let (world, system) = setup_world();
@@ -103,7 +103,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Chamber already exists','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Chamber already exists','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_already_exists() {
         let (world, system) = setup_world();
@@ -114,7 +114,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Invalid token id','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Invalid token id','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_invalid_token_id() {
         let (world, system) = setup_world();
@@ -124,7 +124,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Invalid from direction (Over)','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Invalid from direction (Over)','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_invalid_from_dir() {
         let (world, system) = setup_world();
@@ -134,7 +134,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('from_door does not exist','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('from_door does not exist','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_entry_has_no_under() {
         let (world, system) = setup_world();
@@ -145,7 +145,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Chamber already exists','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Chamber already exists','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_entry_to_existing_chamber() {
         let (world, system) = setup_world();
@@ -168,7 +168,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Invalid chamber_location','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Invalid chamber_location','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_baseline_NOK() {
         let (world, system) = setup_world();
@@ -178,7 +178,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Invalid Entry from_location','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Invalid Entry from_location','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_invalid_entry_location() {
         let (world, system) = setup_world();
@@ -188,7 +188,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('from_chamber does not exist','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('from_chamber does not exist','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_from_chamber_does_not_exist() {
         let (world, system) = setup_world();
@@ -198,7 +198,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('Invalid chamber_location','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('Invalid chamber_location','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_mint_realms_chamber_invalid_entry_direction() {
         let (world, system) = setup_world();

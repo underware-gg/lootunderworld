@@ -123,7 +123,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('from_door does not exist','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('from_door does not exist','ENTRYPOINT_FAILED'))]
     #[available_gas(1_000_000_000)]
     fn test_from_door_does_not_exist() {
         let (world, system) = setup_world();
