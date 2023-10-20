@@ -85,6 +85,18 @@ impl DirIntoU128 of Into<Dir, u128> {
         }
     }
 }
+impl DirIntoFelt252 of Into<Dir, felt252> {
+    fn into(self: Dir) -> felt252 {
+        match self {
+            Dir::North => DIR::NORTH.into(),
+            Dir::East  => DIR::EAST.into(),
+            Dir::West  => DIR::WEST.into(),
+            Dir::South => DIR::SOUTH.into(),
+            Dir::Over  => DIR::OVER.into(),
+            Dir::Under => DIR::UNDER.into(),
+        }
+    }
+}
 
 impl TryU8IntoDir of TryInto<u8, Dir> {
     fn try_into(self: u8) -> Option<Dir> {
@@ -108,27 +120,14 @@ impl TryU128IntoDir of TryInto<u128, Dir> {
         else { Option::None }
     }
 }
-
-impl DirIntoFelt252 of Into<Dir, felt252> {
-    fn into(self: Dir) -> felt252 {
-        match self {
-            Dir::North => 'North',
-            Dir::East => 'East',
-            Dir::West => 'West',
-            Dir::South => 'South',
-            Dir::Over => 'Over',
-            Dir::Under => 'Under',
-        }
-    }
-}
 impl TryFelt252IntoDir of TryInto<felt252, Dir> {
     fn try_into(self: felt252) -> Option<Dir> {
-        if self == 'North'      { Option::Some(Dir::North) }
-        else if self == 'East'  { Option::Some(Dir::East) }
-        else if self == 'West'  { Option::Some(Dir::West) }
-        else if self == 'South' { Option::Some(Dir::South) }
-        else if self == 'Over'  { Option::Some(Dir::Over) }
-        else if self == 'Under' { Option::Some(Dir::Under) }
+        if self == DIR::NORTH.into()      { Option::Some(Dir::North) }
+        else if self == DIR::EAST.into()  { Option::Some(Dir::East) }
+        else if self == DIR::WEST.into()  { Option::Some(Dir::West) }
+        else if self == DIR::SOUTH.into() { Option::Some(Dir::South) }
+        else if self == DIR::OVER.into()  { Option::Some(Dir::Over) }
+        else if self == DIR::UNDER.into() { Option::Some(Dir::Under) }
         else { Option::None }
     }
 }
