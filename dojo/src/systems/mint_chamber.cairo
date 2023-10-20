@@ -11,7 +11,7 @@ trait IMintChamber<TContractState> {
         from_coord: u128,
         from_dir_u128: u128, 
         generatorName: felt252,
-        generatorValue: u32,
+        generatorValue_u128: u128,
     );
 }
 
@@ -35,9 +35,10 @@ mod mint_chamber {
             from_coord: u128,
             from_dir_u128: u128, 
             generatorName: felt252,
-            generatorValue: u32,
+            generatorValue_u128: u128,
         ) {
             assert(token_id > 0, 'Invalid token id');
+            
 
             // TODO: verify token ownership
             
@@ -50,7 +51,7 @@ mod mint_chamber {
             let caller = starknet::contract_address_const::<0x0>();
             let from_location: Location = LocationTrait::from_coord(DOMAINS::REALMS, token_id.try_into().unwrap(), from_coord);
 
-            generate_chamber(world, caller, from_location, from_dir, generatorName, generatorValue);
+            generate_chamber(world, caller, from_location, from_dir, generatorName, generatorValue_u128.try_into().unwrap());
 
             return ();
         }

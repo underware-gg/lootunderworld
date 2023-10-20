@@ -17,7 +17,7 @@ export function createSystemCalls(
 
   const mint_realms_chamber = async (signer: Account, realmId: number, from_coord: bigint, from_dir: number, generatorName: string, generatorValue: number) => {
     try {
-      const args = [realmId, from_coord, BigInt(from_dir), strToFelt252(generatorName), generatorValue]
+      const args = [realmId.toString(), from_coord.toString(), from_dir.toString(), strToFelt252(generatorName), generatorValue.toString()]
       console.log(args)
       const tx = await execute(signer, 'mint_chamber', 'mint_realms_chamber', args)
       console.log(`mint_realms_chamber tx:`, tx)
