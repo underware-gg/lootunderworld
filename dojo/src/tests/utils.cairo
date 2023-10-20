@@ -23,12 +23,12 @@ mod utils {
         (world, system)
     }
 
-    fn execute_mint_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generatorName: felt252, generatorValue: u32) {
-        system.mint_realms_chamber(world, token_id.into(), from_coord.to_id(), from_dir, generatorName, generatorValue);
+    fn execute_mint_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generator_name: felt252, generator_value: u32) {
+        system.mint_realms_chamber(world, token_id.into(), from_coord.to_id(), from_dir, generator_name, generator_value);
     }
 
-    fn mint_get_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generatorName: felt252, generatorValue: u32) -> Chamber {
-        execute_mint_realms_chamber(world, system, token_id, from_coord, from_dir, generatorName, generatorValue);
+    fn mint_get_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generator_name: felt252, generator_value: u32) -> Chamber {
+        execute_mint_realms_chamber(world, system, token_id, from_coord, from_dir, generator_name, generator_value);
         let to_location: Location = from_coord.offset(from_dir);
         get_world_Chamber(world, to_location.to_id())
     }

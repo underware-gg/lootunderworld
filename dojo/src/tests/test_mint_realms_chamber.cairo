@@ -43,8 +43,8 @@ mod tests {
         assert(map.bitmap != 0, 'Map: map != 0');
         assert(map.bitmap.low != map.bitmap.high, 'Map: map.low != map.high');
         assert(map.bitmap != chamber.seed, 'Map: map.high != seed.high');
-        assert(map.generatorName == 'entry', 'Map: generator name');
-        assert(map.generatorValue == 0, 'Map: generator value');
+        assert(map.generator_name == 'entry', 'Map: generator name');
+        assert(map.generator_value == 0, 'Map: generator value');
     }
 
     #[test]
@@ -56,13 +56,13 @@ mod tests {
         // first chamber will always use the 'entry' generator
         let chamber1: Chamber = mint_get_realms_chamber(world, system, token_id, loc1, Dir::Under, 'whateverrrr', 0);
         let map1 = get_world_Map(world, chamber1.location_id);
-        assert(map1.generatorName == 'entry', 'map1.name');
-        assert(map1.generatorValue == 0, 'map1.value');
+        assert(map1.generator_name == 'entry', 'map1.name');
+        assert(map1.generator_value == 0, 'map1.value');
         // first chamber will always use the 'entry' generator
         let chamber2 = mint_get_realms_chamber(world, system, token_id, LocationTrait::from_id(chamber1.location_id), Dir::West, 'collapse', 55);
         let map2 = get_world_Map(world, chamber2.location_id);
-        assert(map2.generatorName == 'collapse', 'map2.name');
-        assert(map2.generatorValue == 55, 'map2.value');
+        assert(map2.generator_name == 'collapse', 'map2.name');
+        assert(map2.generator_value == 55, 'map2.value');
     }
 
     #[test]

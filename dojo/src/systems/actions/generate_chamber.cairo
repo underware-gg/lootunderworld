@@ -19,8 +19,8 @@ fn generate_chamber(world: IWorldDispatcher,
     caller: ContractAddress,
     from_location: Location,
     from_dir: Dir,
-    mut generatorName: felt252,
-    mut generatorValue: u32,
+    mut generator_name: felt252,
+    mut generator_value: u32,
 ) -> u128 {
 
     let from_location_id: u128 = from_location.to_id();
@@ -30,8 +30,8 @@ fn generate_chamber(world: IWorldDispatcher,
         // this is a new Entry from the surface
         assert(from_location.validate_entry() == true, 'Invalid Entry from_location');
         assert(from_chamber.yonder == 0, 'Entry from_chamber exist!?');
-        generatorName = 'entry';
-        generatorValue = 0;
+        generator_name = 'entry';
+        generator_value = 0;
     } else {
         // else, from_chamber must exist
         assert(from_location.validate() == true, 'Invalid from_location');
@@ -69,14 +69,14 @@ fn generate_chamber(world: IWorldDispatcher,
     // Doors
     //
     let entry_dir: Dir = from_dir.flip();
-    let permissions: u8 = randomize_door_permissions(ref rnd, chamber_location, entry_dir, yonder, generatorName);
+    let permissions: u8 = randomize_door_permissions(ref rnd, chamber_location, entry_dir, yonder, generator_name);
     let (doors, protected): (Doors, u256) = generate_doors(world, chamber_location, location_id, ref rnd, entry_dir, permissions);
 
 
     //---------------------
     // Generate Bitmap
     //
-    let bitmap: u256= generate(seed, protected, entry_dir, generatorName, generatorValue);
+    let bitmap: u256= generate(seed, protected, entry_dir, generator_name, generator_value);
     assert(bitmap != 0, 'Chamber is empty');
 
     //---------------------
@@ -94,8 +94,8 @@ fn generate_chamber(world: IWorldDispatcher,
         Map {
             entity_id: location_id,
             bitmap,
-            generatorName,
-            generatorValue,
+            generator_name,
+            generator_value,
             north: doors.north,
             east: doors.east,
             west: doors.west,

@@ -858,7 +858,7 @@
     {
       "name": "mint_chamber",
       "address": "0x1b0e6d71161f6379a25df22d87dac58f81ac2852c3497d9fad19d6fecacfc3",
-      "class_hash": "0x2f46bcbc891a5ff31e6054a71f34334815887293218dbf2d3a161d43f5a7dfb",
+      "class_hash": "0x77cb02b7ddea18a478bcc32f2bc83a535a09df31dd0189f640e916cc5f62a5e",
       "abi": [
         {
           "type": "impl",
@@ -889,16 +889,6 @@
           "interface_name": "loot_underworld::systems::mint_chamber::IMintChamber"
         },
         {
-          "type": "struct",
-          "name": "dojo::world::IWorldDispatcher",
-          "members": [
-            {
-              "name": "contract_address",
-              "type": "core::starknet::contract_address::ContractAddress"
-            }
-          ]
-        },
-        {
           "type": "interface",
           "name": "loot_underworld::systems::mint_chamber::IMintChamber",
           "items": [
@@ -906,10 +896,6 @@
               "type": "function",
               "name": "mint_realms_chamber",
               "inputs": [
-                {
-                  "name": "world",
-                  "type": "dojo::world::IWorldDispatcher"
-                },
                 {
                   "name": "token_id",
                   "type": "core::integer::u128"
@@ -923,11 +909,11 @@
                   "type": "core::integer::u128"
                 },
                 {
-                  "name": "generatorName",
+                  "name": "generator_name",
                   "type": "core::felt252"
                 },
                 {
-                  "name": "generatorValue_u128",
+                  "name": "generator_value_u128",
                   "type": "core::integer::u128"
                 }
               ],
@@ -1168,12 +1154,12 @@
           "key": false
         },
         {
-          "name": "generatorName",
+          "name": "generator_name",
           "type": "felt252",
           "key": false
         },
         {
-          "name": "generatorValue",
+          "name": "generator_value",
           "type": "u32",
           "key": false
         },
@@ -1208,7 +1194,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x2a5a7072ef11878e720edf0fb91c0b291b3aa320d403572a735ec81c7ea59ed",
+      "class_hash": "0x4fcc73c485316fd956cb0bd4d48e4851fd966d27ac309b7c429f0a2272677cd",
       "abi": [
         {
           "type": "function",

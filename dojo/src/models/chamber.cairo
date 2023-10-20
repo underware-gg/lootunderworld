@@ -23,8 +23,8 @@ struct Map {
     #[key]
     entity_id: u128,
     bitmap: u256, // the actual map: 0=void/walls, 1=path
-    generatorName: felt252,
-    generatorValue: u32,
+    generator_name: felt252,
+    generator_value: u32,
     // doors positions
     north: u8,
     east: u8,

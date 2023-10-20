@@ -104,9 +104,9 @@ fn randomize_door_tile(ref rnd: u256, dir: Dir) -> u8 {
 // Under    0b100000
 // Returns an u8 with flags if doors positions are permitted to be generated, for all directions
 // usage example: U8Bitwise::is_set(permissions, DIR::UNDER.into())
-fn randomize_door_permissions(ref rnd: u256, chamber_location: Location, entry_dir: Dir, yonder: u16, generatorName: felt252) -> u8 {
+fn randomize_door_permissions(ref rnd: u256, chamber_location: Location, entry_dir: Dir, yonder: u16, generator_name: felt252) -> u8 {
     // seed generator is used for #[test]
-    if (generatorName == 'seed') {
+    if (generator_name == 'seed') {
         return 0xff;
     }
 
@@ -122,7 +122,7 @@ fn randomize_door_permissions(ref rnd: u256, chamber_location: Location, entry_d
 
     // dead end
     let is_dead_end: bool = (
-        generatorName != 'connection'
+        generator_name != 'connection'
         && false // TODO: this!
     );
 

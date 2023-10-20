@@ -160,8 +160,8 @@ export type Map = {
   east?: Maybe<Scalars['u8']['output']>;
   entity?: Maybe<Entity>;
   entity_id?: Maybe<Scalars['u128']['output']>;
-  generatorName?: Maybe<Scalars['felt252']['output']>;
-  generatorValue?: Maybe<Scalars['u32']['output']>;
+  generator_name?: Maybe<Scalars['felt252']['output']>;
+  generator_value?: Maybe<Scalars['u32']['output']>;
   north?: Maybe<Scalars['u8']['output']>;
   over?: Maybe<Scalars['u8']['output']>;
   south?: Maybe<Scalars['u8']['output']>;
@@ -190,8 +190,8 @@ export enum MapOrderField {
   Bitmap = 'BITMAP',
   East = 'EAST',
   EntityId = 'ENTITY_ID',
-  Generatorname = 'GENERATORNAME',
-  Generatorvalue = 'GENERATORVALUE',
+  GeneratorName = 'GENERATOR_NAME',
+  GeneratorValue = 'GENERATOR_VALUE',
   North = 'NORTH',
   Over = 'OVER',
   South = 'SOUTH',
@@ -221,20 +221,20 @@ export type MapWhereInput = {
   entity_idLT?: InputMaybe<Scalars['u128']['input']>;
   entity_idLTE?: InputMaybe<Scalars['u128']['input']>;
   entity_idNEQ?: InputMaybe<Scalars['u128']['input']>;
-  generatorName?: InputMaybe<Scalars['felt252']['input']>;
-  generatorNameEQ?: InputMaybe<Scalars['felt252']['input']>;
-  generatorNameGT?: InputMaybe<Scalars['felt252']['input']>;
-  generatorNameGTE?: InputMaybe<Scalars['felt252']['input']>;
-  generatorNameLT?: InputMaybe<Scalars['felt252']['input']>;
-  generatorNameLTE?: InputMaybe<Scalars['felt252']['input']>;
-  generatorNameNEQ?: InputMaybe<Scalars['felt252']['input']>;
-  generatorValue?: InputMaybe<Scalars['u32']['input']>;
-  generatorValueEQ?: InputMaybe<Scalars['u32']['input']>;
-  generatorValueGT?: InputMaybe<Scalars['u32']['input']>;
-  generatorValueGTE?: InputMaybe<Scalars['u32']['input']>;
-  generatorValueLT?: InputMaybe<Scalars['u32']['input']>;
-  generatorValueLTE?: InputMaybe<Scalars['u32']['input']>;
-  generatorValueNEQ?: InputMaybe<Scalars['u32']['input']>;
+  generator_name?: InputMaybe<Scalars['felt252']['input']>;
+  generator_nameEQ?: InputMaybe<Scalars['felt252']['input']>;
+  generator_nameGT?: InputMaybe<Scalars['felt252']['input']>;
+  generator_nameGTE?: InputMaybe<Scalars['felt252']['input']>;
+  generator_nameLT?: InputMaybe<Scalars['felt252']['input']>;
+  generator_nameLTE?: InputMaybe<Scalars['felt252']['input']>;
+  generator_nameNEQ?: InputMaybe<Scalars['felt252']['input']>;
+  generator_value?: InputMaybe<Scalars['u32']['input']>;
+  generator_valueEQ?: InputMaybe<Scalars['u32']['input']>;
+  generator_valueGT?: InputMaybe<Scalars['u32']['input']>;
+  generator_valueGTE?: InputMaybe<Scalars['u32']['input']>;
+  generator_valueLT?: InputMaybe<Scalars['u32']['input']>;
+  generator_valueLTE?: InputMaybe<Scalars['u32']['input']>;
+  generator_valueNEQ?: InputMaybe<Scalars['u32']['input']>;
   north?: InputMaybe<Scalars['u8']['input']>;
   northEQ?: InputMaybe<Scalars['u8']['input']>;
   northGT?: InputMaybe<Scalars['u8']['input']>;

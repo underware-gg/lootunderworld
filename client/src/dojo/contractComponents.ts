@@ -29,8 +29,8 @@ export function defineContractComponents(world: World) {
         world,
         {
           bitmap: RecsType.BigInt,
-          generatorName: RecsType.BigInt,
-          generatorValue: RecsType.Number,
+          generator_name: RecsType.BigInt,
+          generator_value: RecsType.Number,
           north: RecsType.Number,
           east: RecsType.Number,
           west: RecsType.Number,
