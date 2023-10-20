@@ -1,7 +1,7 @@
 {
   "world": {
     "name": "world",
-    "address": null,
+    "address": "0x56c991ec4188b7c036066d28a19ed2b245ee1174ed3935f2d7e15c60a496f82",
     "class_hash": "0x5179c281a8d3cca6cfb820201fa7a81150b56f9db492405a29e9564222370b8",
     "abi": [
       {
@@ -857,8 +857,8 @@
   "contracts": [
     {
       "name": "mint_chamber",
-      "address": null,
-      "class_hash": "0x2d88b99d1243881423d2999f31d3b713fb743ecd283bd7c0bedb48312ced312",
+      "address": "0x1b0e6d71161f6379a25df22d87dac58f81ac2852c3497d9fad19d6fecacfc3",
+      "class_hash": "0x74ea81c9c60f737e0f67ac845a2d3f0ff3cf332160d247507ff2efd74a108bb",
       "abi": [
         {
           "type": "impl",
@@ -899,36 +899,6 @@
           ]
         },
         {
-          "type": "enum",
-          "name": "loot_underworld::types::dir::Dir",
-          "variants": [
-            {
-              "name": "North",
-              "type": "()"
-            },
-            {
-              "name": "East",
-              "type": "()"
-            },
-            {
-              "name": "West",
-              "type": "()"
-            },
-            {
-              "name": "South",
-              "type": "()"
-            },
-            {
-              "name": "Over",
-              "type": "()"
-            },
-            {
-              "name": "Under",
-              "type": "()"
-            }
-          ]
-        },
-        {
           "type": "interface",
           "name": "loot_underworld::systems::mint_chamber::IMintChamber",
           "items": [
@@ -949,8 +919,8 @@
                   "type": "core::integer::u128"
                 },
                 {
-                  "name": "from_dir",
-                  "type": "loot_underworld::types::dir::Dir"
+                  "name": "from_dir_u128",
+                  "type": "core::integer::u128"
                 },
                 {
                   "name": "generatorName",

@@ -4,6 +4,7 @@ import { RPCProvider, Query, } from "@dojoengine/core";
 import { Account, num } from "starknet";
 import { GraphQLClient } from 'graphql-request';
 import { getSdk } from '../generated/graphql';
+import manifest from '../../../dojo/target/dev/manifest.json'
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
@@ -12,10 +13,7 @@ export async function setupNetwork() {
   const { VITE_PUBLIC_WORLD_ADDRESS, VITE_PUBLIC_NODE_URL, VITE_PUBLIC_TORII } = import.meta.env;
 
   // Create a new RPCProvider instance.
-  const provider = new RPCProvider(VITE_PUBLIC_WORLD_ADDRESS, VITE_PUBLIC_NODE_URL);
-
-  // Utility function to get the SDK.
-  const createGraphSdk = () => getSdk(new GraphQLClient(VITE_PUBLIC_TORII));
+  const provider = new RPCProvider(VITE_PUBLIC_WORLD_ADDRESS, manifest, VITE_PUBLIC_NODE_URL);
 
   // Return the setup object.
   return {
@@ -26,11 +24,11 @@ export async function setupNetwork() {
     contractComponents: defineContractComponents(world),
 
     // Define the graph SDK instance.
-    graphSdk: createGraphSdk(),
+    graphSdk: () => getSdk(new GraphQLClient(VITE_PUBLIC_TORII)),
 
     // Execute function.
-    execute: async (signer: Account, system: string, call_data: num.BigNumberish[]) => {
-      return provider.execute(signer, system, call_data);
+    execute: async (signer: Account, contract: string, system: string, call_data: num.BigNumberish[]) => {
+      return provider.execute(signer, contract, system, call_data);
     },
 
     // Entity query function.
@@ -41,11 +39,6 @@ export async function setupNetwork() {
     // Entities query function.
     entities: async (component: string, partition: number) => {
       return provider.entities(component, partition);
-    },
-
-    // Call function.
-    call: async (selector: string, call_data: num.BigNumberish[]) => {
-      return provider.call(selector, call_data);
-    },
+    }
   };
 }

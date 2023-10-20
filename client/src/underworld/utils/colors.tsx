@@ -4,7 +4,7 @@ export enum RealmsColors {
   BORDERS = '#c1965d',
   HILLS = '#94631f',
   TEXT = '#fbf6c0',
-  SELECTED = '#ff0',
+  SELECTED = 'rgb(255, 234, 0)',
 }
 
 export enum MapColors {

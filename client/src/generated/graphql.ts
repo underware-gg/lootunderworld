@@ -19,7 +19,6 @@ export type Scalars = {
   ContractAddress: { input: any; output: any; }
   Cursor: { input: any; output: any; }
   DateTime: { input: any; output: any; }
-  Enum: { input: any; output: any; }
   felt252: { input: any; output: any; }
   u8: { input: any; output: any; }
   u16: { input: any; output: any; }
@@ -312,100 +311,12 @@ export type ModelEdge = {
   node?: Maybe<Model>;
 };
 
-export type ModelUnion = Chamber | Map | Moves | Position | State | Tile;
-
-export type Moves = {
-  __typename?: 'Moves';
-  entity?: Maybe<Entity>;
-  last_direction?: Maybe<Scalars['Enum']['output']>;
-  player?: Maybe<Scalars['ContractAddress']['output']>;
-  remaining?: Maybe<Scalars['u8']['output']>;
-};
-
-export type MovesConnection = {
-  __typename?: 'MovesConnection';
-  edges?: Maybe<Array<Maybe<MovesEdge>>>;
-  total_count: Scalars['Int']['output'];
-};
-
-export type MovesEdge = {
-  __typename?: 'MovesEdge';
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  node?: Maybe<Moves>;
-};
-
-export type MovesOrder = {
-  direction: OrderDirection;
-  field: MovesOrderField;
-};
-
-export enum MovesOrderField {
-  LastDirection = 'LAST_DIRECTION',
-  Player = 'PLAYER',
-  Remaining = 'REMAINING'
-}
-
-export type MovesWhereInput = {
-  last_direction?: InputMaybe<Scalars['Enum']['input']>;
-  player?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
-  remaining?: InputMaybe<Scalars['u8']['input']>;
-  remainingEQ?: InputMaybe<Scalars['u8']['input']>;
-  remainingGT?: InputMaybe<Scalars['u8']['input']>;
-  remainingGTE?: InputMaybe<Scalars['u8']['input']>;
-  remainingLT?: InputMaybe<Scalars['u8']['input']>;
-  remainingLTE?: InputMaybe<Scalars['u8']['input']>;
-  remainingNEQ?: InputMaybe<Scalars['u8']['input']>;
-};
+export type ModelUnion = Chamber | Map | State | Tile;
 
 export enum OrderDirection {
   Asc = 'ASC',
   Desc = 'DESC'
 }
-
-export type Position = {
-  __typename?: 'Position';
-  entity?: Maybe<Entity>;
-  player?: Maybe<Scalars['ContractAddress']['output']>;
-  vec?: Maybe<Vec2>;
-};
-
-export type PositionConnection = {
-  __typename?: 'PositionConnection';
-  edges?: Maybe<Array<Maybe<PositionEdge>>>;
-  total_count: Scalars['Int']['output'];
-};
-
-export type PositionEdge = {
-  __typename?: 'PositionEdge';
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  node?: Maybe<Position>;
-};
-
-export type PositionOrder = {
-  direction: OrderDirection;
-  field: PositionOrderField;
-};
-
-export enum PositionOrderField {
-  Player = 'PLAYER',
-  Vec = 'VEC'
-}
-
-export type PositionWhereInput = {
-  player?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
-  playerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
-};
 
 export type Query = {
   __typename?: 'Query';
@@ -418,8 +329,6 @@ export type Query = {
   metadatas?: Maybe<MetadataConnection>;
   model: Model;
   models?: Maybe<ModelConnection>;
-  movesModels?: Maybe<MovesConnection>;
-  positionModels?: Maybe<PositionConnection>;
   stateModels?: Maybe<StateConnection>;
   system: System;
   systemCall: SystemCall;
@@ -506,30 +415,6 @@ export type QueryModelsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryMovesModelsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<MovesOrder>;
-  where?: InputMaybe<MovesWhereInput>;
-};
-
-
-export type QueryPositionModelsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<PositionOrder>;
-  where?: InputMaybe<PositionWhereInput>;
 };
 
 
@@ -783,18 +668,12 @@ export type TileWhereInput = {
   tile_typeNEQ?: InputMaybe<Scalars['u8']['input']>;
 };
 
-export type Vec2 = {
-  __typename?: 'Vec2';
-  x?: Maybe<Scalars['u32']['output']>;
-  y?: Maybe<Scalars['u32']['output']>;
-};
-
 export type GetChamberTilesQueryVariables = Exact<{
   locationId: Scalars['String']['input'];
 }>;
 
 
-export type GetChamberTilesQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, id?: string | null, models?: Array<{ __typename: 'Chamber' } | { __typename: 'Map' } | { __typename: 'Moves' } | { __typename: 'Position' } | { __typename: 'State' } | { __typename: 'Tile', location_id?: any | null, pos?: any | null, tile_type?: any | null } | null> | null } | null } | null> | null } | null };
+export type GetChamberTilesQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, id?: string | null, models?: Array<{ __typename: 'Chamber' } | { __typename: 'Map' } | { __typename: 'State' } | { __typename: 'Tile', location_id?: any | null, pos?: any | null, tile_type?: any | null } | null> | null } | null } | null> | null } | null };
 
 
 export const GetChamberTilesDocument = gql`
@@ -825,7 +704,7 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 const GetChamberTilesDocumentString = print(GetChamberTilesDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getChamberTiles(variables: GetChamberTilesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetChamberTilesQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+    getChamberTiles(variables: GetChamberTilesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetChamberTilesQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetChamberTilesQuery>(GetChamberTilesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getChamberTiles', 'query');
     }
   };

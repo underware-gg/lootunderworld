@@ -1,5 +1,5 @@
 import Burner from './Burner';
-import Example from './Example';
+// import Example from './Example';
 import TestMinter from '../underworld/components/TestMinter';
 import { useSyncWorld } from '../underworld/hooks/useGraphQLQueries';
 
@@ -16,7 +16,7 @@ function App() {
       <hr />
       <TestMinter />
       <hr />
-      <Example />
+      {/* <Example /> */}
     </>
   );
 }

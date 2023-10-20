@@ -1,9 +1,23 @@
 import { createContext, ReactNode, useContext, useMemo } from "react";
 import { SetupResult } from "./dojo/setup";
-import { useBurner } from "@dojoengine/create-burner";
 import { Account, RpcProvider } from "starknet";
+import { useBurner } from "@dojoengine/create-burner";
 
-const DojoContext = createContext<SetupResult | null>(null);
+type Context = {
+  setup: SetupResult;
+  account: {
+    create: () => void;
+    list: () => any[];
+    get: (id: string) => Account;
+    select: (id: string) => void;
+    account: Account;
+    masterAccount: Account;
+    isDeploying: boolean;
+    clear: () => void;
+  };
+}
+
+const DojoContext = createContext<Context | null>(null);
 
 type Props = {
   children: ReactNode;
@@ -11,39 +25,64 @@ type Props = {
 };
 
 export const DojoProvider = ({ children, value }: Props) => {
+  const { VITE_PUBLIC_MASTER_ADDRESS, VITE_PUBLIC_MASTER_PRIVATE_KEY, VITE_PUBLIC_ACCOUNT_CLASS_HASH, VITE_PUBLIC_NODE_URL } = import.meta.env;
+
   const currentValue = useContext(DojoContext);
+
   if (currentValue) throw new Error("DojoProvider can only be used once");
-  return <DojoContext.Provider value={value}>{children}</DojoContext.Provider>;
+
+  const provider = useMemo(
+    () =>
+      new RpcProvider({
+        nodeUrl: VITE_PUBLIC_NODE_URL!,
+      }),
+    [VITE_PUBLIC_NODE_URL],
+  );
+
+  const masterAddress = VITE_PUBLIC_MASTER_ADDRESS!;
+  const privateKey = VITE_PUBLIC_MASTER_PRIVATE_KEY!;
+
+  const masterAccount = useMemo(
+    () => new Account(provider, masterAddress, privateKey),
+    [provider, masterAddress, privateKey],
+  );
+
+  const { create, list, get, account, select, isDeploying, clear } = useBurner({
+    masterAccount: masterAccount,
+    accountClassHash: VITE_PUBLIC_ACCOUNT_CLASS_HASH!,
+  });
+
+  const selectedAccount = useMemo(() => {
+    return account || masterAccount;
+  }, [account, masterAccount])
+
+  const contextValue: Context = {
+    setup: value,
+    account: {
+      create,
+      list,
+      get,
+      select,
+      account: selectedAccount,
+      masterAccount,
+      isDeploying,
+      clear
+    }
+  }
+
+  return <DojoContext.Provider value={contextValue}>{children}</DojoContext.Provider>;
 };
 
 export const useDojo = () => {
   const value = useContext(DojoContext);
-
-  if (!value) throw new Error("The `useDojo` hook must be used within a `DojoProvider`");
-
-  const provider = useMemo(() => new RpcProvider({
-    nodeUrl: import.meta.env.VITE_PUBLIC_NODE_URL!
-  }), []);
-
-  // 
-  // this can be substituted with a wallet provider
-  //
-  const masterAddress = import.meta.env.VITE_PUBLIC_MASTER_ADDRESS!;
-  const privateKey = import.meta.env.VITE_PUBLIC_MASTER_PRIVATE_KEY!;
-  const masterAccount = useMemo(() => new Account(provider, masterAddress, privateKey), [provider, masterAddress, privateKey]);
-
-  const { create, list, get, account, select, isDeploying } = useBurner(
-    {
-      masterAccount: masterAccount,
-      accountClassHash: import.meta.env.VITE_PUBLIC_ACCOUNT_CLASS_HASH!
-    }
-  );
-
-  return {
-    setup: value,
-    account: { create, list, get, select, account: account ? account : masterAccount, isDeploying }
-  };
+  if (!value) throw new Error("Must be used within a DojoProvider");
+  return value;
 };
+
+
+//
+// Loot Underworld
+//
 
 export const useDojoAccount = () => {
   const { account } = useDojo()

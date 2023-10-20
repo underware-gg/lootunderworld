@@ -23,7 +23,7 @@
       "**/dist": true,
       "**/.gitignore": true,
       "**/.gitmodules": true,
-      "**/manifest.json": true,
+      // "**/manifest.json": true,
       "**/database.json": true,
       "**/generated/*": true,
     },

@@ -53,6 +53,7 @@ circle {
 }
 .SelectedCity {
   fill: ${_escapeColor(RealmsColors.SELECTED)}!important;
+	text-shadow: 0.07em 0.07em 1px ${_escapeColor(RealmsColors.BG)};
   font-size: 50px!important;
 }
 text.SelectedCity {

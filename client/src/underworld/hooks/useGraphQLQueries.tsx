@@ -18,7 +18,7 @@ const sdk = getSdk(client);
 type DojoEntity = {
   __typename?: "Entity";
   keys?: (string | bigint | null)[] | null | undefined;
-  components?: any | null[];
+  models?: any | null[];
 };
 
 type getEntitiesQuery = {
@@ -37,7 +37,7 @@ export const useSyncWorld = (): { loading: boolean } => {
   const {
     // setup overridableComponents throw error: js Method Map.prototype.set called on incompatible receiver #<Map>
     // setup: { components },
-    setup: { network: { contractComponents: components }  },
+    setup: { network: { contractComponents: models }  },
   } = useDojo();
 
   const [loading, setLoading] = useState(true);
@@ -45,9 +45,9 @@ export const useSyncWorld = (): { loading: boolean } => {
   useMemo(() => {
     const syncData = async () => {
       try {
-        for (const componentName of Object.keys(components)) {
+        for (const componentName of Object.keys(models)) {
           let shouldContinue = true; // Renamed from continue to avoid reserved keyword
-          let component = (components as Components)[componentName];
+          let component = (models as Components)[componentName];
           let fields = Object.keys(component.schema).join(",");
           let cursor: string | undefined;
           while (shouldContinue) {
@@ -55,14 +55,14 @@ export const useSyncWorld = (): { loading: boolean } => {
             console.log(`Sync [${componentName}]...`)
             const queryBuilder = `
               query SyncWorld {
-                entities: ${componentName.toLowerCase()}Components(${cursor ? `after: "${cursor}"` : ""} first: 100) {
+                entities: ${componentName.toLowerCase()}Models(${cursor ? `after: "${cursor}"` : ""} first: 100) {
                   edges {
                     cursor
                     node {
                       entity {
                         keys
                         id
-                        components {
+                        models {
                           ... on ${componentName} {
                             __typename
                             ${fields}
@@ -85,7 +85,7 @@ export const useSyncWorld = (): { loading: boolean } => {
             }
 
             entities.edges.forEach((edge) => {
-              setComponentFromEntity(edge.node.entity, componentName, components);
+              setComponentFromEntity(edge.node.entity, componentName, models);
             });
           }
         }

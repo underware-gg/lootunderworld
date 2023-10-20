@@ -3,30 +3,23 @@ import {
   Components,
   setComponent,
   Type as RecsType,
-} from "@latticexyz/recs";
-import { Account } from "starknet";
-import { SetupNetworkResult } from "./setupNetwork";
-import { getEntityIdFromKeys, strTofelt252Felt } from "../utils/utils";
+} from '@latticexyz/recs';
+import { Account } from 'starknet';
+import { SetupNetworkResult } from './setupNetwork';
+import { getEntityIdFromKeys, strToFelt252 } from '../utils/utils';
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
-export enum Direction {
-  Left = 0,
-  Right = 1,
-  Up = 2,
-  Down = 3,
-}
-
 export function createSystemCalls(
   { execute, provider, contractComponents }: SetupNetworkResult,
-  // { Position, Moves, Chamber, Map }: ClientComponents,
+  // { Chamber, Map }: ClientComponents,
 ) {
 
-
-  const mint_realms_chamber = async (signer: Account, realmId: number, from_coord: bigint, from_dir: number, generatorName: string, generatorValue:number) => {
+  const mint_realms_chamber = async (signer: Account, realmId: number, from_coord: bigint, from_dir: number, generatorName: string, generatorValue: number) => {
     try {
-      const args = [realmId, from_coord, from_dir, strTofelt252Felt(generatorName), generatorValue]
-      const tx = await execute(signer, "mint_realms_chamber", args)
+      const args = [realmId, from_coord, BigInt(from_dir), strToFelt252(generatorName), generatorValue]
+      console.log(args)
+      const tx = await execute(signer, 'mint_chamber', 'mint_realms_chamber', args)
       console.log(`mint_realms_chamber tx:`, tx)
       const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
       console.log(`mint_realms_chamber receipt:`, receipt)
@@ -35,87 +28,12 @@ export function createSystemCalls(
       console.log(`mint_realms_chamber exception:`, e)
     } finally {
     }
-  };
-
-
-
-  //------------------------
-  // EXAMPLE
-  //
-  const spawn = async (signer: Account): Promise<number> => {
-    let entity_id: number = 0;
-
-    // const entityId = parseInt(signer.address) as EntityIndex;
-    // const positionId = uuid();
-    // Position.addOverride(positionId, {
-    //     entity: entityId,
-    //     value: { x: 1000, y: 1000 },
-    // });
-    // const movesId = uuid();
-    // Moves.addOverride(movesId, {
-    //     entity: entityId,
-    //     value: { remaining: 100 },
-    // });
-
-    try {
-      const tx = await execute(signer, "spawn", []);
-      const receipt = await provider.provider.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-      console.log(`spawn receipt:`, receipt)
-      const { events } = processReceipt(receipt, contractComponents);
-      // const events = getEvents(receipt);
-      // entity_id = getEntityIdFromEvents(events, "Moves");
-    } catch (e) {
-      console.log(`spawn exception:`, e)
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
-    } finally {
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
-    }
-    return entity_id;
-  };
-
-  const move = async (signer: Account, direction: Direction): Promise<number> => {
-    let entity_id: number = 0;
-
-    // const entityId = parseInt(signer.address) as EntityIndex;
-    // const positionId = uuid();
-    // Position.addOverride(positionId, {
-    //     entity: entityId,
-    //     //@ts-ignore
-    //     value: updatePositionWithDirection(direction, getComponentValue(Position, entityId) as Position),
-    // });
-    // const movesId = uuid();
-    // Moves.addOverride(movesId, {
-    //     entity: entityId,
-    //     value: { remaining: (getComponentValue(Moves, entityId)?.remaining || 0) - 1 },
-    // });
-
-    try {
-      const tx = await execute(signer, "move", [direction]);
-      const receipt = await signer.waitForTransaction(tx.transaction_hash, { retryInterval: 200 })
-      console.log(`move receipt:`, receipt)
-      const { events } = processReceipt(receipt, contractComponents);
-      // const events = getEvents(receipt);
-      // entity_id = getEntityIdFromEvents(events, "Moves");
-    } catch (e) {
-      console.log(`move exception:`, e)
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
-    } finally {
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
-    }
-    return entity_id;
-  };
+  }
 
   return {
     mint_realms_chamber,
-    spawn,
-    move
-  };
+  }
 }
-
 
 export function processReceipt(receipt: any, components: any): any {
   if (receipt.execution_status == 'REVERTED') {
@@ -194,7 +112,7 @@ export function setComponentFromEvent(components: Components, eventData: string[
 }
 
 function hexToAscii(hex: string) {
-  var str = "";
+  var str = '';
   for (var n = 2; n < hex.length; n += 2) {
     str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
   }
@@ -202,10 +120,10 @@ function hexToAscii(hex: string) {
 }
 
 function asciiToHex(ascii: string) {
-  var hex = "";
+  var hex = '';
   for (var i = 0; i < ascii.length; i++) {
     var charCode = ascii.charCodeAt(i);
-    hex += charCode.toString(16).padStart(2, "0");
+    hex += charCode.toString(16).padStart(2, '0');
   }
   return `0x${hex}`;
 }
@@ -229,35 +147,35 @@ function getEntityIdFromEvents(events: Event[], componentName: string): number {
 
 // Chamber
 // data: Array(10)
-// 0: "0x4368616d626572"    name
-// 1: "0x1"                 keys_count
-// 2: "0x9"                 key : entity_id
-// 3: "0x0"                 ?
-// 4: "0x5"                 data_count
-// 5: "0x1"                 data: realm_id
-// 6: "0x18a9b743912"       data: location
-// 7: "0x8bee3eaa82565df3aa3490f3cc638b8d"    data: seed.low
-// 8: "0x67005de7ad14a037d950d0894998d9a6"    data: seed.high
-// 9: "0x517ececd29116499f4a1b64b094da79ba08dfd54a3edaa316134c41f8160973"   minter
+// 0: '0x4368616d626572'    name
+// 1: '0x1'                 keys_count
+// 2: '0x9'                 key : entity_id
+// 3: '0x0'                 ?
+// 4: '0x5'                 data_count
+// 5: '0x1'                 data: realm_id
+// 6: '0x18a9b743912'       data: location
+// 7: '0x8bee3eaa82565df3aa3490f3cc638b8d'    data: seed.low
+// 8: '0x67005de7ad14a037d950d0894998d9a6'    data: seed.high
+// 9: '0x517ececd29116499f4a1b64b094da79ba08dfd54a3edaa316134c41f8160973'   minter
 
 // Map
 // data:Array(7)
-// 0:"0x4d6170"
-// 1:"0x1"
-// 2:"0x9"
-// 3:"0x0"    ??
-// 4:"0x2"
-// 5:"0xffff3fbf935f5dfffe3ffcffcdff8bed"
-// 6:"0x6700dff7ef1fef3fdffafff97ff8fffe"
+// 0:'0x4d6170'
+// 1:'0x1'
+// 2:'0x9'
+// 3:'0x0'    ??
+// 4:'0x2'
+// 5:'0xffff3fbf935f5dfffe3ffcffcdff8bed'
+// 6:'0x6700dff7ef1fef3fdffafff97ff8fffe'
 
 // Door
 // data:Array(8)
-// 0:"0x446f6f72"
-// 1:"0x2"
-// 2:"0x9"
-// 3:"0x1"
-// 4:"0x0"    ??
-// 5:"0x2"
-// 6:"0x8f"
-// 7:"0x18a9b743912"
+// 0:'0x446f6f72'
+// 1:'0x2'
+// 2:'0x9'
+// 3:'0x1'
+// 4:'0x0'    ??
+// 5:'0x2'
+// 6:'0x8f'
+// 7:'0x18a9b743912'
 

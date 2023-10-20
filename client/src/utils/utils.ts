@@ -1,6 +1,5 @@
 import { Components, Entity, Schema, setComponent } from "@latticexyz/recs";
 import { poseidonHashMany } from "micro-starknet";
-import { Direction } from "../dojo/createSystemCalls";
 
 export function isValidArray(input: any): input is any[] {
   return Array.isArray(input) && input != null;
@@ -10,9 +9,9 @@ export function getFirstComponentByType(entities: any[] | null | undefined, type
   if (!isValidArray(entities)) return null;
 
   for (let entity of entities) {
-    if (isValidArray(entity?.node.components)) {
-      const foundComponent = entity.node.components.find((comp: any) => comp.__typename === typename);
-      if (foundComponent) return foundComponent;
+    if (isValidArray(entity?.node.models)) {
+      const foundModel = entity.node.models.find((comp: any) => comp.__typename === typename);
+      if (foundModel) return foundModel;
     }
   }
 
@@ -23,26 +22,6 @@ export function extractAndCleanKey(entities?: any[] | null | undefined): string 
   if (!isValidArray(entities) || !entities[0]?.keys) return null;
 
   return entities[0].keys.replace(/,/g, '');
-}
-
-export function updatePositionWithDirection(direction: Direction, value: { x: number, y: number }) {
-  switch (direction) {
-    case Direction.Left:
-      value.x--;
-      break;
-    case Direction.Right:
-      value.x++;
-      break;
-    case Direction.Up:
-      value.y--;
-      break;
-    case Direction.Down:
-      value.y++;
-      break;
-    default:
-      throw new Error("Invalid direction provided");
-  }
-  return value;
 }
 
 // DISCUSSION: MUD expects Numbers, but entities in Starknet are BigInts (from poseidon hash)
@@ -64,13 +43,13 @@ export function getEntityIdFromKeys(keys: bigint[]): Entity {
 type DojoEntity = {
   __typename?: "Entity";
   keys?: (string | bigint | null)[] | null | undefined;
-  components?: any | null[];
+  models?: any | null[];
 };
 
-export function setComponentFromEntity(entity: DojoEntity | null, componentName: string, components: Components) {
+export function setComponentFromEntity(entity: DojoEntity | null, componentName: string, models: Components) {
   if (entity) {
-    let component = components[componentName];
-    let rawComponentValues = entity?.components?.find((component: any) => {
+    let component = models[componentName];
+    let rawComponentValues = entity?.models?.find((component: any) => {
       return component?.__typename === componentName;
     });
     if (rawComponentValues) {
@@ -97,7 +76,7 @@ export const numberToHex = (num: number) => {
   return "0x" + num.toString(16);
 };
 
-export function strTofelt252Felt(str: string): string {
+export function strToFelt252(str: string): string {
   const encoder = new TextEncoder();
   const strB = encoder.encode(str);
   return BigInt(
