@@ -24,7 +24,7 @@ mod utils {
     }
 
     fn execute_mint_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generator_name: felt252, generator_value: u32) {
-        system.mint_realms_chamber(world, token_id.into(), from_coord.to_id(), from_dir, generator_name, generator_value);
+        system.mint_realms_chamber(token_id.into(), from_coord.to_id(), from_dir.into(), generator_name, generator_value.into());
     }
 
     fn mint_get_realms_chamber(world: IWorldDispatcher, system: IMintChamberDispatcher, token_id: u16, from_coord: Location, from_dir: Dir, generator_name: felt252, generator_value: u32) -> Chamber {

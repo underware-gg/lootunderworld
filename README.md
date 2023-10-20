@@ -118,7 +118,7 @@ dojoup -p ../../dojo
 
 ```console
 cd dojo
-katana --disable-fee
+katana --disable-fee --invoke-max-steps 10000000
 ```
 
 #### Terminal 2: Contracts

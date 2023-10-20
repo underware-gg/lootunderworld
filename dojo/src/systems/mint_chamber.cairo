@@ -6,7 +6,6 @@ use loot_underworld::types::dir::{Dir, DIR, DirTrait};
 #[starknet::interface]
 trait IMintChamber<TContractState> {
     fn mint_realms_chamber(self: @TContractState, 
-        world: IWorldDispatcher,
         token_id: u128,
         from_coord: u128,
         from_dir_u128: u128, 
@@ -30,7 +29,6 @@ mod mint_chamber {
     #[external(v0)]
     impl MintChamberImpl of IMintChamber<ContractState> {
         fn mint_realms_chamber(self: @ContractState,
-            world: IWorldDispatcher,
             token_id: u128,
             from_coord: u128,
             from_dir_u128: u128, 
@@ -39,6 +37,7 @@ mod mint_chamber {
         ) {
             assert(token_id > 0, 'Invalid token id');
             
+            let world: IWorldDispatcher = self.world_dispatcher.read();
 
             // TODO: verify token ownership
             

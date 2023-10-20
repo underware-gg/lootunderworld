@@ -858,7 +858,7 @@
     {
       "name": "mint_chamber",
       "address": "0x1b0e6d71161f6379a25df22d87dac58f81ac2852c3497d9fad19d6fecacfc3",
-      "class_hash": "0x77cb02b7ddea18a478bcc32f2bc83a535a09df31dd0189f640e916cc5f62a5e",
+      "class_hash": "0x59c332f23708a21d0bfb7003dc99ce9812298fd67ef5a08be7dcfc937199c9f",
       "abi": [
         {
           "type": "impl",
