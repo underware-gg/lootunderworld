@@ -1,39 +1,64 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useUnderworldContext } from '../hooks/UnderworldContext'
+import { useUnderdarkContext } from '../hooks/UnderdarkContext'
 import { useChamberMap } from '../hooks/useChamber'
 import { MapChamber, MapView, compassToMapViewPos } from './MapView'
-import { coordToCompass } from '../utils/underworld'
+import { Dir, coordToCompass, coordToSlug, offsetCoord } from '../utils/underdark'
 
+
+//-----------------------------
+// Entry Point
+//
 function MinterMap() {
   const [tileSize, seTtileSize] = useState(5)
-  const { chamberId: currentChamberId } = useUnderworldContext()
+  const { gameId, chamberId: currentChamberId } = useUnderdarkContext()
 
   useEffect(() => {
-    _addLoader(currentChamberId)
+    setLoaders([])
+    setChambers({})
+  }, [gameId])
+
+  useEffect(() => {
+    if (currentChamberId > 0) {
+      _addLoaders([currentChamberId])
+    }
   }, [currentChamberId])
 
   // tilemap loaders
   const [loaders, setLoaders] = useState<bigint[]>([])
-  const _addLoader = (chamberId: bigint) => {
-    if (!loaders.includes(chamberId)) {
-      setLoaders([...loaders, chamberId])
+  const _addLoaders = (chamberIds: bigint[]) => {
+    let newLoaders = []
+    chamberIds.forEach(chamberId => {
+      if (!loaders.includes(chamberId)) {
+        newLoaders.push(chamberId)
+      }
+    });
+    if (newLoaders.length > 0) {
+      setLoaders([...loaders, ...newLoaders])
     }
   }
 
   // loaded tilemaps
   const [chambers, setChambers] = useState<{ [key: string]: MapChamber }>({})
   const _addChamber = (chamber: MapChamber) => {
-    const _key = chamber.coord.toString()
-    setChambers({
-      ...chambers,
-      [_key]: chamber,
-    })
+    const _key = coordToSlug(chamber.coord)
+    if (!chambers[_key]) {
+      setChambers({
+        ...chambers,
+        [_key]: chamber,
+      })
+      _addLoaders([
+        offsetCoord(chamber.coord, Dir.North),
+        offsetCoord(chamber.coord, Dir.East),
+        offsetCoord(chamber.coord, Dir.West),
+        offsetCoord(chamber.coord, Dir.South),
+      ])
+    }
   }
 
   // target (center)
   const [targetChamber, setTargetChamber] = useState<MapChamber>({} as MapChamber)
   useEffect(() => {
-    const _key = currentChamberId.toString()
+    const _key = coordToSlug(currentChamberId)
     if (chambers[_key]) {
       setTargetChamber(chambers[_key])
     }
@@ -66,9 +91,9 @@ function MapLoader({
   coord,
   addChamber,
 }: MapLoaderProps) {
-  const { tilemap, expandedTilemap } = useChamberMap(coord)
+  const { bitmap, tilemap, expandedTilemap } = useChamberMap(coord)
   useEffect(() => {
-    if (expandedTilemap) {
+    if (bitmap > 0n && expandedTilemap) {
       const compass = coordToCompass(coord)
       addChamber({
         coord,

@@ -37,12 +37,12 @@ export const useSyncWorld = (): { loading: boolean } => {
   const {
     // setup overridableComponents throw error: js Method Map.prototype.set called on incompatible receiver #<Map>
     // setup: { components },
-    setup: { network: { contractComponents: models }  },
+    setup: { network: { contractComponents: models } },
   } = useDojo();
 
   const [loading, setLoading] = useState(true);
 
-  useMemo(() => {
+  useEffect(() => {
     const syncData = async () => {
       try {
         for (const componentName of Object.keys(models)) {
@@ -73,7 +73,7 @@ export const useSyncWorld = (): { loading: boolean } => {
                   }
                 }
               }`;
-            // console.log(`queryBuilder [${queryBuilder}]...`)
+            // console.log(`queryBuilder:`, queryBuilder)
 
             const { entities }: getEntitiesQuery = await client.request(queryBuilder); // Assumed queryBuilder should be passed here
             // console.log(`query entities:`, entities)
@@ -90,7 +90,7 @@ export const useSyncWorld = (): { loading: boolean } => {
           }
         }
       } catch (error) {
-        console.log({ syncError: error });
+        console.warn({ syncError: error });
       } finally {
         setLoading(false);
       }
