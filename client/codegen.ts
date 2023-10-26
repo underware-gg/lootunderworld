@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "http://localhost:8080/graphql",
+  schema: "http://127.0.0.1:8080/graphql",
   documents: "src/**/*.graphql",
   generates: {
     'src/generated/graphql.ts': {
@@ -12,6 +12,9 @@ const config: CodegenConfig = {
         rawRequest: true
       },
     },
+  },
+  hooks: {
+    afterOneFileWrite: [String.raw`sed -i '' '1s/^/\/\/@ts-nocheck\n/'`]
   }
 };
 
