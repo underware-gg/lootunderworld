@@ -47,7 +47,7 @@ mod mint_chamber {
             let from_dir: Dir = maybe_from_dir.unwrap();
             assert(from_dir != Dir::Over, 'Invalid from direction (Over)');
             
-            let caller = starknet::contract_address_const::<0x0>();
+            let caller = starknet::get_caller_address();
             let from_location: Location = LocationTrait::from_coord(DOMAINS::REALMS, token_id.try_into().unwrap(), from_coord);
 
             generate_chamber(world, caller, from_location, from_dir, generator_name, generator_value_u128.try_into().unwrap());
