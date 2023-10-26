@@ -27,6 +27,9 @@
     "react-ascii-text": "^0.0.3",
     "react-dom": "^18.2.0",
     "rxjs": "^7.8.1",
+    "sass": "^1.69.5",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "3.0.0-beta.0",
     "starknet": "^5.14.1",
     "swr": "^2.2.4"
   },
