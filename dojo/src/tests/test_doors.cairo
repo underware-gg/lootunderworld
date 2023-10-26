@@ -12,7 +12,7 @@ mod tests {
     use loot_underworld::types::doors::{Doors};
     use loot_underworld::types::tile_type::{TileType, TILE};
     use loot_underworld::types::constants::{DOMAINS};
-    use loot_underworld::utils::string::{concat, join};
+    use loot_underworld::utils::string::{String};
     use loot_underworld::tests::utils::utils::{
         setup_world,
         mint_get_realms_chamber,
@@ -30,12 +30,12 @@ mod tests {
         // tiles.south.print();
         // tiles.over.print();
         // tiles.under.print();
-        assert(tiles.north == north, join(prefix, 'north'));
-        assert(tiles.east == east, join(prefix, 'east'));
-        assert(tiles.west == west, join(prefix, 'west'));
-        assert(tiles.south == south, join(prefix, 'south'));
-        assert(tiles.over == over, join(prefix, 'over'));
-        assert(tiles.under == under, join(prefix, 'under'));
+        assert(tiles.north == north, String::join(prefix, 'north'));
+        assert(tiles.east == east, String::join(prefix, 'east'));
+        assert(tiles.west == west, String::join(prefix, 'west'));
+        assert(tiles.south == south, String::join(prefix, 'south'));
+        assert(tiles.over == over, String::join(prefix, 'over'));
+        assert(tiles.under == under, String::join(prefix, 'under'));
     }
 
     #[test]

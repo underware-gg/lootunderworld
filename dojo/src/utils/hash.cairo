@@ -1,5 +1,4 @@
 use traits::Into;
-use debug::PrintTrait;
 
 // https://github.com/starkware-libs/cairo/blob/main/corelib/src/integer.cairo
 // https://github.com/smartcontractkit/chainlink-starknet/blob/develop/contracts/src/utils.cairo
@@ -39,48 +38,52 @@ fn hash_u128_to_u256(value: u128) -> u256 {
 }
 
 
-
-//------------------------------------------------------------------
-// Unit tests
+//----------------------------------------
+// Unit  tests
 //
+#[cfg(test)]
+mod tests {
+    use debug::PrintTrait;
+    use loot_underworld::utils::hash::{felt_to_u128, hash_felt, hash_u128};
 
-#[test]
-// #[available_gas(20000)]
-fn test_felt_to_u128() {
-    assert(0xab9d03074bff6ee2d4dbc374dbf3f846 == felt_to_u128(0x7f25249bc3b57d4a9cb82bd75d25579ab9d03074bff6ee2d4dbc374dbf3f846), '');
-}
+    #[test]
+    // #[available_gas(20000)]
+    fn test_felt_to_u128() {
+        assert(0xab9d03074bff6ee2d4dbc374dbf3f846 == felt_to_u128(0x7f25249bc3b57d4a9cb82bd75d25579ab9d03074bff6ee2d4dbc374dbf3f846), '');
+    }
 
-#[test]
-// #[available_gas(20000)]
-fn test_hash_felt() {
-    let rnd0  = hash_felt(25, 1);
-    let rnd00 = hash_felt(rnd0, rnd0);
-    let rnd1  = hash_felt(25, 1);
-    let rnd12 = hash_felt(25, 2);
-    let rnd2  = hash_felt(26, 1);
-    let rnd22 = hash_felt(26, 2);
-    assert(rnd0 == 0x7f25249bc3b57d4a9cb82bd75d25579ab9d03074bff6ee2d4dbc374dbf3f846, '');
-    assert(rnd0 != rnd00, '');
-    assert(rnd0 == rnd1, '');
-    assert(rnd1 != rnd12, '');
-    assert(rnd1 != rnd2, '');
-    assert(rnd2 != rnd22, '');
-}
+    #[test]
+    // #[available_gas(20000)]
+    fn test_hash_felt() {
+        let rnd0  = hash_felt(25, 1);
+        let rnd00 = hash_felt(rnd0, rnd0);
+        let rnd1  = hash_felt(25, 1);
+        let rnd12 = hash_felt(25, 2);
+        let rnd2  = hash_felt(26, 1);
+        let rnd22 = hash_felt(26, 2);
+        assert(rnd0 == 0x7f25249bc3b57d4a9cb82bd75d25579ab9d03074bff6ee2d4dbc374dbf3f846, '');
+        assert(rnd0 != rnd00, '');
+        assert(rnd0 == rnd1, '');
+        assert(rnd1 != rnd12, '');
+        assert(rnd1 != rnd2, '');
+        assert(rnd2 != rnd22, '');
+    }
 
-#[test]
-// #[available_gas(20000)]
-fn test_hash_u128() {
-    let rnd0  = hash_u128(25, 1);
-    let rnd00 = hash_u128(rnd0, rnd0);
-    let rnd1  = hash_u128(25, 1);
-    let rnd12 = hash_u128(25, 2);
-    let rnd2  = hash_u128(26, 1);
-    let rnd22 = hash_u128(26, 2);
-    // rnd.print();
-    assert(rnd0 == 0xab9d03074bff6ee2d4dbc374dbf3f846, '');
-    assert(rnd0 != rnd00, '');
-    assert(rnd0 == rnd1, '');
-    assert(rnd1 != rnd12, '');
-    assert(rnd1 != rnd2, '');
-    assert(rnd2 != rnd22, '');
+    #[test]
+    // #[available_gas(20000)]
+    fn test_hash_u128() {
+        let rnd0  = hash_u128(25, 1);
+        let rnd00 = hash_u128(rnd0, rnd0);
+        let rnd1  = hash_u128(25, 1);
+        let rnd12 = hash_u128(25, 2);
+        let rnd2  = hash_u128(26, 1);
+        let rnd22 = hash_u128(26, 2);
+        // rnd.print();
+        assert(rnd0 == 0xab9d03074bff6ee2d4dbc374dbf3f846, '');
+        assert(rnd0 != rnd00, '');
+        assert(rnd0 == rnd1, '');
+        assert(rnd1 != rnd12, '');
+        assert(rnd1 != rnd2, '');
+        assert(rnd2 != rnd22, '');
+    }
 }

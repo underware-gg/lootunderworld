@@ -11,7 +11,7 @@ mod tests {
     use loot_underworld::types::dir::{Dir, DirTrait, DIR};
     use loot_underworld::types::tile_type::{TileType, TILE};
     use loot_underworld::types::constants::{DOMAINS};
-    use loot_underworld::utils::string::{concat, join};
+    use loot_underworld::utils::string::{String};
     use loot_underworld::tests::utils::utils::{
         setup_world,
         make_from_location,

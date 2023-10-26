@@ -141,67 +141,69 @@ impl PrintDir of PrintTrait<Dir> {
 
 
 
-
-
-//------------------------------------------------------------------
-// Unit tests
+//----------------------------------------
+// Unit  tests
 //
-use loot_underworld::core::seeder::{make_seed};
-use loot_underworld::core::randomizer::{randomize_door_tile};
-use loot_underworld::utils::bitmap::{Bitmap};
+#[cfg(test)]
+mod tests {
+    use loot_underworld::core::seeder::{make_seed};
+    use loot_underworld::core::randomizer::{randomize_door_tile};
+    use loot_underworld::utils::bitmap::{Bitmap};
+    use loot_underworld::types::dir::{Dir, DIR, DirTrait};
 
-#[test]
-#[available_gas(1_000_000_000)]
-fn test_flip_door_tile() {
-    let mut rnd = make_seed(777, 888);
-    let mut dir_u8: u8 = 0;
-    loop {
-        if (dir_u8 == DIR::COUNT) { break; }
-        // ---
-        let maybe_dir: Option<Dir> = dir_u8.try_into();
-        let dir: Dir = maybe_dir.unwrap();
-        let mut i: usize = 0;
+    #[test]
+    #[available_gas(1_000_000_000)]
+    fn test_flip_door_tile() {
+        let mut rnd = make_seed(777, 888);
+        let mut dir_u8: u8 = 0;
         loop {
-            if (i == 5) { break; }
+            if (dir_u8 == DIR::COUNT) { break; }
             // ---
-            let tile: u8 = randomize_door_tile(ref rnd, dir);
-            let (x, y) = Bitmap::tile_to_xy(tile.into());
-            let flipped = dir.flip_door_tile(tile);
-            let (fx, fy) = Bitmap::tile_to_xy(flipped.into());
+            let maybe_dir: Option<Dir> = dir_u8.try_into();
+            let dir: Dir = maybe_dir.unwrap();
+            let mut i: usize = 0;
+            loop {
+                if (i == 5) { break; }
+                // ---
+                let tile: u8 = randomize_door_tile(ref rnd, dir);
+                let (x, y) = Bitmap::tile_to_xy(tile.into());
+                let flipped = dir.flip_door_tile(tile);
+                let (fx, fy) = Bitmap::tile_to_xy(flipped.into());
 
-            if(x == 0) {
-                assert(fx == 15, 'x==0');
-                assert(fy == y, 'x==0_y');
-            }
-            else if(x == 15) {
-                assert(fx == 0, 'x==15');
-                assert(fy == y, 'x==15_y');
-            }
-            else {
-                assert(fx == x, 'x==fx');
-            }
+                if(x == 0) {
+                    assert(fx == 15, 'x==0');
+                    assert(fy == y, 'x==0_y');
+                }
+                else if(x == 15) {
+                    assert(fx == 0, 'x==15');
+                    assert(fy == y, 'x==15_y');
+                }
+                else {
+                    assert(fx == x, 'x==fx');
+                }
 
-            if(y == 0) {
-                assert(fy == 15, 'y==0');
-                assert(fx == x, 'y==0_x');
-            }
-            else if(y == 15) {
-                assert(fy == 0, 'y==15');
-                assert(fx == x, 'y==15_x');
-            }
-            else {
-                assert(fy == y, 'y==fy');
-            }
-            
-            let unflipped = dir.flip().flip_door_tile(flipped);
-            assert(unflipped == tile, 'unflipped==tile');
-            let (ffx, ffy) = Bitmap::tile_to_xy(unflipped.into());
-            assert(ffx == x, 'x==ffx');
-            assert(ffy == y, 'y==ffy');
+                if(y == 0) {
+                    assert(fy == 15, 'y==0');
+                    assert(fx == x, 'y==0_x');
+                }
+                else if(y == 15) {
+                    assert(fy == 0, 'y==15');
+                    assert(fx == x, 'y==15_x');
+                }
+                else {
+                    assert(fy == y, 'y==fy');
+                }
+                
+                let unflipped = dir.flip().flip_door_tile(flipped);
+                assert(unflipped == tile, 'unflipped==tile');
+                let (ffx, ffy) = Bitmap::tile_to_xy(unflipped.into());
+                assert(ffx == x, 'x==ffx');
+                assert(ffy == y, 'y==ffy');
+                // ---
+                i += 1;
+            };
             // ---
-            i += 1;
+            dir_u8 += 1;
         };
-        // ---
-        dir_u8 += 1;
-    };
+    }
 }

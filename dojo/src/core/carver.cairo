@@ -1,6 +1,5 @@
 use array::ArrayTrait;
 use traits::Into;
-use debug::PrintTrait;
 use loot_underworld::utils::bitwise::{U256Bitwise};
 use loot_underworld::utils::bitmap::{Bitmap};
 use loot_underworld::utils::arrays::{create_array};
@@ -78,45 +77,56 @@ fn carve(bitmap: u256, protected: u256, pass_value: u8) -> u256 {
 }
 
 
-//----------------------------------------------
-// test_calc_cell_values
+//----------------------------------------
+// Unit  tests
 //
-use integer::BoundedU256;
+#[cfg(test)]
+mod tests {
+    use debug::PrintTrait;
+    use integer::BoundedU256;
+    use loot_underworld::core::seeder::{make_seed};
+    use loot_underworld::core::carver::{
+        carve,
+        calc_cell_values,
+        CELL_VALUE_PROTECTED,
+        CELL_VALUE_WALL
+    };
 
-#[test]
-#[available_gas(20_000_000)]
-fn test_calc_cell_values() {
-    let values = calc_cell_values(0xff, 0x0f);
-    let mut n: usize = 0;
-    loop {
-        if (n < 4) {
-            assert(*values[255 - n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PROTECTED');
-        } else if (n < 8) {
-            assert(*values[255 - n] == CELL_VALUE_WALL, 'test_calc_cell_values WALL');
-        } else {
-            assert(*values[255 - n] == 0, 'test_calc_cell_values PATH');
+    #[test]
+    #[available_gas(20_000_000)]
+    fn test_calc_cell_values() {
+        let values = calc_cell_values(0xff, 0x0f);
+        let mut n: usize = 0;
+        loop {
+            if (n < 4) {
+                assert(*values[255 - n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PROTECTED');
+            } else if (n < 8) {
+                assert(*values[255 - n] == CELL_VALUE_WALL, 'test_calc_cell_values WALL');
+            } else {
+                assert(*values[255 - n] == 0, 'test_calc_cell_values PATH');
+            }
+            if (n == 255) { break; }
+            n += 1;
         }
-        if (n == 255) { break; }
-        n += 1;
     }
-}
 
-#[test]
-#[available_gas(20_000_000)]
-fn test_calc_cell_values_max() {
-    let values = calc_cell_values(BoundedU256::max(), BoundedU256::max());
-    let mut n: usize = 0;
-    loop {
-        assert(*values[n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PATH');
-        if (n == 255) { break; }
-        n += 1;
+    #[test]
+    #[available_gas(20_000_000)]
+    fn test_calc_cell_values_max() {
+        let values = calc_cell_values(BoundedU256::max(), BoundedU256::max());
+        let mut n: usize = 0;
+        loop {
+            assert(*values[n] == CELL_VALUE_PROTECTED, 'test_calc_cell_values PATH');
+            if (n == 255) { break; }
+            n += 1;
+        }
     }
-}
 
-#[test]
-#[available_gas(60_000_000)]
-fn test_carve() {
-    let seed = make_seed(1234, 5678);
-    let bitmap = carve(seed, 0, 5);
-    assert(seed != bitmap, '');
+    #[test]
+    #[available_gas(60_000_000)]
+    fn test_carve() {
+        let seed = make_seed(1234, 5678);
+        let bitmap = carve(seed, 0, 5);
+        assert(seed != bitmap, '');
+    }
 }

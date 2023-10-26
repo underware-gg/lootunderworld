@@ -39,17 +39,20 @@ fn protect(bitmap: u256, protected: u256) -> u256 {
 }
 
 
-//----------------------------------------------
-// Unit tests
+//----------------------------------------
+// Unit  tests
 //
-// use debug::PrintTrait;
+#[cfg(test)]
+mod tests {
+    use loot_underworld::core::protector::{protect};
 
-#[test]
-#[available_gas(1_000_000_000)]
-fn test_protect() {
-    let bitmap = 0x0;
-    let protect = 0x8801000000000000800000000800000000010000000000000000000000008041;
-    let expected = 0xdc03dc030000c000c000dc001c001c03000300030000000000000000c0e3c0e3;
-    let result = protect(bitmap, protect);
-    assert(result == expected, 'protect incorrect');
+    #[test]
+    #[available_gas(1_000_000_000)]
+    fn test_protect() {
+        let bitmap = 0x0;
+        let protect = 0x8801000000000000800000000800000000010000000000000000000000008041;
+        let expected = 0xdc03dc030000c000c000dc001c001c03000300030000000000000000c0e3c0e3;
+        let result = protect(bitmap, protect);
+        assert(result == expected, 'protect incorrect');
+    }
 }
