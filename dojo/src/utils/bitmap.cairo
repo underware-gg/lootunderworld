@@ -290,6 +290,7 @@ impl Bitmap of BitmapTrait {
 mod tests {
     use debug::PrintTrait;
     use loot_underworld::utils::bitmap::{Bitmap, MASK};
+    use underdark::types::dir::{Dir, DirTrait};
 
     #[test]
     #[available_gas(100_000_000)]
@@ -389,5 +390,44 @@ mod tests {
         assert(Bitmap::shift_up(bmp, 16) == 0, 'shift_up_16');
         bmp = Bitmap::shift_up(bmp, 15);
         assert(bmp == MASK::TOP_ROW, 'shift_up_15');
+    }
+
+    #[test]
+    #[available_gas(100_000_000)]
+    fn test_bitmap_move_tile() {
+        assert(Bitmap::move_tile(0, Dir::North) == 0, '0_North');
+        assert(Bitmap::move_tile(0, Dir::East) == 1, '0_East');
+        assert(Bitmap::move_tile(0, Dir::West) == 0, '0_West');
+        assert(Bitmap::move_tile(0, Dir::South) == 16, '0_South');
+        assert(Bitmap::move_tile(0, Dir::Over) == 0, '0_Over');
+        assert(Bitmap::move_tile(0, Dir::Under) == 0, '0_Under');
+
+        assert(Bitmap::move_tile(15, Dir::North) == 15, '15_North');
+        assert(Bitmap::move_tile(15, Dir::East) == 15, '15_East');
+        assert(Bitmap::move_tile(15, Dir::West) == 14, '15_West');
+        assert(Bitmap::move_tile(15, Dir::South) == 31, '15_South');
+        assert(Bitmap::move_tile(15, Dir::Over) == 15, '15_Over');
+        assert(Bitmap::move_tile(15, Dir::Under) == 15, '15_Under');
+
+        assert(Bitmap::move_tile(240, Dir::North) == 224, '240_North');
+        assert(Bitmap::move_tile(240, Dir::East) == 241, '240_East');
+        assert(Bitmap::move_tile(240, Dir::West) == 240, '240_West');
+        assert(Bitmap::move_tile(240, Dir::South) == 240, '240_South');
+        assert(Bitmap::move_tile(240, Dir::Over) == 240, '240_Over');
+        assert(Bitmap::move_tile(240, Dir::Under) == 240, '240_Under');
+
+        assert(Bitmap::move_tile(255, Dir::North) == 239, '255_North');
+        assert(Bitmap::move_tile(255, Dir::East) == 255, '255_East');
+        assert(Bitmap::move_tile(255, Dir::West) == 254, '255_West');
+        assert(Bitmap::move_tile(255, Dir::South) == 255, '255_South');
+        assert(Bitmap::move_tile(255, Dir::Over) == 255, '255_Over');
+        assert(Bitmap::move_tile(255, Dir::Under) == 255, '255_Under');
+
+        assert(Bitmap::move_tile(100, Dir::North) == 84, '100_North');
+        assert(Bitmap::move_tile(100, Dir::East) == 101, '100_East');
+        assert(Bitmap::move_tile(100, Dir::West) == 99, '100_West');
+        assert(Bitmap::move_tile(100, Dir::South) == 116, '100_South');
+        assert(Bitmap::move_tile(100, Dir::Over) == 100, '100_Over');
+        assert(Bitmap::move_tile(100, Dir::Under) == 100, '100_Under');
     }
 }
