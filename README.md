@@ -140,7 +140,7 @@ Uncomment the `world_address` parameter in `dojo/Scarb.toml` then:
 
 ```console
 cd dojo
-torii --world 0x56c991ec4188b7c036066d28a19ed2b245ee1174ed3935f2d7e15c60a496f82
+torii --world 0x76724b8917bd87868d80ae286a71ba7008a0d1a02381bc483fcfbe61d9b3ee0
 ```
 
 #### Terminal 4: Client
@@ -189,12 +189,12 @@ npm run codegen
 
 ```
 [1] 🌎 Building World state....
-  > Found remote World: 0x56c991ec4188b7c036066d28a19ed2b245ee1174ed3935f2d7e15c60a496f82
+  > Found remote World: 0x76724b8917bd87868d80ae286a71ba7008a0d1a02381bc483fcfbe61d9b3ee0
   > Fetching remote state
 error: Failed to build remote World state.
 
 Caused by:
-    Unable to find remote World at address 0x56c991ec4188b7c036066d28a19ed2b245ee1174ed3935f2d7e15c60a496f82. Make sure the World address is correct and that it is already deployed!
+    Unable to find remote World at address 0x76724b8917bd87868d80ae286a71ba7008a0d1a02381bc483fcfbe61d9b3ee0. Make sure the World address is correct and that it is already deployed!
 ```
 
 Fix: Comment `world_address` on `Scarb.toml`, migrate, and uncomment.

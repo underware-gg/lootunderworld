@@ -1,8 +1,8 @@
 {
   "world": {
     "name": "world",
-    "address": "0x56c991ec4188b7c036066d28a19ed2b245ee1174ed3935f2d7e15c60a496f82",
-    "class_hash": "0x5179c281a8d3cca6cfb820201fa7a81150b56f9db492405a29e9564222370b8",
+    "address": "0x76724b8917bd87868d80ae286a71ba7008a0d1a02381bc483fcfbe61d9b3ee0",
+    "class_hash": "0x6441e7fc96d795ec94fca66634e6d87edf84362e564ef80eb13f459914b8b",
     "abi": [
       {
         "type": "impl",
@@ -733,12 +733,14 @@
           }
         ]
       }
-    ]
+    ],
+    "reads": [],
+    "writes": []
   },
   "executor": {
     "name": "executor",
     "address": null,
-    "class_hash": "0x2b35dd4816731188ed1ad16caa73bde76075c9d9cb8cbfa3e447d3ab9b1ab33",
+    "class_hash": "0x54ee9d99457d82d53e21030920f7e6f43509b98ea62282b5c2520050264a28c",
     "abi": [
       {
         "type": "impl",
@@ -791,11 +793,13 @@
         "kind": "enum",
         "variants": []
       }
-    ]
+    ],
+    "reads": [],
+    "writes": []
   },
   "base": {
     "name": "base",
-    "class_hash": "0x7aec2b7d7064c1294a339cd90060331ff704ab573e4ee9a1b699be2215c11c9",
+    "class_hash": "0x5a2c567ed06c8059c8d1199684796a0a0ef614f9a2ab628700e804524816b5c",
     "abi": [
       {
         "type": "impl",
@@ -857,8 +861,8 @@
   "contracts": [
     {
       "name": "mint_chamber",
-      "address": "0x1b0e6d71161f6379a25df22d87dac58f81ac2852c3497d9fad19d6fecacfc3",
-      "class_hash": "0x59c332f23708a21d0bfb7003dc99ce9812298fd67ef5a08be7dcfc937199c9f",
+      "address": "0xc2d4c2c84e3de5ad05c3317c6f4c05db27f6868578b559038f8f7f43abb3c7",
+      "class_hash": "0x16a43980ea3ac31769878b1f2a867c74ec0fac4a0a67a84174a9c986cd7668c",
       "abi": [
         {
           "type": "impl",
@@ -939,7 +943,9 @@
           "kind": "enum",
           "variants": []
         }
-      ]
+      ],
+      "reads": [],
+      "writes": []
     }
   ],
   "models": [
@@ -977,7 +983,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x4d2e6784df1345ef6b6c81e2959f3eaaf8e6c75e3ef29b052b18cd19ca6b2af",
+      "class_hash": "0x2f64b790ea45ee24623cf114e3bdce3f41ab4c1fbcc90e9b95cb0eb5ad411cd",
       "abi": [
         {
           "type": "function",
@@ -1194,7 +1200,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x4fcc73c485316fd956cb0bd4d48e4851fd966d27ac309b7c429f0a2272677cd",
+      "class_hash": "0x4cd5afb2728e5ef17b6e5a756aeb1cac6f3c7bd1980edeb1abd92e1d457e949",
       "abi": [
         {
           "type": "function",
@@ -1381,7 +1387,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x65e45f06d0e4aad746d54c09c72e8707fd4daa3af6c03327b5622c2e5615378",
+      "class_hash": "0x7cde8566a239d96400310a28184853ddab7499383891ed1726655bd67b7c3bb",
       "abi": [
         {
           "type": "function",
@@ -1573,7 +1579,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x7d47674da1a93548406070b9431aa1f95b62058a1bb54c1bd5f444860615574",
+      "class_hash": "0x3357389451d4087fe46c6fd19a3e2a9ca044f94003cd8d99627771622c305b5",
       "abi": [
         {
           "type": "function",

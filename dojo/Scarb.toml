@@ -8,7 +8,7 @@ sierra-replace-ids = true
 
 [dependencies]
 # dojo = { git = "https://github.com/dojoengine/dojo.git", rev = "47c0cbcfa4ebd4d4b504ec959fdbcfd3e4271e8a" }
-dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v0.3.2" }
+dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v0.3.5" }
 
 
 [[target.dojo]]
@@ -23,4 +23,4 @@ rpc_url = "http://localhost:5050/"
 account_address = "0x517ececd29116499f4a1b64b094da79ba08dfd54a3edaa316134c41f8160973"
 # also from Katana log
 private_key = "0x1800000000300000180000000000030000000000003006001800006600"
-world_address = "0x56c991ec4188b7c036066d28a19ed2b245ee1174ed3935f2d7e15c60a496f82"
+world_address = "0x76724b8917bd87868d80ae286a71ba7008a0d1a02381bc483fcfbe61d9b3ee0"
