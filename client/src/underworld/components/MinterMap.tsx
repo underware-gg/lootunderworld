@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useUnderworldContext } from '../hooks/UnderworldContext'
-import { useChamberMap } from '../hooks/useChamber'
+import { useChamber, useChamberMap } from '../hooks/useChamber'
 import { MapChamber, MapView, compassToMapViewPos } from './MapView'
 import { Dir, coordToCompass, coordToSlug, offsetCoord } from '../utils/underworld'
 
@@ -10,12 +10,12 @@ import { Dir, coordToCompass, coordToSlug, offsetCoord } from '../utils/underwor
 //
 function MinterMap() {
   const [tileSize, seTtileSize] = useState(5)
-  const { gameId, chamberId: currentChamberId } = useUnderworldContext()
+  const { realmId, chamberId: currentChamberId } = useUnderworldContext()
 
   useEffect(() => {
     setLoaders([])
     setChambers({})
-  }, [gameId])
+  }, [realmId])
 
   useEffect(() => {
     if (currentChamberId > 0) {
@@ -67,7 +67,7 @@ function MinterMap() {
   return (
     <div className='MinterMap'>
       {loaders.map((coord: bigint) => {
-        return <MapLoader key={`loader_${coord.toString()}`} coord={coord} addChamber={_addChamber} />
+        return <MapPreLoader key={`loader_${coord.toString()}`} coord={coord} addChamber={_addChamber} />
       })}
       <div className='MinterMap NoBorder'>
         <MapView targetChamber={targetChamber} chambers={Object.values(chambers)} tileSize={tileSize} />
@@ -83,14 +83,21 @@ function MinterMap() {
   )
 }
 
-interface MapLoaderProps {
-  coord: bigint,
-  addChamber: (chamber: MapChamber) => void,
+function MapPreLoader({
+  coord,
+  addChamber,
+}) {
+  const { chamberExists } = useChamber(coord)
+  if (chamberExists) {
+    return <MapLoader coord={coord} addChamber={addChamber} />
+  }
+  return <></>
 }
+
 function MapLoader({
   coord,
   addChamber,
-}: MapLoaderProps) {
+}) {
   const { bitmap, tilemap, expandedTilemap } = useChamberMap(coord)
   useEffect(() => {
     if (bitmap > 0n && expandedTilemap) {

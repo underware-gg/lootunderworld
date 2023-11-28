@@ -1,6 +1,6 @@
 // import { useDojo } from '../DojoContext';
-// import { Entity } from '@latticexyz/recs';
-// import { useComponentValue } from "@latticexyz/react";
+// import { Entity } from '@dojoengine/recs';
+// import { useComponentValue } from "@dojoengine/react";
 // import { Direction, } from '../dojo/createSystemCalls'
 
 // function Example() {

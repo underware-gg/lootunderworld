@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useDojo } from '../../DojoContext';
-import { Entity, Has } from '@latticexyz/recs';
-import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { Entity, Has } from '@dojoengine/recs';
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { Dir } from '../utils/underworld';
 
 interface TestMapProps {

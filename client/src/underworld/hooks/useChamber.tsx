@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react"
-import { Entity, HasValue, Has, getComponentValue } from '@latticexyz/recs'
-import { useComponentValue, useEntityQuery } from "@latticexyz/react"
+import { Entity, HasValue, Has, getComponentValue } from '@dojoengine/recs'
+import { useComponentValue, useEntityQuery } from "@dojoengine/react"
 import { useDojoComponents } from '../../DojoContext'
 import { bigintToEntity, bigintToHex } from "../utils/utils"
 import { Dir, TileType, expandTilemap_1p, offsetCoord } from "../utils/underworld"
@@ -46,6 +46,7 @@ export const useChamber = (chamberId: bigint) => {
     domain_id: chamber?.domain_id ?? 0,
     token_id: chamber?.token_id ?? 0,
     yonder: chamber?.yonder ?? 0,
+    chamberExists: seed > 0,
   }
 }
 

@@ -1,7 +1,10 @@
-import { Entity } from '@latticexyz/recs'
+import { shortString } from "starknet";
+import { Entity } from '@dojoengine/recs'
 
 export const bigintToHex = (n: bigint) => `0x${n.toString(16)}`
 export const bigintToEntity = (n: bigint): Entity => (`0x${n.toString(16)}` as Entity)
+export const numberToHex = (num: number): string => `0x${num.toString(16)}`
+export const strToFelt252 = (str: string): string => shortString.encodeShortString(str)
 
 export const abs = (v: number): number => (v < 0 ? -v : v)
 export const min = (v1: number, v2: number): number => (v1 < v2 ? v1 : v2)
