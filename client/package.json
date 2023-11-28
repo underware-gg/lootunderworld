@@ -12,11 +12,11 @@
     "create-components": "npx @dojoengine/core ../dojo/target/dev/manifest.json src/dojo/contractComponents.ts"
   },
   "dependencies": {
-    "@dojoengine/core": "^0.1.29",
+    "@dojoengine/core": "link:../../dojo.js/packages/core",
     "@dojoengine/create-burner": "^0.1.29",
-    "@latticexyz/react": "^2.0.0-next.11",
-    "@latticexyz/recs": "^2.0.0-next.11",
-    "@latticexyz/utils": "^2.0.0-next.11",
+    "@dojoengine/react": "link:../../dojo.js/packages/react",
+    "@dojoengine/recs": "^0.1.35",
+    "@dojoengine/utils": "link:../../dojo.js/packages/utils",
     "ethers": "^6.8.0",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
