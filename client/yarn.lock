@@ -533,23 +533,33 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@dojoengine/core@link:../../dojo.js/packages/core":
-  version "0.0.0"
-  uid ""
+"@dojoengine/core@^0.1.56":
+  version "0.1.56"
+  resolved "https://registry.yarnpkg.com/@dojoengine/core/-/core-0.1.56.tgz#6ccc81b937db0d72823b6b23b58ab4a6b0cb7511"
+  integrity sha512-fJazlDEKudESLW0nqfT88UgAgjz9F6LOtBtjWY9a8wnGNnBe/Z5QzA7zd/CJGDF8ynJ2lcb65kx7voDiu7Es4Q==
 
-"@dojoengine/create-burner@^0.1.29":
-  version "0.1.29"
-  resolved "https://registry.yarnpkg.com/@dojoengine/create-burner/-/create-burner-0.1.29.tgz#1d00b340b124ef458879d6ed41307a00bfcffa4a"
-  integrity sha512-HR6aW7dTh0dniBp49tbNH/Kl6Qly+pbiKO47B1l0Yb/SZn96LhMxMDYlwjLJhb7JE6HR8dBhjHjZ5VbSIee/Sw==
+"@dojoengine/create-burner@^0.1.56":
+  version "0.1.56"
+  resolved "https://registry.yarnpkg.com/@dojoengine/create-burner/-/create-burner-0.1.56.tgz#2b9f83ae255adcb3ed951e331a8a2ac5f64e719b"
+  integrity sha512-6bYYXYIsWNWdz6j92/J2s+c4f/NeHZxO1TA80Zxy/Lfr1+af9do3ETPeNYxKuKYhzcu40TpY2dO1/5GUoelZvQ==
   dependencies:
     "@starknet-react/core" "^1.0.3"
     encoding "^0.1.13"
     get-starknet-core "^3.2.0"
     js-cookie "^3.0.5"
 
-"@dojoengine/react@link:../../dojo.js/packages/react":
-  version "0.0.0"
-  uid ""
+"@dojoengine/react@^0.1.56":
+  version "0.1.56"
+  resolved "https://registry.yarnpkg.com/@dojoengine/react/-/react-0.1.56.tgz#e2331b5f78a2a15fc75706cdc1a43bda5a8a65fe"
+  integrity sha512-3IxwvsF8oEVwu7RU8ql/S5q9tHCOmbDTkHDbDkfJdAzc4GpbSkTyLVBx3vEKuBQznS0HjMnqvZBmtrnBFKPPpA==
+  dependencies:
+    "@dojoengine/recs" "0.1.35"
+    "@latticexyz/utils" "^2.0.0-next.11"
+    encoding "^0.1.13"
+    fast-deep-equal "^3.1.3"
+    get-starknet-core "^3.2.0"
+    js-cookie "^3.0.5"
+    rxjs "7.5.5"
 
 "@dojoengine/recs@0.1.35", "@dojoengine/recs@^0.1.35":
   version "0.1.35"
@@ -561,9 +571,15 @@
     mobx "^6.7.0"
     rxjs "7.5.5"
 
-"@dojoengine/utils@link:../../dojo.js/packages/utils":
-  version "0.0.0"
-  uid ""
+"@dojoengine/utils@^0.1.56":
+  version "0.1.56"
+  resolved "https://registry.yarnpkg.com/@dojoengine/utils/-/utils-0.1.56.tgz#232799e38692a9f7ab89d08f060dc2a572ad91da"
+  integrity sha512-VTNHhrXYyIoECmaYNva3pUdiq6FCeU8XdCkNFXT608gk/qDthyQ+t7m5wl9na+z+floIglkmbOwX+LyCcujIJw==
+  dependencies:
+    "@dojoengine/recs" "0.1.35"
+    "@latticexyz/utils" "^2.0.0-next.11"
+    mathjs "^12.0.0"
+    micro-starknet "^0.2.3"
 
 "@esbuild/android-arm64@0.18.20":
   version "0.18.20"
@@ -4451,7 +4467,7 @@ sponge-case@^1.0.1:
   dependencies:
     tslib "^2.0.3"
 
-starknet@^5.14.1, starknet@^5.19.5:
+starknet@5.19.5:
   version "5.19.5"
   resolved "https://registry.yarnpkg.com/starknet/-/starknet-5.19.5.tgz#59a2e0f707dc1f64fbe9894195984ae97f623449"
   integrity sha512-S7V4ifyYd+ApsIwYTd7YA5U2Px+NZkCsQPnmgY/wkc5LLFKhYMNpzHQ5nIA15p70AwtSXCcsEBnHNRBOuci13Q==

@@ -12,11 +12,11 @@
     "create-components": "npx @dojoengine/core ../dojo/target/dev/manifest.json src/dojo/contractComponents.ts"
   },
   "dependencies": {
-    "@dojoengine/core": "link:../../dojo.js/packages/core",
-    "@dojoengine/create-burner": "^0.1.29",
-    "@dojoengine/react": "link:../../dojo.js/packages/react",
+    "@dojoengine/core": "^0.1.56",
+    "@dojoengine/create-burner": "^0.1.56",
+    "@dojoengine/react": "^0.1.56",
     "@dojoengine/recs": "^0.1.35",
-    "@dojoengine/utils": "link:../../dojo.js/packages/utils",
+    "@dojoengine/utils": "^0.1.56",
     "ethers": "^6.8.0",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
@@ -30,7 +30,7 @@
     "sass": "^1.69.5",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "3.0.0-beta.0",
-    "starknet": "^5.14.1",
+    "starknet": "5.19.5",
     "swr": "^2.2.4"
   },
   "devDependencies": {
