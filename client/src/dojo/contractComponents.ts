@@ -12,6 +12,7 @@ export function defineContractComponents(world: World) {
 	        metadata: {
 	          name: "Chamber",
 	          types: ["u128","u256","contractaddress","u16","u16","u16"],
+	          customTypes: [],
 	        },
 	      }
 	    );
@@ -24,6 +25,7 @@ export function defineContractComponents(world: World) {
 	        metadata: {
 	          name: "Map",
 	          types: ["u128","u256","felt252","u32","u8","u8","u8","u8","u8","u8"],
+	          customTypes: [],
 	        },
 	      }
 	    );
@@ -36,6 +38,7 @@ export function defineContractComponents(world: World) {
 	        metadata: {
 	          name: "State",
 	          types: ["u128","u8","u8","u8"],
+	          customTypes: [],
 	        },
 	      }
 	    );
@@ -48,6 +51,7 @@ export function defineContractComponents(world: World) {
 	        metadata: {
 	          name: "Tile",
 	          types: ["u128","u8","u128","u8","u8"],
+	          customTypes: [],
 	        },
 	      }
 	    );
