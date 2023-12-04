@@ -290,7 +290,7 @@ impl Bitmap of BitmapTrait {
 mod tests {
     use debug::PrintTrait;
     use loot_underworld::utils::bitmap::{Bitmap, MASK};
-    use underdark::types::dir::{Dir, DirTrait};
+    use loot_underworld::types::dir::{Dir, DirTrait};
 
     #[test]
     #[available_gas(100_000_000)]

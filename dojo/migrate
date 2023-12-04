@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export WORLD_ADDRESS="0x76724b8917bd87868d80ae286a71ba7008a0d1a02381bc483fcfbe61d9b3ee0"
+export WORLD_ADDRESS="0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e"
 export RPC_URL="http://localhost:5050/"
 
 #sozo --offline build
