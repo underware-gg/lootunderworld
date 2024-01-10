@@ -2,15 +2,29 @@
 set -euo pipefail
 pushd $(dirname "$0")/..
 
-echo "Authorizing models..."
+if ! [ -x "$(command -v toml)" ]; then
+  echo 'Error: toml not instlaled! Instal with: cargo install toml-cli'
+  exit 1
+fi
 
-export WORLD_ADDRESS="0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e";
+export RPC_URL=$(toml get Scarb.toml --raw tool.dojo.env.rpc_url)
+export ACCOUNT_ADDRESS=$(toml get Scarb.toml --raw tool.dojo.env.account_address)
+export ACTIONS_ADDRESS=$(cat ./target/dev/manifest.json | jq -r '.contracts[] | select(.name == "loot_underworld::systems::mint_chamber::mint_chamber" ).address')
+export WORLD_ADDRESS=$(cat ./target/dev/manifest.json | jq -r '.world.address')
 
-# enable system -> model authorizations
-MODELS=("Chamber" "Map" "State" "Tile" )
-for model in ${MODELS[@]}; do
-    sozo auth writer --world $WORLD_ADDRESS $model 0x1b0e6d71161f6379a25df22d87dac58f81ac2852c3497d9fad19d6fecacfc3
+export COMPONENTS=("Chamber" "Map" "State" "Tile" )
+
+echo "---------------------------------------------------------------------------"
+echo "sozo auth writer"
+echo "RPC        : $RPC_URL"
+echo "world      : $WORLD_ADDRESS"
+echo "account    : $ACCOUNT_ADDRESS"
+echo "actions    : $ACTIONS_ADDRESS"
+echo "components : ${COMPONENTS[*]}"
+echo "---------------------------------------------------------------------------"
+
+for component in ${COMPONENTS[@]}; do
+  sozo auth writer --world $WORLD_ADDRESS --rpc-url $RPC_URL $component $ACTIONS_ADDRESS --account-address $ACCOUNT_ADDRESS
 done
 
-
-echo "Default authorizations have been successfully set."
+echo "Default authorizations have been successfully set! 👍"

@@ -2,7 +2,7 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { DojoProvider } from '../DojoContext.tsx';
-import { setup } from '../dojo/setup.ts';
+import { setup } from '../dojo/setup';
 import Underworld from '../underworld/components/Underworld.tsx';
 
 async function init() {

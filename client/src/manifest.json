@@ -1,8 +1,8 @@
 {
   "world": {
-    "name": "world",
-    "address": "0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e",
-    "class_hash": "0x99b08b2ff33750916e36b5e241b5d4a63e8d48862bf90a68fec2ff58a8de6",
+    "name": "dojo::world::world",
+    "address": "0x3cc6a9ed7c1e2485d4fe787a7191f1f6835cd905a3d0731fc9e24f5a39d9415",
+    "class_hash": "0x5ac623f0c96059936bd2d0904bdd31799e430fe08a0caff7a5f497260b16497",
     "abi": [
       {
         "type": "impl",
@@ -783,9 +783,9 @@
     "computed": []
   },
   "executor": {
-    "name": "executor",
+    "name": "dojo::executor::executor",
     "address": null,
-    "class_hash": "0x54ee9d99457d82d53e21030920f7e6f43509b98ea62282b5c2520050264a28c",
+    "class_hash": "0x585507fa2818fe78e66da6ea4c5915376739f4abf509d41153f60a16cb1f68d",
     "abi": [
       {
         "type": "impl",
@@ -844,8 +844,8 @@
     "computed": []
   },
   "base": {
-    "name": "base",
-    "class_hash": "0x77638e9a645209ac1e32e143bfdbfe9caf723c4f7645fcf465c38967545ea2f",
+    "name": "dojo::base::base",
+    "class_hash": "0x6c458453d35753703ad25632deec20a29faf8531942ec109e6eb0650316a2bc",
     "abi": [
       {
         "type": "impl",
@@ -947,9 +947,9 @@
   },
   "contracts": [
     {
-      "name": "mint_chamber",
-      "address": "0x16d2afbadd354a2108450abf1f111eae0787f05658b653f1a3d90e400e708c7",
-      "class_hash": "0x3f8259b8a2d915748c8e5cf7bf9a4590314dab17dfbdb0c97a5162f61730d52",
+      "name": "loot_underworld::systems::mint_chamber::mint_chamber",
+      "address": "0x3cb5e228edccebc6678b1f9f1d5f29c776fc114682cf0a52757bd0f4d78281f",
+      "class_hash": "0x5019ea36ab7067d9e8ce3e9f6cf9063d67bdf4fd6d6ec7c40017c0c7aef0f53",
       "abi": [
         {
           "type": "impl",
@@ -1100,7 +1100,7 @@
   ],
   "models": [
     {
-      "name": "Chamber",
+      "name": "loot_underworld::models::chamber::chamber",
       "members": [
         {
           "name": "location_id",
@@ -1133,7 +1133,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x2ab5e5dee5c6ab28890c9dc82a0648293df70c90b92c3ab29c6fb74b9356391",
+      "class_hash": "0x3c85839176035f7ab51a836a9f5153f4daaac6696bb4f3073d56e093200e6f0",
       "abi": [
         {
           "type": "function",
@@ -1297,7 +1297,7 @@
       ]
     },
     {
-      "name": "Map",
+      "name": "loot_underworld::models::chamber::map",
       "members": [
         {
           "name": "entity_id",
@@ -1350,7 +1350,7 @@
           "key": false
         }
       ],
-      "class_hash": "0xbb4f797a43203b4e24f378293e83b8f317f41b56f1c3dac76379024f9e0088",
+      "class_hash": "0x2a5aead704a7035bc1e7298976849b41dc9e1ff71fc1db3e1c794c9de5270c",
       "abi": [
         {
           "type": "function",
@@ -1514,7 +1514,7 @@
       ]
     },
     {
-      "name": "State",
+      "name": "loot_underworld::models::chamber::state",
       "members": [
         {
           "name": "location_id",
@@ -1537,7 +1537,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x4f76f1859de308a7fc82a0be1c6f3729acb7536ac6f41e11d9220af258e6574",
+      "class_hash": "0x5f065a0c851b453e29206c0493917dc1957c9dbfae5d2b3321356eeabe8b9e5",
       "abi": [
         {
           "type": "function",
@@ -1701,7 +1701,7 @@
       ]
     },
     {
-      "name": "Tile",
+      "name": "loot_underworld::models::tile::tile",
       "members": [
         {
           "name": "key_location_id",
@@ -1729,7 +1729,7 @@
           "key": false
         }
       ],
-      "class_hash": "0x2c28538577e4555308f3805ad26117fd3133a2110c861a207410a37fb0b23d1",
+      "class_hash": "0x350a07391b39ef3adb91fffacf7365139bd685dd7ede07c9bc7d2c397255cfb",
       "abi": [
         {
           "type": "function",

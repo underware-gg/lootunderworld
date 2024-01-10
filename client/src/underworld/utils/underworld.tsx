@@ -4,8 +4,6 @@
 // From Crawler SDK
 //
 
-import { validate } from "graphql"
-
 export enum Dir {
   North = 0,
   East = 1,

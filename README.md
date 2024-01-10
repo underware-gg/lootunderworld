@@ -61,21 +61,22 @@ Cloned from the [dojo-starter-react-app](https://github.com/dojoengine/dojo-star
 For an in-depth setup guide, consult the [Dojo book](https://book.dojoengine.org/getting-started/quick-start.html).
 
 
-### Development Setup [🔗](https://book.dojoengine.org/getting-started/setup.html)
+## Environment Setup [🔗](https://book.dojoengine.org/getting-started/setup.html)
 
 Install Rust + Cargo + others
 
 ```
 # Install Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# open new terminal to update PATH
 rustup override set stable
 rustup update
-cargo test
 
 # Install Cargo
 curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh
 
 # other stuff you might need
+cargo install toml-cli
 brew install protobuf
 ```
 
@@ -84,31 +85,21 @@ Install the [Cairo 1.0](https://marketplace.visualstudio.com/items?itemName=star
 
 ### Install Dojo [🔗](https://book.dojoengine.org/getting-started/quick-start.html)
 
+Using Dojo 0.4.3!
+
 ```console
 curl -L https://install.dojoengine.org | bash
-dojoup
+# open new terminal to update PATH
+dojoup -v 0.4.3
+
+# test dojo
+cd dojo
+sozo build
+sozo test
 
 # install packages
-cd client
+cd ../client
 yarn
-```
-
-
-### Update Dojo [🔗](https://book.dojoengine.org/toolchain/dojoup.html)
-
-```console
-# latest stable
-dojoup
-# install specific version
-dojoup -v 0.2.1
-# install the nightly
-dojoup -v nightly
-# install specific branch
-dojoup -b main
-# install specific commit
-dojoup -C 40ea4d86a9739fd85ca153f56668c8797bb3750f
-# install fromo a path
-dojoup -p ../../dojo
 ```
 
 
@@ -119,38 +110,48 @@ dojoup -p ../../dojo
 ```console
 cd dojo
 katana --disable-fee --invoke-max-steps 10000000
-```
 
-#### Terminal 2: Contracts
-
-```console
+# or just...
 cd dojo
-sozo build && sozo migrate
-
-# authorize burner Accounts to interact with the contracts
-sozo auth writer Position move
-sozo auth writer Position spawn
-sozo auth writer Moves move
-sozo auth writer Moves spawn
+./run_katana
 ```
 
-#### Terminal 3: Torii (indexer)
+#### Terminal 2: Torii (indexer)
 
 Uncomment the `world_address` parameter in `dojo/Scarb.toml` then:
 
 ```console
 cd dojo
-torii --world 0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e
+torii --world 0x6400412d8083e10058277920b8a4a81338727912bc3435e5413f168221e73c7
+
+# or just...
+cd dojo
+./run_torii
 ```
 
-#### Terminal 4: Client
-
-You need this [`.env`](https://github.com/dojoengine/dojo-starter-react-app/blob/main/client/.env) in your `client` folder.
+#### Terminal 3: Client
 
 ```console
 cd client
 yarn && yarn dev
+
+# or just...
+cd dojo
+./run_client
 ```
+
+#### Terminal 4: Sozo commands
+
+```console
+# build world and systems
+cd dojo
+sozo build
+
+# migrate to local Katana
+cd dojo
+./migrate
+```
+
 
 #### Browser
 
@@ -169,18 +170,10 @@ sozo migrate
 scripts/default_auth.sh
 cp target/dev/manifest.json ../client/src/
 cd ../client
-yarn run codegen
 
 # or just...
 cd dojo
 ./migrate
-```
-
-#### Run client codegen
-
-```console
-cd client
-npm run codegen
 ```
 
 ## FAQ / Pitfalls
@@ -189,12 +182,12 @@ npm run codegen
 
 ```
 [1] 🌎 Building World state....
-  > Found remote World: 0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e
+  > Found remote World: 0x3cc6a9ed7c1e2485d4fe787a7191f1f6835cd905a3d0731fc9e24f5a39d9415
   > Fetching remote state
 error: Failed to build remote World state.
 
 Caused by:
-    Unable to find remote World at address 0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e. Make sure the World address is correct and that it is already deployed!
+    Unable to find remote World at address 0x3cc6a9ed7c1e2485d4fe787a7191f1f6835cd905a3d0731fc9e24f5a39d9415. Make sure the World address is correct and that it is already deployed!
 ```
 
 Fix: Comment `world_address` on `Scarb.toml`, migrate, and uncomment.

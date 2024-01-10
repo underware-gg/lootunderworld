@@ -1,7 +1,7 @@
 import { Account } from 'starknet';
 import { getEvents, setComponentsFromEvents } from "@dojoengine/utils";
 import { SetupNetworkResult } from './setupNetwork';
-import { strToFelt252 } from '../underworld/utils/utils';
+import { stringToFelt } from '../underworld/utils/utils';
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -14,7 +14,7 @@ export function createSystemCalls(
     let success = false
 
     try {
-      const args = [realmId.toString(), from_coord.toString(), from_dir.toString(), strToFelt252(generator_name), generator_value.toString()]
+      const args = [realmId.toString(), from_coord.toString(), from_dir.toString(), stringToFelt(generator_name), generator_value.toString()]
       // console.log(args)
       const tx = await execute(signer, 'mint_chamber', 'mint_realms_chamber', args)
 

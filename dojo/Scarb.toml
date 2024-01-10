@@ -1,14 +1,19 @@
 [package]
-cairo-version = "2.3.0"
+cairo-version = "2.3.1"
 name = "loot_underworld"
 version = "0.1.0"
+description = "Excavating the endless mysteries of the subterranean in an autonomous (under)world!"
+# icon_uri = "https://play.lootunder.world/images/logo.jpg"
+# cover_uri = "https://play.lootunder.world/images/splash.jpg"
+website = "https://lootunder.world"
+socials.x = "https://twitter.com/lootunderworld"
 
 [cairo]
 sierra-replace-ids = true
 
 [dependencies]
 # dojo = { git = "https://github.com/dojoengine/dojo.git", rev = "47c0cbcfa4ebd4d4b504ec959fdbcfd3e4271e8a" }
-dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v0.3.15" }
+dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v0.4.3" }
 
 
 [[target.dojo]]
@@ -17,7 +22,7 @@ dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v0.3.15" }
 initializer_class_hash = "0xbeef"
 
 [tool.dojo.env]
-world_address = "0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e"
+world_address = "0x3cc6a9ed7c1e2485d4fe787a7191f1f6835cd905a3d0731fc9e24f5a39d9415"
 
 # Development
 rpc_url = "http://localhost:5050/"
@@ -25,6 +30,6 @@ account_address = "0x517ececd29116499f4a1b64b094da79ba08dfd54a3edaa316134c41f816
 private_key = "0x1800000000300000180000000000030000000000003006001800006600"
 
 # SLOT
-# rpc_url = "https://api.cartridge.gg/x/underdark/katana"
+# rpc_url = "https://api.cartridge.gg/x/loot_underworld/katana"
 # account_address = "0x4e9c35bb113eaf274457edb2473437b02fe636f14c477aa110ba8d3626d3282"
 # private_key = "0x45250d2d14c52cd1a7ad81e91d89550630ae90a3398ebf836bed3dcebc0cec3"

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export WORLD_ADDRESS="0x592275900516a2e313cb6a85324566c9f4265b21f5a0afa5adaf890d2d9ea0e"
+export WORLD_ADDRESS="0x3cc6a9ed7c1e2485d4fe787a7191f1f6835cd905a3d0731fc9e24f5a39d9415"
 export RPC_URL="http://localhost:5050/"
 
 #sozo --offline build
@@ -12,7 +12,6 @@ scripts/default_auth.sh
 cp target/dev/manifest.json ../client/src/
 
 cd ../client
-yarn run codegen
 yarn run create-components $RPC_URL $WORLD_ADDRESS
 
 echo "--- DONE!"
