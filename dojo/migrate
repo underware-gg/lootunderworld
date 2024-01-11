@@ -12,6 +12,6 @@ scripts/default_auth.sh
 cp target/dev/manifest.json ../client/src/
 
 cd ../client
-yarn run create-components $RPC_URL $WORLD_ADDRESS
+npm run create-components $RPC_URL $WORLD_ADDRESS
 
 echo "--- DONE!"
