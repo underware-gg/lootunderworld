@@ -1,9 +1,11 @@
-import './index.css';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { useAsciiText, deltaCorpsPriest1 } from 'react-ascii-text';
+import React from 'react'
+import Link from 'next/link'
+import { Image } from 'semantic-ui-react'
+import { useAsciiText, deltaCorpsPriest1 } from 'react-ascii-text'
+import App from '@/underworld/components/App'
+// import SplashArt from '@/underworld/components/SplashArt'
 
-function IndexPage() {
+export default function IndexPage() {
   //@ts-ignore
   const textStyle: UseAsciiTextArgs = {
     animationCharacters: "▒ ░ █",
@@ -23,35 +25,23 @@ function IndexPage() {
   });
 
   return (
-    <div className="card">
+    <App>
       {/* @ts-ignore */}
       <pre ref={Text1Ref}></pre>
       {/* @ts-ignore */}
       <pre ref={Text2Ref}></pre>
-      
+
       <div className='Spacer20' />
       <h2><button onClick={() => { location.href = '/underworld/' }}>ENTER</button></h2>
 
       <div className='Spacer20' />
       <h2><button onClick={() => { location.href = '/editor/' }}>BITMAP EDITOR</button></h2>
 
-      <br/>
+      <br />
       <div className='Spacer20' />
       <a href='/test/'>test page</a>
-    </div>
+    </App>
   );
 }
 
 
-async function init() {
-  const rootElement = document.getElementById('root');
-  if (!rootElement) throw new Error('React root not found');
-  const root = ReactDOM.createRoot(rootElement as HTMLElement);
-  root.render(
-    <React.StrictMode>
-      <IndexPage />
-    </React.StrictMode>
-  );
-}
-
-init();

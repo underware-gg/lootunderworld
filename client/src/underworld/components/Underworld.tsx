@@ -1,8 +1,8 @@
-import { UnderworldProvider } from '../hooks/UnderworldContext'
-import RealmImage from './RealmImage'
-import RealmData from './RealmData'
-import MinterMap from './MinterMap'
-import MinterData from './MinterData'
+import { UnderworldProvider } from '@/underworld/hooks/UnderworldContext'
+import RealmImage from '@/underworld/components/RealmImage'
+import RealmData from '@/underworld/components/RealmData'
+import MinterMap from '@/underworld/components/MinterMap'
+import MinterData from '@/underworld/components/MinterData'
 
 function Underworld() {
   return (

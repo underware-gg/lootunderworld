@@ -1,12 +1,13 @@
-import { useState, useMemo, useEffect } from 'react'
-import { MapColors } from '../utils/colors'
-import { bigintToHex } from '../utils/utils'
+import React, { useState, useMemo, useEffect } from 'react'
+import { MapColors } from '@/underworld/utils/colors'
+import { bigintToHex } from '@/underworld/utils/utils'
+import App from '@/underworld/components/App'
 
 function EditorPage() {
   return (
-    <div className="card">
+    <App>
       <EditorMap />
-    </div>
+    </App>
   )
 }
 

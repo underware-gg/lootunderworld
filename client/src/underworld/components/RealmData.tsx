@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
-import { useUnderworldContext } from '../hooks/UnderworldContext'
-import { useRealmMetadata, useRealmSvgMetadata } from '../hooks/useRealm'
-import { compassToSlug } from '../utils/underworld'
-import { bigintToHex } from '../utils/utils'
-import { City } from '../utils/realms'
+import React, { useEffect } from 'react'
+import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
+import { useRealmMetadata, useRealmSvgMetadata } from '@/underworld/hooks/useRealm'
+import { compassToSlug } from '@/underworld/utils/underworld'
+import { bigintToHex } from '@/underworld/utils/utils'
+import { City } from '@/underworld/utils/realms'
 
 interface ChamberMapProps {
   // realmId: number,

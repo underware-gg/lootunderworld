@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
-import { Compass, TileType } from '../utils/underworld'
-import { MapColors } from '../utils/colors'
-import { Point } from '../utils/realms'
+import React, { useMemo } from 'react'
+import { Compass, TileType } from '@/underworld/utils/underworld'
+import { MapColors } from '@/underworld/utils/colors'
+import { Point } from '@/underworld/utils/realms'
 
 export const compassToMapViewPos = (compass: Compass | null): Point => {
   const north = (compass?.north ?? 0)

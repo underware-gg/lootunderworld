@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { Entity, HasValue, Has, getComponentValue } from '@dojoengine/recs'
 import { useComponentValue, useEntityQuery } from "@dojoengine/react"
-import { useDojoComponents } from '../../DojoContext'
+import { useDojoComponents } from '@/dojo/DojoContext'
 import { bigintToEntity, bigintToHex } from "../utils/utils"
 import { Dir, TileType, expandTilemap_1p, offsetCoord } from "../utils/underworld"
 

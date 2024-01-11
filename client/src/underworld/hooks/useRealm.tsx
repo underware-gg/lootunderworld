@@ -1,10 +1,10 @@
-import { useMemo } from 'react'
-import { useUnderworldContext } from '../hooks/UnderworldContext'
-import { convertCityCenterToMeters, convertCityCenterToCompass, City } from '../utils/realms'
-import { compassToCoord } from '../utils/underworld'
+import React, { useMemo } from 'react'
+import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
+import { convertCityCenterToMeters, convertCityCenterToCompass, City } from '@/underworld/utils/realms'
+import { compassToCoord } from '@/underworld/utils/underworld'
 
 import useSWR from 'swr'
-import { RealmsColors } from '../utils/colors'
+import { RealmsColors } from '@/underworld/utils/colors'
 const textFetcher = (url: string) => fetch(url).then((res) => res.text())
 
 export const useRealmMetadata = (realmId: number) => {

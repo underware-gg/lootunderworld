@@ -1,6 +1,6 @@
-import { useUnderworldContext } from '../hooks/UnderworldContext';
-import { useRealmSvgMetadata } from '../hooks/useRealm'
-import Svg from './Svg';
+import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
+import { useRealmSvgMetadata } from '@/underworld/hooks/useRealm'
+import Svg from '@/underworld/components/Svg'
 
 interface ChamberMapProps {
   // realmId: number,

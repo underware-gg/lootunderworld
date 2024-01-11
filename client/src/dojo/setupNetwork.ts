@@ -1,25 +1,25 @@
 import { Account, num } from 'starknet'
 import { DojoProvider, } from '@dojoengine/core'
 import * as torii from '@dojoengine/torii-client'
-import { defineContractComponents } from './contractComponents'
-import { world } from './world'
+import { defineContractComponents } from '@/dojo/contractComponents'
+import { world } from '@/dojo/world'
 import manifest from '../../../dojo/target/dev/manifest.json'
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>
 
 export async function setupNetwork() {
 
-  if (!import.meta.env.VITE_PUBLIC_WORLD_ADDRESS) throw (`VITE_PUBLIC_WORLD_ADDRESS is null`)
-  if (!import.meta.env.VITE_PUBLIC_NODE_URL) throw (`VITE_PUBLIC_NODE_URL is null`)
-  if (!import.meta.env.VITE_PUBLIC_TORII) throw (`VITE_PUBLIC_TORII is null`)
+  if (!process.env.NEXT_PUBLIC_WORLD_ADDRESS) throw (`NEXT_PUBLIC_WORLD_ADDRESS is null`)
+  if (!process.env.NEXT_PUBLIC_NODE_URL) throw (`NEXT_PUBLIC_NODE_URL is null`)
+  if (!process.env.NEXT_PUBLIC_TORII) throw (`NEXT_PUBLIC_TORII is null`)
 
   // Create a new DojoProvider instance.
-  const provider = new DojoProvider(import.meta.env.VITE_PUBLIC_WORLD_ADDRESS, manifest, import.meta.env.VITE_PUBLIC_NODE_URL)
+  const provider = new DojoProvider(process.env.NEXT_PUBLIC_WORLD_ADDRESS, manifest, process.env.NEXT_PUBLIC_NODE_URL)
 
   const toriiClient = await torii.createClient([], {
-    rpcUrl: import.meta.env.VITE_PUBLIC_NODE_URL,
-    toriiUrl: import.meta.env.VITE_PUBLIC_TORII,
-    worldAddress: import.meta.env.VITE_PUBLIC_WORLD_ADDRESS,
+    rpcUrl: process.env.NEXT_PUBLIC_NODE_URL,
+    toriiUrl: process.env.NEXT_PUBLIC_TORII,
+    worldAddress: process.env.NEXT_PUBLIC_WORLD_ADDRESS,
   })
 
   // Return the setup object.

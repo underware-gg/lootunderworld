@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useUnderworldContext } from '../hooks/UnderworldContext'
-import { useChamber, useChamberMap } from '../hooks/useChamber'
-import { MapChamber, MapView, compassToMapViewPos } from './MapView'
-import { Dir, coordToCompass, coordToSlug, offsetCoord } from '../utils/underworld'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
+import { useChamber, useChamberMap } from '@/underworld/hooks/useChamber'
+import { MapChamber, MapView, compassToMapViewPos } from '@/underworld/components/MapView'
+import { Dir, coordToCompass, coordToSlug, offsetCoord } from '@/underworld/utils/underworld'
 
 
 //-----------------------------

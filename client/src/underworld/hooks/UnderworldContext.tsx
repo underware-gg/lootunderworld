@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, useReducer, useContext, useEffect } from 'react'
-import realmsMetadata from '../data/database.json'
-import { makeRealmEntryChamberIdFromCoord } from '../utils/underworld'
-import { City } from '../utils/realms'
+import realmsMetadata from '@/underworld/data/database.json'
+import { makeRealmEntryChamberIdFromCoord } from '@/underworld/utils/underworld'
+import { City } from '@/underworld/utils/realms'
 
 //
 // React + Typescript + Context

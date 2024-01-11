@@ -1,7 +1,7 @@
-import { Account } from 'starknet';
-import { getEvents, setComponentsFromEvents } from "@dojoengine/utils";
-import { SetupNetworkResult } from './setupNetwork';
-import { stringToFelt } from '../underworld/utils/utils';
+import { Account } from 'starknet'
+import { getEvents, setComponentsFromEvents } from '@dojoengine/utils'
+import { SetupNetworkResult } from '@/dojo/setupNetwork'
+import { stringToFelt } from '@/underworld/utils/utils'
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 

@@ -5,7 +5,7 @@
 //   setTweenState(1000) // tweenState gradually changes to 1000 in 700ms
 // 
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 
 const useAnimationFrame = ({

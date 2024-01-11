@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useDojoSystemCalls, useDojoAccount } from '../../DojoContext'
-import { useChamber, useChamberState, useChamberMap, useChamberOffset, useRealmChamberIds } from '../hooks/useChamber'
-import { useUnderworldContext } from '../hooks/UnderworldContext'
-import { bigintToHex } from '../utils/utils'
-import { Dir, DirNames, coordToCompass, coordToSlug, offsetCompass } from '../utils/underworld'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useDojoSystemCalls, useDojoAccount } from '@/dojo/DojoContext'
+import { useChamber, useChamberState, useChamberMap, useChamberOffset, useRealmChamberIds } from '@/underworld/hooks/useChamber'
+import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
+import { bigintToHex } from '@/underworld/utils/utils'
+import { Dir, DirNames, coordToCompass, coordToSlug, offsetCompass } from '@/underworld/utils/underworld'
 
 interface Generator {
   name: string
