@@ -39,7 +39,10 @@ export default function IndexPage() {
 
       <br />
       <div className='Spacer20' />
-      <a href='/test/'>test page</a>
+
+      <p>by <a href='https://lootunder.world'>Team Underworld</a></p>
+      <p><a href='https://x.com/LootUnderworld'>@LootUnderworld</a></p>
+
     </App>
   );
 }
