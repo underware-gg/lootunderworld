@@ -1,5 +1,5 @@
 [package]
-cairo-version = "2.3.1"
+cairo-version = "2.4.0"
 name = "loot_underworld"
 version = "0.1.0"
 description = "Excavating the endless mysteries of the subterranean in an autonomous (under)world!"
@@ -13,7 +13,7 @@ sierra-replace-ids = true
 
 [dependencies]
 # dojo = { git = "https://github.com/dojoengine/dojo.git", rev = "47c0cbcfa4ebd4d4b504ec959fdbcfd3e4271e8a" }
-dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v0.4.3" }
+dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v0.4.4" }
 
 
 [[target.dojo]]

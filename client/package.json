@@ -11,12 +11,12 @@
     "create-components": "npx @dojoengine/core ../dojo/target/dev/manifest.json src/dojo/contractComponents.ts"
   },
   "dependencies": {
-    "@dojoengine/core": "^0.2.10",
-    "@dojoengine/create-burner": "^0.2.10",
-    "@dojoengine/react": "^0.2.10",
+    "@dojoengine/core": "^0.3.4",
+    "@dojoengine/create-burner": "^0.3.4",
+    "@dojoengine/react": "^0.3.4",
     "@dojoengine/recs": "^0.1.35",
-    "@dojoengine/torii-client": "^0.2.10",
-    "@dojoengine/utils": "^0.2.10",
+    "@dojoengine/torii-client": "^0.3.4",
+    "@dojoengine/utils": "^0.3.4",
     "next": "^13.5.6",
     "react": "^18.2.0",
     "react-ascii-text": "^0.0.3",
@@ -24,7 +24,7 @@
     "react-dom": "^18.2.0",
     "sass": "^1.69.5",
     "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^3.0.0-beta.0",
+    "semantic-ui-react": "^3.0.0-beta.2",
     "starknet": "5.24.3",
     "swr": "^2.2.4",
     "type-fest": "^2.14.0"
