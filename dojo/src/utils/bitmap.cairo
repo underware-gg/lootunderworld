@@ -2,7 +2,7 @@ use loot_underworld::utils::bitwise::{U256Bitwise};
 use loot_underworld::types::dir::{Dir, DirTrait};
 
 //
-// use editor to create bitmaps: http://localhost:5173/editor/
+// use editor to create bitmaps: http://localhost:3000/editor/
 mod MASK {
     const NONE: u256 = 0x0;
     const ALL: u256  = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;

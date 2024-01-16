@@ -156,7 +156,7 @@ cd dojo
 
 #### Browser
 
-Open [http://localhost:5173/](http://localhost:5173/)
+Open [http://localhost:3000/](http://localhost:3000/)
 
 
 
