@@ -4,6 +4,7 @@ import { useComponentValue, useEntityQuery } from "@dojoengine/react"
 import { useDojoComponents } from '@/dojo/DojoContext'
 import { bigintToEntity, bigintToHex } from "../utils/utils"
 import { Dir, TileType, expandTilemap_1p, offsetCoord } from "../utils/underworld"
+import { useEntityKeys, useEntityKeysQuery } from "@/underworld/hooks/useEntityKeys"
 
 
 //------------------
@@ -12,8 +13,9 @@ import { Dir, TileType, expandTilemap_1p, offsetCoord } from "../utils/underworl
 
 export const useAllChamberIds = () => {
   const { Chamber } = useDojoComponents()
-  const entityIds: Entity[] = useEntityQuery([Has(Chamber)])
-  const chamberIds: bigint[] = useMemo(() => (entityIds ?? []).map((entityId) => BigInt(entityId)), [entityIds])
+  // const entityIds: Entity[] = useEntityQuery([Has(Chamber)])
+  // const chamberIds: bigint[] = useMemo(() => (entityIds ?? []).map((entityId) => BigInt(entityId)), [entityIds])
+  const chamberIds: bigint[] = useEntityKeys(Chamber, 'location_id')
   return {
     chamberIds,
   }
@@ -21,8 +23,9 @@ export const useAllChamberIds = () => {
 
 export const useRealmChamberIds = (realmId: number) => {
   const { Chamber } = useDojoComponents()
-  const entityIds = useEntityQuery([HasValue(Chamber, { token_id: realmId })])
-  const chamberIds: bigint[] = useMemo(() => (entityIds ?? []).map((entityId) => BigInt(entityId)), [entityIds])
+  // const entityIds = useEntityQuery([HasValue(Chamber, { token_id: realmId })])
+  // const chamberIds: bigint[] = useMemo(() => (entityIds ?? []).map((entityId) => BigInt(entityId)), [entityIds])
+  const chamberIds: bigint[] = useEntityKeysQuery(Chamber, 'location_id', [HasValue(Chamber, { token_id: realmId })])
   return {
     chamberIds,
   }
@@ -37,6 +40,7 @@ export const useChamber = (chamberId: bigint) => {
   const { Chamber } = useDojoComponents()
 
   const chamber: any = useComponentValue(Chamber, bigintToEntity(chamberId))
+console.log(`useChamber()`, Chamber, bigintToEntity(chamberId), chamber)
   const seed = useMemo(() => BigInt(chamber?.seed ?? 0), [chamber])
   const minter = useMemo(() => BigInt(chamber?.minter ?? 0), [chamber])
 
