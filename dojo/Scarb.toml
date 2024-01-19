@@ -1,12 +1,15 @@
-[package]
-cairo-version = "2.4.0"
-name = "loot_underworld"
-version = "0.1.0"
+[tool.dojo.world]
+name = "Loot Underworld"
 description = "Excavating the endless mysteries of the subterranean in an autonomous (under)world!"
 # icon_uri = "https://play.lootunder.world/images/logo.jpg"
 # cover_uri = "https://play.lootunder.world/images/splash.jpg"
 website = "https://lootunder.world"
 socials.x = "https://twitter.com/lootunderworld"
+
+[package]
+cairo-version = "2.4.0"
+name = "loot_underworld"
+version = "0.1.0"
 
 [cairo]
 sierra-replace-ids = true
