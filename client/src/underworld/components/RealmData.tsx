@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
 import { useRealmMetadata, useRealmSvgMetadata } from '@/underworld/hooks/useRealm'
 import { compassToSlug } from '@/underworld/utils/underworld'
-import { bigintToHex } from '@/underworld/utils/utils'
 import { City } from '@/underworld/utils/realms'
+import { Utils } from '@avante/crawler-core'
 
 interface ChamberMapProps {
   // realmId: number,
@@ -82,7 +82,7 @@ function RealmData({
             Compass: <b>{compassToSlug(city.compass)}</b>
           </p>
           <p>
-            Coord: <b>{bigintToHex(city.coord)}</b>
+            Coord: <b>{Utils.bigIntToHex(city.coord)}</b>
           </p>
         </div>
       }

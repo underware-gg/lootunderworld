@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react"
 import { Entity, HasValue, Has, getComponentValue } from '@dojoengine/recs'
 import { useComponentValue, useEntityQuery } from "@dojoengine/react"
 import { useDojoComponents } from '@/dojo/DojoContext'
-import { bigintToEntity, bigintToHex } from "../utils/utils"
+import { bigintToEntity } from "../utils/utils"
 import { Dir, TileType, expandTilemap_1p, offsetCoord } from "../utils/underworld"
 import { useEntityKeys, useEntityKeysQuery } from "@/underworld/hooks/useEntityKeys"
 
@@ -89,7 +89,7 @@ export const useChamberMap = (locationId: bigint) => {
     }
     return result
   }, [bitmap, tiles])
-  // useEffect(() => console.log(`tilemap:`, bigintToHex(bitmap), tilemap), [tilemap])
+  // useEffect(() => console.log(`tilemap:`, Utils.Utils.bigIntToHex(bitmap), tilemap), [tilemap])
 
   const expandedTilemap = useMemo(() => expandTilemap_1p(tilemap), [tilemap])
 

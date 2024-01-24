@@ -1,4 +1,4 @@
-import { map, clamp } from "./utils"
+import { Utils } from '@avante/crawler-core'
 import { Compass } from "./underworld"
 
 export interface Point {
@@ -20,15 +20,15 @@ export interface City {
 
 export const convertCityCenterToMeters = (center: Point): Point => {
   return {
-    x: map(center.x, -450, 450, 0, 80000),
-    y: map(center.y, -450, 450, 0, 80000),
+    x: Utils.map(center.x, -450, 450, 0, 80000),
+    y: Utils.map(center.y, -450, 450, 0, 80000),
   }
 }
 
 export const convertCityCenterToCompass = (center: Point): Compass => {
   const m = convertCityCenterToMeters(center)
-  const mx = clamp(Math.ceil(m.x / 40), 1, 2000)
-  const my = clamp(Math.ceil(m.y / 40), 1, 2000)
+  const mx = Utils.clamp(Math.ceil(m.x / 40), 1, 2000)
+  const my = Utils.clamp(Math.ceil(m.y / 40), 1, 2000)
   return {
     north: my <= 1000 ? (1000 - my + 1) : 0,
     east: mx > 1000 ? (mx - 1000) : 0,

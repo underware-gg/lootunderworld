@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
+import { Utils } from '@avante/crawler-core'
 import { MapColors } from '@/underworld/utils/colors'
-import { bigintToHex } from '@/underworld/utils/utils'
 import App from '@/underworld/components/App'
 
 function EditorPage() {
@@ -23,7 +23,7 @@ function EditorMap() {
     }
     return result
   }, [bitmap])
-  useEffect(() => console.log(`EDITOR tilemap:`, bigintToHex(bitmap), tilemap), [tilemap])
+  useEffect(() => console.log(`EDITOR tilemap:`, Utils.bigIntToHex(bitmap), tilemap), [tilemap])
 
   const _setTileBit = (index: number) => {
     setBitmap(bitmap ^ (BigInt(1) << BigInt(255 - index)))
@@ -65,7 +65,7 @@ function EditorMap() {
         Bit: [<b>{activeTile < 0 ? '-' : (255 - activeTile)}</b >]
       </p>
       <p>
-        {bigintToHex(bitmap)}
+        {Utils.bigIntToHex(bitmap)}
       </p>
       <p>
         <button onClick={() => setBitmap(0n)}>clear</button>
@@ -74,7 +74,7 @@ function EditorMap() {
         &nbsp;
         /
         &nbsp;
-        <button onClick={() => { navigator?.clipboard?.writeText(bigintToHex(bitmap)) }}>copy</button>
+        <button onClick={() => { navigator?.clipboard?.writeText(Utils.bigIntToHex(bitmap)) }}>copy</button>
         &nbsp;
         <button onClick={async () => { setBitmap(BigInt(await navigator?.clipboard?.readText() ?? bitmap)) }}>paste</button>
       </p>

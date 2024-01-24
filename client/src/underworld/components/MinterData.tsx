@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDojoSystemCalls, useDojoAccount } from '@/dojo/DojoContext'
 import { useChamber, useChamberState, useChamberMap, useChamberOffset, useRealmChamberIds } from '@/underworld/hooks/useChamber'
 import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
-import { bigintToHex } from '@/underworld/utils/utils'
 import { Dir, DirNames, coordToCompass, coordToSlug, offsetCompass } from '@/underworld/utils/underworld'
+import { Utils } from '@avante/crawler-core'
 
 interface Generator {
   name: string
@@ -152,7 +152,7 @@ function MinterData() {
       <p>
         @ Realm#{realmId} [{city?.name ?? '?'}]
         <br />
-        {bigintToHex(city?.coord ?? 0n)}
+        {Utils.bigIntToHex(city?.coord ?? 0n)}
       </p>
 
       {!chamberExists && <>
@@ -175,7 +175,7 @@ function MinterData() {
         <p>
           <b>{coordToSlug(chamberId, yonder)}</b>
           <br />
-          {bigintToHex(chamberId)}
+          {Utils.bigIntToHex(chamberId)}
           <br />
           {chamberId.toString()}
         </p>

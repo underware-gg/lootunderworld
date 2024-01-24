@@ -4,6 +4,7 @@
 // From Crawler SDK
 //
 
+// TODO: DELETE ME
 export enum Dir {
   North = 0,
   East = 1,
@@ -13,6 +14,7 @@ export enum Dir {
   Under = 5,
 }
 
+// TODO: DELETE ME
 export const DirNames = {
   [Dir.North]: 'North',
   [Dir.East]: 'East',
@@ -22,6 +24,7 @@ export const DirNames = {
   [Dir.Under]: 'Under',
 }
 
+// TODO: DELETE ME
 export enum TileType {
   Void = 0x00,
   Entry = 0x01,
@@ -35,15 +38,18 @@ export enum TileType {
   Path = 0xff,
 }
 
+// TODO: DELETE ME
 export enum Domain {
   Realms = 1,
   // CryptsAndCaverns = 2,
 }
 
+// TODO: DELETE ME
 export const DomainTokenCount = {
   [Domain.Realms]: 8000,
 }
 
+// TODO: DELETE ME
 export interface Compass {
   domainId?: Domain
   tokenId?: number
@@ -55,6 +61,7 @@ export interface Compass {
   south?: number
 }
 
+// TODO: DELETE ME
 export const validateCompass = (compass: Compass | null): boolean => {
   if (!compass) return false
   const hasNorth = (compass.north && compass.north > 0)
@@ -72,6 +79,7 @@ export const validateCompass = (compass: Compass | null): boolean => {
   return true
 }
 
+// TODO: DELETE ME
 export const validatedCompass = (compass: Compass | null): Compass | null => {
   if (!compass || !validateCompass(compass)) {
     return null
@@ -88,10 +96,12 @@ export const validatedCompass = (compass: Compass | null): Compass | null => {
   return result
 }
 
+// TODO: DELETE ME
 export const slugSeparators = [null, '', ',', '.', ';', '-'] as const
 export const defaultSlugSeparator = ','
 export type SlugSeparator = typeof slugSeparators[number]
 
+// TODO: DELETE ME
 export const compassToSlug = (compass: Compass | null, yonder: number = 0, separator: SlugSeparator = defaultSlugSeparator): string => {
   if (!compass || !validateCompass(compass)) return ''
   let result = ''
@@ -116,6 +126,7 @@ export const compassToSlug = (compass: Compass | null, yonder: number = 0, separ
   return result
 }
 
+// TODO: DELETE ME
 export const compassToCoord = (compass: Compass | null): bigint => {
   let result = 0n
   if (compass && validateCompass(compass)) {
@@ -131,6 +142,7 @@ export const compassToCoord = (compass: Compass | null): bigint => {
   return result
 }
 
+// TODO: DELETE ME
 export const coordToCompass = (coord: bigint): Compass | null => {
   let result: Compass = {
     domainId: Number((coord >> 112n) & BigInt(0xffff)),
@@ -145,10 +157,12 @@ export const coordToCompass = (coord: bigint): Compass | null => {
   return validatedCompass(result)
 }
 
+// TODO: DELETE ME
 export const coordToSlug = (coord: bigint, yonder: number = 0): string => {
   return compassToSlug(coordToCompass(coord), yonder)
 }
 
+// TODO: DELETE ME
 export const offsetCompass = (compass: Compass | null, dir: Dir): Compass | null => {
   const _add = (v: number | undefined) => (v ? v + 1 : 1)
   const _sub = (v: number | undefined) => (v && v > 1 ? v - 1 : 0)
@@ -176,6 +190,7 @@ export const offsetCompass = (compass: Compass | null, dir: Dir): Compass | null
   return validatedCompass(result)
 }
 
+// TODO: DELETE ME
 export const offsetCoord = (coord: bigint, dir: Dir): bigint => {
   return compassToCoord(offsetCompass(coordToCompass(coord), dir))
 }
