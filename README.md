@@ -179,6 +179,17 @@ cd dojo
 
 ## FAQ / Pitfalls
 
+* Linking to a local package:
+
+```sh
+cd client
+npm link @dojoengine/state ../../dojo.js/packages/state
+
+# unlink
+npm unlink @dojoengine/state
+```
+
+
 * `sozo migrate` error:
 
 ```
@@ -194,12 +205,13 @@ Caused by:
 Fix: Comment `world_address` on `Scarb.toml`, migrate, and uncomment.
 
 
-* Console error:
+* Console errors...
 
-`Error: code=ContractNotFound, message="Contract not found"`
+`Uncaught (in promise) Error: Error fetching transaction receipt`
 
 Fix: Delete burner wallets from Browser Local Storage
 
+`Uncaught (in promise) failed to build client: status: Internal, message: "error returned from database: (code: 1) no such table: worlds", details: [], metadata: MetadataMap { headers: {"content-length": "0", "content-type": "application/grpc-web+proto"} }`
 
-
+Fix: Restart torii
 
