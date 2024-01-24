@@ -40,7 +40,8 @@ export const useChamber = (chamberId: bigint) => {
   const { Chamber } = useDojoComponents()
 
   const chamber: any = useComponentValue(Chamber, bigintToEntity(chamberId))
-console.log(`useChamber()`, Chamber, bigintToEntity(chamberId), chamber)
+// useMemo(() => console.log(`useChamber()`, Chamber, bigintToEntity(chamberId), chamber), [chamber])
+
   const seed = useMemo(() => BigInt(chamber?.seed ?? 0), [chamber])
   const minter = useMemo(() => BigInt(chamber?.minter ?? 0), [chamber])
 

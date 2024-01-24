@@ -15,6 +15,7 @@
     "@dojoengine/create-burner": "^0.3.4",
     "@dojoengine/react": "^0.3.4",
     "@dojoengine/recs": "^0.1.35",
+    "@dojoengine/state": "file:../../dojo.js/packages/state",
     "@dojoengine/torii-client": "^0.3.4",
     "@dojoengine/utils": "^0.3.4",
     "next": "^13.5.6",
