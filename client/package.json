@@ -11,6 +11,8 @@
     "create-components": "npx @dojoengine/core ../dojo/target/dev/manifest.json src/dojo/contractComponents.ts"
   },
   "dependencies": {
+    "@avante/crawler-core": "file:../../../DAPPS/crawler-sdk/packages/crawler-core",
+    "@avante/crawler-react": "file:../../../DAPPS/crawler-sdk/packages/crawler-react",
     "@dojoengine/core": "^0.3.4",
     "@dojoengine/create-burner": "^0.3.4",
     "@dojoengine/react": "^0.3.4",
