@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, useReducer, useContext, useEffect } from 'react'
 import realmsMetadata from '@/underworld/data/database.json'
-import { makeRealmEntryChamberIdFromCoord } from '@/underworld/utils/underworld'
 import { City } from '@/underworld/utils/realms'
+import { useLootUnderworld } from '@avante/crawler-react'
 
 //
 // React + Typescript + Context
@@ -69,6 +69,7 @@ interface UnderworldProviderProps {
 const UnderworldProvider = ({
   children,
 }: UnderworldProviderProps) => {
+  const { underworld } = useLootUnderworld()
   const [state, dispatch] = useReducer((state: UnderworldStateType, action: ActionType) => {
     let newState = { ...state }
     switch (action.type) {
@@ -87,7 +88,7 @@ const UnderworldProvider = ({
       }
       case UnderworldActions.SET_CITY: {
         newState.city = action.payload ? { ...action.payload } : null
-        newState.chamberId = action.payload ? makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord) : 0n
+        newState.chamberId = action.payload ? underworld.makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord) : 0n
         break
       }
       case UnderworldActions.SET_CHAMBER: {

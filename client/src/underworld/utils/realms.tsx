@@ -1,5 +1,6 @@
-import { Utils } from '@avante/crawler-core'
-import { Compass } from "./underworld"
+import { LootUnderworld, Utils } from '@avante/crawler-core'
+
+type Compass = LootUnderworld.Compass
 
 export interface Point {
   x: number

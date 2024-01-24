@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react'
-import { Compass, TileType } from '@/underworld/utils/underworld'
 import { MapColors } from '@/underworld/utils/colors'
 import { Point } from '@/underworld/utils/realms'
+import { LootUnderworld, TileType } from '@avante/crawler-core'
+
+type Compass = LootUnderworld.Compass
 
 export const compassToMapViewPos = (compass: Compass | null): Point => {
   const north = (compass?.north ?? 0)

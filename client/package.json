@@ -21,7 +21,7 @@
     "@dojoengine/torii-client": "^0.3.4",
     "@dojoengine/utils": "^0.3.4",
     "next": "^13.5.6",
-    "react": "^18.2.0",
+    "react": "file:../../../DAPPS/crawler-sdk/node_modules/.pnpm/react@18.2.0/node_modules/react",
     "react-ascii-text": "^0.0.3",
     "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
 import { useRealmMetadata, useRealmSvgMetadata } from '@/underworld/hooks/useRealm'
-import { compassToSlug } from '@/underworld/utils/underworld'
 import { City } from '@/underworld/utils/realms'
+import { useLootUnderworld } from '@avante/crawler-react'
 import { Utils } from '@avante/crawler-core'
 
 interface ChamberMapProps {
@@ -44,6 +44,7 @@ function RealmCitySelector({
 function RealmData({
   // realmId,
 }: ChamberMapProps) {
+  const { underworld } = useLootUnderworld()
   const { realmId, city, dispatch, UnderworldActions } = useUnderworldContext()
   const { metadata } = useRealmMetadata(realmId)
 
@@ -79,7 +80,7 @@ function RealmData({
             Elevation: <b>{city.elevation >= 0 ? city.elevation : '?'}</b>
           </p>
           <p>
-            Compass: <b>{compassToSlug(city.compass)}</b>
+            Compass: <b>{underworld.compassToSlug(city.compass)}</b>
           </p>
           <p>
             Coord: <b>{Utils.bigIntToHex(city.coord)}</b>

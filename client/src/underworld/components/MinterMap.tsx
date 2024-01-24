@@ -2,13 +2,15 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
 import { useChamber, useChamberMap } from '@/underworld/hooks/useChamber'
 import { MapChamber, MapView, compassToMapViewPos } from '@/underworld/components/MapView'
-import { Dir, coordToCompass, coordToSlug, offsetCoord } from '@/underworld/utils/underworld'
+import { Dir } from '@avante/crawler-core'
+import { useLootUnderworld } from '@avante/crawler-react'
 
 
 //-----------------------------
 // Entry Point
 //
 function MinterMap() {
+  const { underworld } = useLootUnderworld()
   const [tileSize, seTtileSize] = useState(5)
   const { realmId, chamberId: currentChamberId } = useUnderworldContext()
 
@@ -40,17 +42,17 @@ function MinterMap() {
   // loaded tilemaps
   const [chambers, setChambers] = useState<{ [key: string]: MapChamber }>({})
   const _addChamber = (chamber: MapChamber) => {
-    const _key = coordToSlug(chamber.coord)
+    const _key = underworld.coordToSlug(chamber.coord)
     if (!chambers[_key]) {
       setChambers({
         ...chambers,
         [_key]: chamber,
       })
       _addLoaders([
-        offsetCoord(chamber.coord, Dir.North),
-        offsetCoord(chamber.coord, Dir.East),
-        offsetCoord(chamber.coord, Dir.West),
-        offsetCoord(chamber.coord, Dir.South),
+        underworld.offsetCoord(chamber.coord, Dir.North),
+        underworld.offsetCoord(chamber.coord, Dir.East),
+        underworld.offsetCoord(chamber.coord, Dir.West),
+        underworld.offsetCoord(chamber.coord, Dir.South),
       ])
     }
   }
@@ -58,7 +60,7 @@ function MinterMap() {
   // target (center)
   const [targetChamber, setTargetChamber] = useState<MapChamber>({} as MapChamber)
   useEffect(() => {
-    const _key = coordToSlug(currentChamberId)
+    const _key = underworld.coordToSlug(currentChamberId)
     if (chambers[_key]) {
       setTargetChamber(chambers[_key])
     }
@@ -98,10 +100,11 @@ function MapLoader({
   coord,
   addChamber,
 }) {
+  const { underworld } = useLootUnderworld()
   const { bitmap, tilemap, expandedTilemap } = useChamberMap(coord)
   useEffect(() => {
     if (bitmap > 0n && expandedTilemap) {
-      const compass = coordToCompass(coord)
+      const compass = underworld.coordToCompass(coord)
       addChamber({
         coord,
         compass,

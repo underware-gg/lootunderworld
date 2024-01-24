@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react'
 import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
 import { convertCityCenterToMeters, convertCityCenterToCompass, City } from '@/underworld/utils/realms'
-import { compassToCoord } from '@/underworld/utils/underworld'
-
-import useSWR from 'swr'
 import { RealmsColors } from '@/underworld/utils/colors'
+import { useLootUnderworld } from '@avante/crawler-react'
+import useSWR from 'swr'
 const textFetcher = (url: string) => fetch(url).then((res) => res.text())
 
 export const useRealmMetadata = (realmId: number) => {
@@ -16,6 +15,7 @@ export const useRealmMetadata = (realmId: number) => {
 }
 
 export const useRealmSvgMetadata = (realmId: number) => {
+  const { underworld } = useLootUnderworld()
   const { cityIndex } = useUnderworldContext()
   const { metadata } = useRealmMetadata(realmId)
   const { data, error, isLoading } = useSWR(metadata.image, textFetcher)
@@ -87,7 +87,7 @@ circle.SelectedCity {
           elevation: -1,
           meters: convertCityCenterToMeters(center),
           compass,
-          coord: compassToCoord(compass),
+          coord: underworld.compassToCoord(compass),
           selected: false,
         }
         if (i === cityIndex) {

@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDojoSystemCalls, useDojoAccount } from '@/dojo/DojoContext'
 import { useChamber, useChamberState, useChamberMap, useChamberOffset, useRealmChamberIds } from '@/underworld/hooks/useChamber'
 import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
-import { Dir, DirNames, coordToCompass, coordToSlug, offsetCompass } from '@/underworld/utils/underworld'
-import { Utils } from '@avante/crawler-core'
+import { Dir, DirNames, Utils } from '@avante/crawler-core'
+import { useLootUnderworld } from '@avante/crawler-react'
 
 interface Generator {
   name: string
@@ -104,6 +104,7 @@ function DirectionButton({
 
 
 function MinterData() {
+  const { underworld } = useLootUnderworld()
   const { mint_realms_chamber } = useDojoSystemCalls()
   const { account } = useDojoAccount()
 
@@ -167,13 +168,13 @@ function MinterData() {
           <select value={chamberId?.toString()} onChange={e => _selectChamber(BigInt(e.target.value))}>
             {chamberIds.map((locationId) => {
               const _id = locationId.toString()
-              return <option value={_id} key={_id}>{coordToSlug(locationId)}</option>
+              return <option value={_id} key={_id}>{underworld.coordToSlug(locationId)}</option>
             })}
           </select>
         </div>
 
         <p>
-          <b>{coordToSlug(chamberId, yonder)}</b>
+          <b>{underworld.coordToSlug(chamberId, yonder)}</b>
           <br />
           {Utils.bigIntToHex(chamberId)}
           <br />

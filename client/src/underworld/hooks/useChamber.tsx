@@ -3,8 +3,10 @@ import { Entity, HasValue, Has, getComponentValue } from '@dojoengine/recs'
 import { useComponentValue, useEntityQuery } from "@dojoengine/react"
 import { useDojoComponents } from '@/dojo/DojoContext'
 import { bigintToEntity } from "../utils/utils"
-import { Dir, TileType, expandTilemap_1p, offsetCoord } from "../utils/underworld"
+import { expandTilemap_1p } from "../utils/underworld"
 import { useEntityKeys, useEntityKeysQuery } from "@/underworld/hooks/useEntityKeys"
+import { Dir, TileType } from "@avante/crawler-core"
+import { useLootUnderworld } from "@avante/crawler-react"
 
 
 //------------------
@@ -56,7 +58,8 @@ export const useChamber = (chamberId: bigint) => {
 }
 
 export const useChamberOffset = (chamberId: bigint, dir: Dir) => {
-  const locationId = useMemo(() => offsetCoord(chamberId, dir), [chamberId, dir])
+  const { underworld } = useLootUnderworld()
+  const locationId = useMemo(() => underworld.offsetCoord(chamberId, dir), [chamberId, dir])
   const result = useChamber(locationId)
   return {
     locationId,
