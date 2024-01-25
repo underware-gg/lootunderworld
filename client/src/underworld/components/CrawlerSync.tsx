@@ -3,7 +3,8 @@ import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
 import { useChamber, useChamberMap } from '@/underworld/hooks/useChamber'
 import { MapChamber, compassToMapViewPos } from '@/underworld/components/MapView'
 import { Dir, DirNames, LootUnderworld } from '@avante/crawler-core'
-import { useConsoleLog, useConsoleWarn, useLootUnderworld, useSideCoords } from '@avante/crawler-react'
+import { useChamberData, useConsoleLog, useConsoleWarn, useLootUnderworld, useSideCoords } from '@avante/crawler-react'
+import { ChamberDataModel } from '@avante/crawler-core/dist/views/view.chamberData'
 
 
 // export const useSideCoords = <T extends ModuleInterface>(coord: BigIntIsh): bigint[] | null => {
@@ -18,7 +19,7 @@ import { useConsoleLog, useConsoleWarn, useLootUnderworld, useSideCoords } from 
 //--------------------------------------
 // Sync maps from Dojo to CrawlerContext
 //
-function CrawlerSync() {
+export default function CrawlerSync() {
   const { underworld } = useLootUnderworld()
   const { cityEntryCoord } = useUnderworldContext()
 
@@ -57,28 +58,32 @@ function PreLoader({
   addLoaders,
 }: LoaderProps) {
   const { chamberExists } = useChamber(coord)
-  if (chamberExists) {
-    return <Loader coord={coord} addLoaders={addLoaders} />
-  }
-  return <></>
+  const { chamberData } = useChamberData(coord)
+  // useConsoleWarn(chamberData && [`chamberData:`, chamberData], [chamberData])
+
+  return (
+    <>
+      {chamberExists && !chamberData && <Loader coord={coord} />}
+      {chamberExists && <SideLoader coord={coord} addLoaders={addLoaders} />}
+    </>
+  )
 }
 
 
 //--------------------------------------
 // <Loader>
-// created for existing Chambers only
+// for existing Chambers only
 // adds new Chambers
 //
 function Loader({
   coord,
-  addLoaders,
-}: LoaderProps) {
-  const { underworld } = useLootUnderworld()
+}) {
+  const { dispatchChamberData } = useLootUnderworld()
   const { token_id, yonder, seed } = useChamber(coord)
   const { bitmap, tilemap, doors, tiles, isLoading } = useChamberMap(coord)
   
-  const chamberData = useMemo(() => {
-    return isLoading ? null : underworld.chamberData.transform({
+  const chamberDataModel = useMemo<ChamberDataModel>(() => {
+    return (coord && !isLoading) ? {
       tokenId: token_id,
       coord,
       bitmap,
@@ -87,14 +92,30 @@ function Loader({
       tilemap,
       locks: Array(Object.values(doors).length).fill(true),
       doors: Object.values(doors),
-    })
-  }, [bitmap, tiles, tilemap, isLoading])
+    } : null
+  }, [coord, isLoading])
+  // useConsoleWarn([`chamberDataModel:`, chamberDataModel], [chamberDataModel])
 
-  // TODO: push to Crawler
-  
-  // useConsoleWarn([`chamberData:`, chamberData], [chamberData])
+  useEffect(() => {
+    if (chamberDataModel) {
+      dispatchChamberData(coord, chamberDataModel)
+    }
+  }, [chamberDataModel])
 
-  // cfreate loaders for side chambers...
+  return <></>
+}
+
+//--------------------------------------
+// <SideLoader>
+// for existing Chambers only
+// Create Loaders for side chambers
+//
+function SideLoader({
+  coord,
+  addLoaders,
+}: LoaderProps) {
+  const { doors } = useChamberMap(coord)
+
   const sideCoords = useSideCoords<LootUnderworld.Module>(coord)
   useEffect(() => {
     if (sideCoords) {
@@ -110,4 +131,3 @@ function Loader({
   return <></>
 }
 
-export default CrawlerSync
