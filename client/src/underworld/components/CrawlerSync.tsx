@@ -58,7 +58,7 @@ function PreLoader({
   addLoaders,
 }: LoaderProps) {
   const { chamberExists } = useChamber(coord)
-  const { chamberData } = useChamberData(coord)
+  const chamberData = useChamberData(coord)
   // useConsoleWarn(chamberData && [`chamberData:`, chamberData], [chamberData])
 
   return (

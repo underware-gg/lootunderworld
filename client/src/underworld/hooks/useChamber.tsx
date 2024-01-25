@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo } from "react"
-import { Entity, HasValue, Has, getComponentValue } from '@dojoengine/recs'
+import React, { useMemo } from "react"
+import { Entity, HasValue, getComponentValue } from '@dojoengine/recs'
 import { useComponentValue, useEntityQuery } from "@dojoengine/react"
 import { useDojoComponents } from '@/dojo/DojoContext'
 import { bigintToEntity } from "../utils/utils"
-import { expandTilemap_1p } from "../utils/underworld"
 import { useEntityKeys, useEntityKeysQuery } from "@/underworld/hooks/useEntityKeys"
-import { Dir, TileType, Utils } from "@avante/crawler-core"
-import { useLootUnderworld, useConsoleLog } from "@avante/crawler-react"
+import { Dir, TileType } from "@avante/crawler-core"
+import { useLootUnderworld } from "@avante/crawler-react"
 
 
 //------------------
@@ -67,6 +66,13 @@ export const useChamberOffset = (chamberId: bigint, dir: Dir) => {
   }
 }
 
+
+
+//------------------
+// Chamber Maps
+// (used by <CrawlerSync> only)
+//
+
 export const useTiles = (locationId: bigint) => {
   const { Tile } = useDojoComponents()
   const tileIds: Entity[] = useEntityQuery([HasValue(Tile, { location_id: locationId ?? 0n })])
@@ -78,7 +84,6 @@ export const useTiles = (locationId: bigint) => {
 }
 
 export const useChamberMap = (locationId: bigint) => {
-  const { underworld } = useLootUnderworld()
   const { Map } = useDojoComponents()
 
   const map: any = useComponentValue(Map, bigintToEntity(locationId))
@@ -113,13 +118,9 @@ export const useChamberMap = (locationId: bigint) => {
   }, [bitmap, tiles])
   // useConsoleLog([`tilemap:`, Utils.bigIntToHex(bitmap)], [tilemap])
 
-  // TODO: REMOVE FROM HERE
-  const expandedTilemap = useMemo(() => expandTilemap_1p(tilemap), [tilemap])
-
   return {
     bitmap,
     tilemap,
-    expandedTilemap,
     doors,
     tiles,
     isLoading: (!map || !bitmap || !tiles?.length || !tilemap.length),

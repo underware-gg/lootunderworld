@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDojoSystemCalls, useDojoAccount } from '@/dojo/DojoContext'
-import { useChamber, useChamberState, useChamberMap, useChamberOffset, useRealmChamberIds } from '@/underworld/hooks/useChamber'
+import { useChamberState, useChamberOffset, useRealmChamberIds } from '@/underworld/hooks/useChamber'
 import { useUnderworldContext } from '@/underworld/hooks/UnderworldContext'
 import { Dir, DirNames, Utils } from '@avante/crawler-core'
-import { useLootUnderworld } from '@avante/crawler-react'
+import { useLootUnderworld, useChamberData } from '@avante/crawler-react'
+import { expandTilemap_1p } from "../utils/underworld"
 
 interface Generator {
   name: string
@@ -112,11 +113,12 @@ function MinterData() {
 
   // Current Realm / Chamber
   const { realmId, city, chamberId, dispatch, UnderworldActions } = useUnderworldContext()
-  const { seed, yonder } = useChamber(chamberId)
-  const { doors } = useChamberMap(chamberId)
+
+  const { seed, yonder, doors, tilemap } = useChamberData(chamberId) ?? {}
+
   const state = useChamberState(chamberId)
 
-  const chamberExists = useMemo(() => (seed > 0), [seed])
+  const chamberExists = useMemo(() => Boolean(seed), [seed])
   const canMintFirst = useMemo(() => (realmId > 0 && city != null && !chamberExists), [realmId, city, chamberExists])
 
   // Chambers list
@@ -174,28 +176,28 @@ function MinterData() {
         </div>
 
         <p>
-          <b>{underworld.coordToSlug(chamberId, yonder)}</b>
+          <b>{underworld.coordToSlug(chamberId)}</b>
           <br />
           {Utils.bigIntToHex(chamberId)}
           <br />
           {chamberId.toString()}
         </p>
         <p>
-          Yonder: <b>{yonder}</b>
+          Yonder: <b>{yonder.toString()}</b>
         </p>
         <p>
-          Doors: [{doors.north},{doors.east},{doors.west},{doors.south}]
+          Doors: [{doors[Dir.North]},{doors[Dir.East]},{doors[Dir.West]},{doors[Dir.South]}]
         </p>
         <p>
           State: [{state.light},{state.threat},{state.wealth}]
         </p>
         <div className='Padded'>
-          <DirectionButton chamberId={chamberId} dir={Dir.North} doorTile={doors?.north ?? 0} generator={_generators[generatorIndex]} />
+          <DirectionButton chamberId={chamberId} dir={Dir.North} doorTile={doors[Dir.North] ?? 0} generator={_generators[generatorIndex]} />
           <div>
-            <DirectionButton chamberId={chamberId} dir={Dir.West} doorTile={doors?.west ?? 0} generator={_generators[generatorIndex]} />
-            <DirectionButton chamberId={chamberId} dir={Dir.East} doorTile={doors?.east ?? 0} generator={_generators[generatorIndex]} />
+            <DirectionButton chamberId={chamberId} dir={Dir.West} doorTile={doors[Dir.West] ?? 0} generator={_generators[generatorIndex]} />
+            <DirectionButton chamberId={chamberId} dir={Dir.East} doorTile={doors[Dir.East] ?? 0} generator={_generators[generatorIndex]} />
           </div>
-          <DirectionButton chamberId={chamberId} dir={Dir.South} doorTile={doors?.south ?? 0} generator={_generators[generatorIndex]} />
+          <DirectionButton chamberId={chamberId} dir={Dir.South} doorTile={doors[Dir.South] ?? 0} generator={_generators[generatorIndex]} />
         </div>
 
         <div>
