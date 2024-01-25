@@ -12,8 +12,9 @@ import { useLootUnderworld } from '@avante/crawler-react'
 // Constants
 //
 export const initialState = {
-  realmId: 1, //6915,
+  realmId: 1, // 6915,
   cityIndex: null,
+  cityEntryCoord: null,
   city: null,
   chamberId: 0n,
   // constants
@@ -33,7 +34,8 @@ const UnderworldActions = {
 //
 type UnderworldStateType = {
   realmId: number,
-  cityIndex: number|null,
+  cityIndex: number | null,
+  cityEntryCoord: bigint | null,
   city: City | null,
   chamberId: bigint,
   // constants
@@ -74,24 +76,31 @@ const UnderworldProvider = ({
     let newState = { ...state }
     switch (action.type) {
       case UnderworldActions.SET_REALM_ID: {
+        // Selected new Realm, clear current city and chamber
         newState.realmId = action.payload as number
         newState.cityIndex = null
+        newState.cityEntryCoord = null
         newState.city = null
         newState.chamberId = 0n
         break
       }
       case UnderworldActions.SET_CITY_INDEX: {
+        // Selected new City, clear current city and chamber, wait for City data
         newState.cityIndex = action.payload as number
+        newState.cityEntryCoord = null
         newState.city = null
         newState.chamberId = 0n
         break
       }
       case UnderworldActions.SET_CITY: {
+        // Fetched City data, set current city and chamber
+        newState.cityEntryCoord = action.payload ? underworld.makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord) : null
         newState.city = action.payload ? { ...action.payload } : null
-        newState.chamberId = action.payload ? underworld.makeRealmEntryChamberIdFromCoord(newState.realmId, action.payload.coord) : 0n
+        newState.chamberId = newState.cityEntryCoord ?? 0n
         break
       }
       case UnderworldActions.SET_CHAMBER: {
+        // Selected new Chamber
         newState.chamberId = action.payload
         break
       }

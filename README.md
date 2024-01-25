@@ -211,6 +211,8 @@ Fix: Comment `world_address` on `Scarb.toml`, migrate, and uncomment.
 
 Fix: Delete burner wallets from Browser Local Storage
 
+`POST http://0.0.0.0:8080/world.World/WorldMetadata net::ERR_CONNECTION_REFUSED`
+`Uncaught (in promise) failed to build client: status: Unknown, message: "js api error: TypeError: Failed to fetch", details: [], metadata: MetadataMap { headers: {} }`
 `Uncaught (in promise) failed to build client: status: Internal, message: "error returned from database: (code: 1) no such table: worlds", details: [], metadata: MetadataMap { headers: {"content-length": "0", "content-type": "application/grpc-web+proto"} }`
 
 Fix: Restart torii

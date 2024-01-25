@@ -5,8 +5,8 @@ import { useDojoComponents } from '@/dojo/DojoContext'
 import { bigintToEntity } from "../utils/utils"
 import { expandTilemap_1p } from "../utils/underworld"
 import { useEntityKeys, useEntityKeysQuery } from "@/underworld/hooks/useEntityKeys"
-import { Dir, TileType } from "@avante/crawler-core"
-import { useLootUnderworld } from "@avante/crawler-react"
+import { Dir, TileType, Utils } from "@avante/crawler-core"
+import { useLootUnderworld, useConsoleLog } from "@avante/crawler-react"
 
 
 //------------------
@@ -42,7 +42,7 @@ export const useChamber = (chamberId: bigint) => {
   const { Chamber } = useDojoComponents()
 
   const chamber: any = useComponentValue(Chamber, bigintToEntity(chamberId))
-// useMemo(() => console.log(`useChamber()`, Chamber, bigintToEntity(chamberId), chamber), [chamber])
+// useConsoleLog([`useChamber()`, Chamber, bigintToEntity(chamberId), chamber], [chamber])
 
   const seed = useMemo(() => BigInt(chamber?.seed ?? 0), [chamber])
   const minter = useMemo(() => BigInt(chamber?.minter ?? 0), [chamber])
@@ -67,17 +67,36 @@ export const useChamberOffset = (chamberId: bigint, dir: Dir) => {
   }
 }
 
+export const useTiles = (locationId: bigint) => {
+  const { Tile } = useDojoComponents()
+  const tileIds: Entity[] = useEntityQuery([HasValue(Tile, { location_id: locationId ?? 0n })])
+  const tiles: any[] = useMemo(() => tileIds.map((tileId) => getComponentValue(Tile, tileId)), [tileIds])
+  // useConsoleLog([`TILES:`, tiles], [tileIds, tiles])
+  return {
+    tiles,
+  }
+}
+
 export const useChamberMap = (locationId: bigint) => {
-  const { Map, Tile } = useDojoComponents()
+  const { underworld } = useLootUnderworld()
+  const { Map } = useDojoComponents()
 
   const map: any = useComponentValue(Map, bigintToEntity(locationId))
   const bitmap: bigint = useMemo(() => BigInt(map?.bitmap ?? 0), [map])
-  // useEffect(() => console.log(`map:`, map, typeof map?.bitmap, bitmap), [bitmap])
+  // useConsoleLog([`map:`, map, typeof map?.bitmap, bitmap], [bitmap])
 
-  const tileIds: Entity[] = useEntityQuery([HasValue(Tile, { location_id: locationId ?? 0n })])
-  // useEffect(() => console.log(`tileIds:`, tileIds), [tileIds])
+  const doors = useMemo(() => {
+    return {
+      north: map?.north ?? 0,
+      east: map?.east ?? 0,
+      west: map?.west ?? 0,
+      south: map?.south ?? 0,
+      over: map?.over ?? 0,
+      under: map?.under ?? 0,
+    }
+  }, [map])
 
-  const tiles: any[] = useMemo(() => tileIds.map((tileId) => getComponentValue(Tile, tileId)), [tileIds])
+  const { tiles } = useTiles(locationId)
 
   const tilemap = useMemo(() => {
     let result: number[] = []
@@ -92,22 +111,18 @@ export const useChamberMap = (locationId: bigint) => {
     }
     return result
   }, [bitmap, tiles])
-  // useEffect(() => console.log(`tilemap:`, Utils.Utils.bigIntToHex(bitmap), tilemap), [tilemap])
+  // useConsoleLog([`tilemap:`, Utils.bigIntToHex(bitmap)], [tilemap])
 
+  // TODO: REMOVE FROM HERE
   const expandedTilemap = useMemo(() => expandTilemap_1p(tilemap), [tilemap])
 
   return {
     bitmap,
     tilemap,
     expandedTilemap,
-    doors: {
-      north: map?.north ?? 0,
-      east: map?.east ?? 0,
-      west: map?.west ?? 0,
-      south: map?.south ?? 0,
-      over: map?.over ?? 0,
-      under: map?.under ?? 0,
-    }
+    doors,
+    tiles,
+    isLoading: (!map || !bitmap || !tiles?.length || !tilemap.length),
   }
 }
 
