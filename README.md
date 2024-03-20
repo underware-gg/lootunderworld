@@ -72,7 +72,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 rustup override set stable
 rustup update
 
-# Install Cargo
+# Install Scarb/Cargo
+# (matching your Scarb.toml Cairo version)
+curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh -s -- -v 2.4.0
+# (or latest)
 curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh
 
 # other stuff you might need
